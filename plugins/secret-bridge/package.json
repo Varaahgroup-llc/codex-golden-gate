@@ -6,6 +6,6 @@
   "type": "module",
   "engines": { "node": ">=22" },
   "scripts": { "start": "node dist/server.mjs", "build": "node scripts/build.mjs", "test": "node --test test/core.test.mjs test/adapters.test.mjs test/protocol.test.mjs", "test:ui": "node --test test/browser.test.mjs" },
-  "dependencies": { "@modelcontextprotocol/sdk": "^1.20.2", "zod": "^3.25.76" },
+  "dependencies": { "@modelcontextprotocol/sdk": "^1.20.2", "zod": "^4.6.7" },
   "devDependencies": { "esbuild": "^0.25.0", "playwright": "^1.56.0" }
 }
