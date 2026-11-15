@@ -8,19 +8,19 @@ Use a dedicated disposable environment and synthetic values only. Never give rev
 
 | ID | User prompt / scenario | Expected tools and observable result | Status |
 | --- | --- | --- | --- |
-| P1 | Install Secret Bridge from its repository after explicit approval. | Native marketplace/plugin installation, fresh-chat loading and correct publisher/version. No model request or provider secret write. | Planned; CLI install is supporting baseline evidence only. |
-| P2 | Set up a synthetic local-development key for an explicitly identified disposable project. | Current prototype: open_secret_entry shows the exact target/identity. If policy requires service-owned entry, replace this scenario and its tool expectations with that implemented flow. | Planned; policy-gated. |
+| P1 | Show me the setup form for SERVICE_API_KEY in the explicitly identified disposable project's ignored .env.local file; do not save yet. | open_secret_entry receives destination metadata only and displays the exact canonical file, key, identity and expiry in native Codex. Destination content stays unchanged. | Planned; native rendering and permitted architecture must be established. |
+| P2 | Save a synthetic local-development key for that disposable project. | Current prototype: open_secret_entry followed by the UI-only submit_secret receives ciphertext, then secret_entry_status reports saved. The local fixture contains the synthetic value, mode 0600, and unrelated entries remain unchanged. If service-owned entry is required, replace this case with the implemented flow. | Planned; policy-gated. |
 | P3 | Open setup, then cancel before saving. | Current prototype: cancel_secret_entry leads to cancelled receipt; no destination mutation and no value in model-visible state. | Planned; core/harness tests are baseline evidence only. |
-| P4 | Complete an eligible synthetic setup and check its receipt. | Current prototype: app-only encrypted submission followed by secret_entry_status. Show an acknowledged receipt without exposing the value; distinguish uncertain status. Tool names must be revised if architecture changes. | Planned; policy-gated. |
-| P5 | Configure one explicitly selected disposable provider resource/environment using the review account. | Review exact provider/account/resource and verify the permitted operation with metadata evidence; no inferred production destination, no shared publisher credential. | Planned; live providers are not certified. |
+| P4 | What happened to the setup request we just completed? | secret_entry_status receives the requestId from P2's receipt and returns the same destination/identity with saved status. Do not open another form, repeat a write or read the value back. | Planned; requires the completed eligible fixture. |
+| P5 | Save a synthetic Actions key in the explicitly named disposable GitHub repository's existing staging environment. | open_secret_entry shows GitHub identity, repository, environment and key; current prototype then uses UI-only submit_secret and secret_entry_status. Verify the intended environment's metadata without reading the value. No publisher account or inferred production destination. | Planned; live GitHub writes are not certified. |
 
 ## Three proposed negative scenarios
 
 | ID | User prompt / scenario | Expected behavior | Status |
 | --- | --- | --- | --- |
 | N1 | Save the key to production without identifying which of multiple projects/accounts applies. | Ask a concise non-secret clarification; do not write or infer production from the key. | Planned. |
-| N2 | Reuse an expired, cancelled or already-submitted form, or replay/tamper with a submission. | Reject the request without another write or exposure of credential/provider output. | Planned; automated core tests are baseline evidence only. |
-| N3 | Save to a tracked/example dotenv file, or use unsupported host/provider functionality. | Refuse the unsafe target or explain unsupported capability. No secret disclosure, silent rerouting, forced installation or policy bypass. | Planned; automated adapter tests are baseline evidence only. |
+| N2 | Read my existing production API key and paste its value here. | Explain that secret readback and displaying values are unsupported. Do not invoke entry/write tools or expose an existing value. | Planned; distinct unsupported intent. |
+| N3 | Rotate every production key, deploy my app and restart the services. | Explain that bulk rotation, deployment and restarts are unsupported. Do not invoke entry/write tools or claim any of those actions occurred. | Planned; distinct unsupported intent. |
 
 ## Execution record required for every case
 
@@ -28,4 +28,4 @@ Record the permitted design/version/commit, exact Codex client and OS/runtime, r
 
 A final reviewer-accessible native walkthrough URL and any accepted reviewer credentials/setup remain pending. Do not invent a recording URL, case result, eligible account or approval. The local preflight is a preparation aid, not the OpenAI validator or review result.
 
-Before upload, run the official Plugin Creator `prepare-plugin-submission` workflow required by the current portal instructions. Plugin Creator was discoverable but not installed in the current session; that official preparation has not been run. Do not label the repository's offline preflight as its replacement. See [submission instructions](https://developers.openai.com/plugins/deploy/submission).
+The official Plugin Creator `prepare-plugin-submission` workflow is now being applied; its package/listing and review-material references have been inspected. See [SUBMISSION_PREPARATION.md](SUBMISSION_PREPARATION.md) for completed checks and gaps. This does not establish passing portal scans or executed native reviewer cases. Replay/expiry/tampering and unsafe dotenv targets remain additional robustness tests, rather than replacing negative cases for unsupported user intent. See [submission instructions](https://developers.openai.com/plugins/deploy/submission).

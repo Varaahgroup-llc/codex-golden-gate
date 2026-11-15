@@ -17,7 +17,20 @@
     "shortDescription": "Private secret setup",
     "longDescription": "Local desktop MCP companion with encrypted secret submissions. Supports dotenv, GitHub Actions, existing AWS Secrets Manager secrets, and Azure Key Vault. Embedded UI requires an MCP Apps-compatible host; modal availability depends on the host.",
     "category": "Productivity",
+    "logo": "./assets/logo.png",
+    "composerIcon": "./assets/icon.png",
+    "composerIconDark": "./assets/icon-dark.png",
+    "brandColor": "#126D5B",
+    "brandColorDark": "#7ACDB7",
     "capabilities": ["Read", "Write"],
     "defaultPrompt": ["Use Secret Bridge to save an API key to my selected service."]
-  } } }
+  },
+    "review": {
+      "commerce": false,
+      "commerce_description": "This version has no checkout, payments, purchases, subscriptions or upgrade flow. Future commercial features are outside this submission and require separate policy review."
+    },
+    "publication": {
+      "countries": []
+    }
+  } }
 }

@@ -6,6 +6,8 @@ The raw-credential-entry prototype is not ready for a directory submission. The 
 
 An authorized eligibility inquiry was escalated to an OpenAI support specialist on November 14, 2026. See docs/approval/SUPPORT_STATUS.md. This is not an approval or listing submission.
 
+Plugin Creator's official preparation workflow has been applied to the current source; see [the preparation record](docs/approval/SUBMISSION_PREPARATION.md). Proposed icons and publication-country scope are packaged. The [terms draft](docs/approval/TERMS_DRAFT.md) still needs owner review and a verified published URL; it is not an effective terms page. Current-version commerce metadata describes the existing no-checkout behavior; future payment plans remain a separate eligibility/product decision.
+
 Run `python3 scripts/preflight_submission.py` before attempting portal submission. It exits nonzero while known evidence gates are unresolved. `--report-only` is for displaying blockers in CI and does not grant eligibility. This limited offline check does not replace OpenAI package/skill scans, verification, policy attestations or human review. Proposed reviewer scenarios and unverified evidence are in docs/approval/REVIEW_PLAN.md.
 
 ## Repository distribution

@@ -32,7 +32,7 @@ class PackagingTests(unittest.TestCase):
 
     def test_unknown_files_never_enter_either_archive(self):
         marker = b'SYNTHETIC-PRIVATE-NOT-A-CREDENTIAL'
-        for name in ['private-account.md', 'docs/approval/verification.json', 'plugins/secret-bridge/dist/private.txt', 'plugins/secret-bridge/skills/save-secret/private.txt', '.env', '.aws/credentials']:
+        for name in ['private-account.md', 'docs/approval/verification.json', 'plugins/secret-bridge/dist/private.txt', 'plugins/secret-bridge/skills/save-secret/private.txt', 'plugins/secret-bridge/assets/private.txt', '.env', '.aws/credentials']:
             file = self.root / name
             file.parent.mkdir(parents=True, exist_ok=True)
             file.write_bytes(marker)
@@ -46,6 +46,9 @@ class PackagingTests(unittest.TestCase):
         with zipfile.ZipFile(release) as archive:
             self.assertIn('dist/server.mjs', archive.namelist())
             self.assertIn('skills/save-secret/SKILL.md', archive.namelist())
+            self.assertIn('assets/logo.png', archive.namelist())
+            self.assertIn('assets/icon.png', archive.namelist())
+            self.assertIn('assets/icon-dark.png', archive.namelist())
         self.assertEqual(sums.read_text(), ''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n' for p in [source, release]))
 
     def test_missing_approved_file_fails_before_creating_archives(self):

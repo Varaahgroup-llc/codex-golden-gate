@@ -10,6 +10,8 @@ Local dotenv destinations store plaintext on the user's disk. Cloud destinations
 
 Temporary in-memory form keys expire after five minutes and are discarded after saving or cancellation. Local atomic writes may leave private temporary files after an abrupt system or process crash. JavaScript memory, browser extensions, swap and compromised systems can expose data; encryption does not remove those risks.
 
+Request metadata and receipts remain in the local server's memory until later session cleanup or process exit; their deletion is not guaranteed at the five-minute key-expiry time. Host conversation/tool history and provider/CLI logs follow those services' retention settings. Saved dotenv files and cloud secrets remain at the selected destination until the user changes or deletes them through that destination. Cancelling a pending form clears that form's value and capability; it does not delete a value already saved. Stopping or uninstalling the plugin does not delete destination data or host history.
+
 GitHub downloads, releases and support interactions are governed by GitHub's policies. Never attach real secrets, full dotenv files, private form captures, or unredacted provider logs to a bug report. For security issues, use the private reporting process in SECURITY.md.
 
 Changes to data handling require review, a changelog entry and an updated policy before release.

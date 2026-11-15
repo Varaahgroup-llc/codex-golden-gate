@@ -12,7 +12,7 @@ def excluded(path):
     return any(p in {'node_modules', '.git', '__pycache__', 'release'} for p in path.parts) or path.name.startswith(('.env', '.dev.vars')) or path.suffix in {'.log', '.zip', '.pyc'} or path.name in {'.DS_Store', 'preview.png'}
 
 PUBLIC_DOCS = ['README.md', 'INSTALL.md', 'SECURITY.md', 'PRIVACY.md', 'PUBLISHING.md', 'CHANGELOG.md', 'MAINTAINING.md', 'CONTRIBUTING.md', 'VALIDATION.md', 'LICENSE',
-               'docs/TRACKING.md', 'docs/approval/SUPPORT_STATUS.md', 'docs/approval/REVIEW_PLAN.md', 'docs/approval/readiness.json', 'docs/approval/SECURITY_PREPARATION.md']
+               'docs/TRACKING.md', 'docs/approval/SUPPORT_STATUS.md', 'docs/approval/REVIEW_PLAN.md', 'docs/approval/readiness.json', 'docs/approval/SECURITY_PREPARATION.md', 'docs/approval/SUBMISSION_PREPARATION.md', 'docs/approval/TERMS_DRAFT.md']
 
 def approved_files(root):
     """Only reviewed catalog entries may leave the working directory."""
@@ -55,7 +55,7 @@ def package(root, output):
                 archive.write(file, name)
             elif rel.parts[:2] == ('plugins', 'secret-bridge'):
                 plugin_rel = PurePosixPath(*rel.parts[2:])
-                if plugin_rel.parts[0] in {'dist', 'skills'} or str(plugin_rel) in {'plugin.json', 'mcp.json'}:
+                if plugin_rel.parts[0] in {'dist', 'skills', 'assets'} or str(plugin_rel) in {'plugin.json', 'mcp.json'}:
                     archive.write(file, str(plugin_rel))
     checksums = output / 'SHA256SUMS.txt'
     checksums.write_text(''.join(f'{hashlib.sha256(file.read_bytes()).hexdigest()}  {file.name}\n' for file in [source, release]))
