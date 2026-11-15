@@ -115,8 +115,8 @@ def main():
     parser.add_argument('--report-only', action='store_true', help='Report known blockers without failing CI; never means eligible or approved')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    manifest = json.loads((root / 'plugins/secret-bridge/plugin.json').read_text())
-    mcp_file = root / 'plugins/secret-bridge/mcp.json'
+    manifest = json.loads((root / 'plugins/golden-gate/plugin.json').read_text())
+    mcp_file = root / 'plugins/golden-gate/mcp.json'
     mcp_config = json.loads(mcp_file.read_text()) if mcp_file.is_file() else {}
     readiness = json.loads((root / 'docs/approval/readiness.json').read_text())
     result = assess(manifest, readiness, mcp_config)

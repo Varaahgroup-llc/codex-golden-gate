@@ -19,7 +19,7 @@ test('dotenv preserves unrelated entries and rejects ambiguous syntax', () => {
   assert.throws(() => updateDotenv('', 'KEY', 'both\'"quotes'));
 });
 test('local save writes mode 0600, rejects symlinks, protects examples', async t => {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'secret-bridge-test-')); t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-test-')); t.after(() => fs.rm(dir, { recursive: true, force: true }));
   const file = path.join(dir, '.env.local'), plan = await prepare({ provider: 'env', file, name: 'KEY' });
   await save(plan, 'synthetic-test-only');
   assert.equal(await fs.readFile(file, 'utf8'), "KEY='synthetic-test-only'\n");
@@ -29,7 +29,7 @@ test('local save writes mode 0600, rejects symlinks, protects examples', async t
   await assert.rejects(prepare({ provider: 'env', file: path.join(dir, '.env.example'), name: 'KEY' }), /example/);
 });
 test('Git dotenv guard refuses nonignored and tracked files', async t => {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'secret-bridge-git-')); t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-git-')); t.after(() => fs.rm(dir, { recursive: true, force: true }));
   await run('git', ['init', '-q', dir]);
   const destination = { provider: 'env', file: path.join(dir, '.env.local'), name: 'KEY' };
   await assert.rejects(prepare(destination), /Ignore/);
@@ -39,7 +39,7 @@ test('Git dotenv guard refuses nonignored and tracked files', async t => {
   await assert.rejects(prepare(destination), /tracked/);
 });
 test('Git guard fails closed if Git is unavailable in a repository', async t => {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'secret-bridge-closed-')); t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-closed-')); t.after(() => fs.rm(dir, { recursive: true, force: true }));
   await fs.mkdir(path.join(dir, '.git'));
   await assert.rejects(prepare({ provider: 'env', file: path.join(dir, '.env'), name: 'KEY' }, async () => { throw new Error(); }), /verify Git/);
 });

@@ -1,11 +1,11 @@
 ---
 name: save-secret
-description: Open Secret Bridge's encrypted MCP Apps entry form to save API keys, tokens, or passwords to a selected dotenv file, GitHub Actions, AWS Secrets Manager, or Azure Key Vault without pasting values in chat.
+description: Open Golden Gate's encrypted MCP Apps entry form to save API keys, tokens, or passwords to a selected dotenv file, GitHub Actions, AWS Secrets Manager, or Azure Key Vault without pasting values in chat.
 ---
 
 # Save a secret
 
-Use the connected Secret Bridge MCP tools. A skill alone cannot render this UI; if its MCP tools are unavailable, explain that the companion plugin must be installed and enabled.
+Use the connected Golden Gate MCP tools. A skill alone cannot render this UI; if its MCP tools are unavailable, explain that the companion plugin must be installed and enabled.
 
 Select the destination automatically from the user's instruction and unambiguous project metadata. The user's explicit service/project/environment wins. For a CI secret use the requested repository and existing Actions environment; for local app setup use the active project's private dotenv location; for a named vault or secret manager use its exact resource identity. Read only the non-secret project/configuration metadata needed to distinguish these options. Do not read existing secret values to infer routing.
 

@@ -1,6 +1,6 @@
 # Privacy
 
-Secret Bridge is open-source software maintained by Varaahgroup-llc. This document describes version 0.1.0's behavior.
+Golden Gate is open-source software maintained by Varaahgroup-llc. This document describes the prepared 0.2.0 rename version's behavior.
 
 The plugin executes on the user's computer. It has no operator-hosted backend, analytics, advertising, telemetry, user database, or secret storage service. The maintainers do not receive values entered in the form through the plugin's normal operation.
 

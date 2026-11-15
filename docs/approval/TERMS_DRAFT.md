@@ -1,10 +1,10 @@
-# Secret Bridge terms — draft for owner review
+# Golden Gate terms — draft for owner review
 
 **Not effective or published terms.** Prepared November 14, 2026 for the current local software. Varaahgroup LLC must approve the scope and final text before this document becomes a public Terms of Service page. Do not use this draft's URL as the listing's `termsOfServiceURL`.
 
 ## Maintainer and scope
 
-Secret Bridge is standalone open-source software maintained by Varaahgroup LLC at [the project repository](https://github.com/Varaahgroup-llc/codex-secret-bridge). These proposed terms describe the locally executing version, not a hosted secret-storage service. OpenAI and destination providers operate their own services under their own terms. Secret Bridge is not endorsed by OpenAI.
+Golden Gate is standalone open-source software maintained by Varaahgroup LLC at [the project repository](https://github.com/Varaahgroup-llc/codex-golden-gate). These proposed terms describe the locally executing version, not a hosted secret-storage service. OpenAI and destination providers operate their own services under their own terms. Golden Gate is not endorsed by OpenAI.
 
 ## Software license
 
@@ -12,13 +12,13 @@ The source code and distributed software are provided under the repository's [MI
 
 ## Authorized use and destination review
 
-Use provider accounts and resources you are authorized to administer. Review the exact account, project, environment, file and secret name before approving an operation. Saving may replace an existing value or add a provider version. Secret Bridge does not automatically deploy, restart services or rotate downstream consumers.
+Use provider accounts and resources you are authorized to administer. Review the exact account, project, environment, file and secret name before approving an operation. Saving may replace an existing value or add a provider version. Golden Gate does not automatically deploy, restart services or rotate downstream consumers.
 
 The current preview has compatibility and validation limits described in [README](../../README.md) and [VALIDATION](../../VALIDATION.md). A failed or uncertain response may require checking destination metadata before another attempt. It does not establish that a cloud write was rolled back.
 
 ## Privacy and support
 
-The [Privacy Policy](../../PRIVACY.md) describes the current local data flow, host/provider involvement, receipts and temporary-memory/file limitations. Do not put keys, passwords, identity documents, full dotenv files or unredacted logs in public issues. Use [project support](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues) for ordinary questions and the [security reporting process](../../SECURITY.md) for vulnerabilities. This draft does not promise a response time or service-level agreement.
+The [Privacy Policy](../../PRIVACY.md) describes the current local data flow, host/provider involvement, receipts and temporary-memory/file limitations. Do not put keys, passwords, identity documents, full dotenv files or unredacted logs in public issues. Use [project support](https://github.com/Varaahgroup-llc/codex-golden-gate/issues) for ordinary questions and the [security reporting process](../../SECURITY.md) for vulnerabilities. This draft does not promise a response time or service-level agreement.
 
 ## Payments and third-party costs
 

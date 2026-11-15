@@ -1,6 +1,8 @@
 # Eligibility inquiry — November 14, 2026
 
-Tracking: [SBR-2](https://varaahgroup.atlassian.net/browse/SBR-2), [SBR-3](https://varaahgroup.atlassian.net/browse/SBR-3), [GitHub #7](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues/7), [GitHub #8](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues/8).
+The existing inquiry was sent under the former Secret Bridge name. The product and repository are now Golden Gate / codex-golden-gate under the same publisher. Keep the original conversation and private organization reference; the rename is not a new eligibility decision or a reason to open a duplicate inquiry.
+
+Tracking: [GG-2](https://varaahgroup.atlassian.net/browse/GG-2), [GG-3](https://varaahgroup.atlassian.net/browse/GG-3), [GitHub #7](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/7), [GitHub #8](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/8).
 
 The maintainer authorized an eligibility inquiry to OpenAI Platform support. It was sent through the signed-in OpenAI Help Center support conversation. It described the local stdio MCP architecture, acknowledged that the current encrypted form still processes raw credentials, identified the public Codex directory as the target, and asked about a service-owned-entry alternative and local-MCP approved-partner/allowlisting requirements.
 

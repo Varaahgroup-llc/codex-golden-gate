@@ -36829,14 +36829,14 @@ async function save(plan, secret, execute = run) {
   if (d.provider === "env") {
     await safeFile(d.file);
     await gitGuard(d.file, execute);
-    const lock = `${d.file}.secret-bridge.lock`;
+    const lock = `${d.file}.golden-gate.lock`;
     let handle;
     try {
       handle = await fs.open(lock, "wx", 384);
     } catch {
-      throw new SafeError("Destination is busy. If a prior process crashed, review and remove its .secret-bridge.lock file.");
+      throw new SafeError("Destination is busy. If a prior process crashed, review and remove its .golden-gate.lock file.");
     }
-    const temp = path.join(path.dirname(d.file), `.secret-bridge-${randomUUID()}`);
+    const temp = path.join(path.dirname(d.file), `.golden-gate-${randomUUID()}`);
     try {
       let text = "", before;
       try {
@@ -36902,7 +36902,7 @@ var decode3 = (value, max) => {
   if (typeof value !== "string" || value.length > max || !/^[A-Za-z0-9_-]+$/.test(value)) throw new SafeError("Invalid encrypted submission.");
   return Buffer.from(value, "base64url");
 };
-var SecretBridge = class {
+var GoldenGate = class {
   constructor({ prepareFn = prepare, saveFn = save, now = Date.now } = {}) {
     this.prepareFn = prepareFn;
     this.saveFn = saveFn;
@@ -36987,8 +36987,8 @@ var SecretBridge = class {
 };
 
 // src/server.mjs
-var URI = "ui://secret-bridge/entry-v1.html";
-var VERSION = true ? "0.1.0" : JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).version;
+var URI = "ui://golden-gate/entry-v1.html";
+var VERSION = true ? "0.2.0" : JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).version;
 var receiptSchema = { requestId: external_exports.string().uuid(), destination: external_exports.string(), identity: external_exports.string(), status: external_exports.enum(["pending", "saving", "saved", "failed", "uncertain", "cancelled", "expired"]), expiresAt: external_exports.string(), message: external_exports.string().optional() };
 var reply = (receipt) => ({ content: [{ type: "text", text: JSON.stringify(receipt) }], structuredContent: receipt });
 var guard = (fn) => async (args) => {
@@ -36999,17 +36999,17 @@ var guard = (fn) => async (args) => {
   }
 };
 async function createServer() {
-  const bridge = new SecretBridge();
-  const server = new McpServer({ name: "secret-bridge", version: VERSION }, {
+  const bridge = new GoldenGate();
+  const server = new McpServer({ name: "golden-gate", version: VERSION }, {
     instructions: "Never ask for secret values in chat. Open the entry UI using metadata only. submit_secret accepts encrypted UI payloads only. Report success only from a saved receipt. MCP Apps UI support is required."
   });
   const html = (true ? `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Secret Bridge</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Golden Gate</title>
 <style>
 :root{font:14px/1.5 system-ui,sans-serif;color-scheme:light dark;color:#1c2530;background:transparent}*{box-sizing:border-box}body{margin:0;padding:20px}main{max-width:560px;margin:auto;border:1px solid #d8e0e7;border-radius:18px;padding:24px;background:#fff}.eyebrow{font-size:11px;font-weight:750;letter-spacing:.13em;color:#247267}h1{font-size:24px;letter-spacing:-.04em;margin:6px 0 8px}p{color:#596674;margin:8px 0 18px}.target{padding:14px;background:#f3f7f7;border-radius:10px;overflow-wrap:anywhere;margin-bottom:18px}.caption{font-size:11px;color:#596674;text-transform:uppercase;letter-spacing:.06em}.identity{font-size:12px;margin-top:10px}label{display:block;font-weight:600;margin-bottom:8px}input[type=password],input[type=text]{width:100%;padding:12px;border:1px solid #b5c3cd;border-radius:8px;font:inherit}textarea{width:100%;min-height:100px;padding:12px;border:1px solid #b5c3cd;border-radius:8px;font:14px monospace}button{font:inherit;font-weight:600;padding:10px 16px;border-radius:8px;border:1px solid #bdcbd2;background:#fff;color:#26343e;cursor:pointer}button.primary{background:#126d5b;color:#fff;border-color:#126d5b}button:disabled{opacity:.45;cursor:default}.buttons{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}.check{display:flex;gap:9px;align-items:flex-start;font-size:13px;margin-top:16px;font-weight:400}.check input{margin-top:4px}.small{font-size:12px}.note{font-size:12px;margin:10px 0}#status{margin-top:16px;white-space:pre-wrap}#status.error{color:#a62c32}[hidden]{display:none!important}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #73bdaf;outline-offset:2px}
 @media(prefers-color-scheme:dark){:root{color:#edf3f6}main{background:#192127;border-color:#394952}.target{background:#222f34}p,.caption{color:#b3c4cc}input[type=password],input[type=text],textarea,button{background:#172026;color:#edf3f6;border-color:#52656e}#status.error{color:#ffadb0}}
 </style></head><body><main>
-<div class="eyebrow">SECRET BRIDGE \xB7 PRIVATE ENTRY</div><h1>Save a secret</h1>
+<div class="eyebrow">GOLDEN GATE \xB7 PRIVATE ENTRY</div><h1>Save a secret</h1>
 <p>Review the destination, then enter your value. The form encrypts it before sending it through the chat host.</p>
 <div class="target"><div class="caption">Destination</div><strong id="destination">Waiting for the host\u2026</strong><div class="identity"><span class="caption">Signed in as</span><br><span id="identity">\u2014</span></div></div>
 <form id="form" autocomplete="off"><fieldset id="fields" disabled style="padding:0;border:0;margin:0">
@@ -37031,7 +37031,7 @@ const rpc=(method,params)=>new Promise((resolve,reject)=>{const id=++rpcId;const
 const message=(text,error=false)=>{$('status').textContent=text;$('status').className=error?'error':'';};
 function clear(){ $('secret').value='';$('multi').value=''; }
 function apply(result){
-  const privateData=result?._meta?.secretBridge;
+  const privateData=result?._meta?.goldenGate;
   if(privateData && !session){session=privateData;$('destination').textContent=session.label;$('identity').textContent=session.identity;$('expiry').textContent='Expires '+new Date(session.expiresAt).toLocaleTimeString();$('fields').disabled=!ready;message(ready?'Ready for private entry.':'Connecting to the chat host\u2026');}
   const state=result?.structuredContent?.status;
   if(state && !['pending','saving'].includes(state)){finished=true;clear();$('fields').disabled=true;session=undefined;message(state==='saved'?'Saved. The chat receives a receipt without the value.':(result.structuredContent.message||'Entry '+state+'.'),state==='uncertain'||state==='failed');}
@@ -37059,11 +37059,11 @@ $('cancel').onclick=async()=>{if(!session||busy||finished)return;busy=true;$('fi
 $('modal').onclick=async()=>{if(!session||busy||finished)return;const requestId=session.requestId;clear();busy=true;$('fields').disabled=true;try{await window.openai.requestModal({});await callTool('secret_entry_status',{requestId});}catch{message('This host could not open or refresh the modal. Check the receipt before saving again.',true);}finally{busy=false;$('fields').disabled=finished||!session;}};
 setInterval(()=>{if(session&&!busy&&Date.now()>=session.expiresAt){clear();session=undefined;finished=true;$('fields').disabled=true;message('This form expired. Ask for a new entry request.');}},1000);
 window.addEventListener('pagehide',clear);
-if(parent===window){message('Open this form through the Secret Bridge MCP plugin in a compatible chat host.',true);}
+if(parent===window){message('Open this form through the Golden Gate MCP plugin in a compatible chat host.',true);}
 else if(!crypto.subtle){message('This host does not provide the required Web Crypto API. Entry is disabled.',true);}
-else{try{await rpc('ui/initialize',{appInfo:{name:'secret-bridge',version:'__SECRET_BRIDGE_VERSION__'},appCapabilities:{},protocolVersion:'2026-01-26'});ready=true;notify('ui/notifications/initialized',{});legacy();if(session)$('fields').disabled=false;message(session?'Ready for private entry.':'Waiting for the destination\u2026');if(typeof window.openai?.requestModal==='function')$('modal').hidden=false;}catch{message('This chat host did not initialize MCP Apps. Entry is disabled.',true);}}
+else{try{await rpc('ui/initialize',{appInfo:{name:'golden-gate',version:'__GOLDEN_GATE_VERSION__'},appCapabilities:{},protocolVersion:'2026-01-26'});ready=true;notify('ui/notifications/initialized',{});legacy();if(session)$('fields').disabled=false;message(session?'Ready for private entry.':'Waiting for the destination\u2026');if(typeof window.openai?.requestModal==='function')$('modal').hidden=false;}catch{message('This chat host did not initialize MCP Apps. Entry is disabled.',true);}}
 </script></body></html>
-` : await readFile(new URL("../web/entry.html", import.meta.url), "utf8")).replaceAll("__SECRET_BRIDGE_VERSION__", VERSION);
+` : await readFile(new URL("../web/entry.html", import.meta.url), "utf8")).replaceAll("__GOLDEN_GATE_VERSION__", VERSION);
   server.registerResource("secret-entry", URI, { mimeType: "text/html;profile=mcp-app" }, async () => ({ contents: [{
     uri: URI,
     mimeType: "text/html;profile=mcp-app",
@@ -37079,7 +37079,7 @@ else{try{await rpc('ui/initialize',{appInfo:{name:'secret-bridge',version:'__SEC
     _meta: { ui: { resourceUri: URI }, "openai/outputTemplate": URI }
   }, guard(async ({ destination }) => {
     const opened = await bridge.open(destination);
-    return { ...reply(opened.receipt), _meta: { secretBridge: opened.private } };
+    return { ...reply(opened.receipt), _meta: { goldenGate: opened.private } };
   }));
   server.registerTool("secret_entry_status", {
     title: "Check secret entry receipt",

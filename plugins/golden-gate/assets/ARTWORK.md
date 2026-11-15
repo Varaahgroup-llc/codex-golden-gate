@@ -1,9 +1,11 @@
-# Secret Bridge artwork
+# Golden Gate artwork
 
 The current proposed listing/composer artwork is `golden-gate-lock.png`, created with the built-in ImageGen tool on November 14, 2026 at the maintainer's request. It depicts San Francisco's Golden Gate Bridge with a closed padlock in the center. The original generated PNG is copied into this repository without resizing or pixel edits. The listing, light composer and dark composer references use the same self-contained illustration.
 
 The earlier `logo`, `icon` and `icon-dark` PNG/SVG files are previous geometric studies, not editable vector sources for the generated illustration. The current art does not contain OpenAI branding or claim approval. Final publisher/branding review remains part of submission preparation.
 
-## Final generation prompt
+## Original generation prompt (historical name preserved)
+
+The original image was generated before the rename; the prompt is retained verbatim for provenance.
 
 Use case: logo-brand. Asset type: a polished square app icon for Secret Bridge, a Codex plugin. Create a beautiful original illustration inspired by San Francisco's Golden Gate Bridge, with its unmistakable international-orange suspension towers, rectangular tower openings, elegant main cables and fine vertical suspenders above cool teal San Francisco Bay. Central requirement: a clear CLOSED PADLOCK SYMBOL prominently in the MIDDLE of the composition, integrated elegantly with the bridge; the lock must read immediately at small icon size, with a clean cream or warm ivory lock body and a simple keyhole, rather than an isolated keyhole. Composition: nearly frontal slightly elevated view, balanced two bridge towers framing the central lock; bridge deck runs horizontally across the lower middle, subtle simplified waves and a restrained soft fog bank behind the structure. Premium modern editorial illustration with crisp vector-like silhouettes, tasteful depth and controlled shading, carefully designed proportions, richer and more distinctive than a generic line icon. Palette: international orange bridge, deep petrol/teal background and bay, warm ivory accents. Square full-bleed composition suitable for an app listing icon; leave safe breathing room around towers and lock; one finished icon only, no presentation board. No words, letters, captions, watermark, border, OpenAI branding, extra logos or photographic collage. High contrast and clean silhouette readable when reduced to 48 pixels. Preserve the bridge's recognizable architectural character without overcrowding the central padlock.

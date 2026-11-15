@@ -137,11 +137,11 @@ export async function save(plan, secret, execute = run) {
   const d = plan.destination;
   if (d.provider === 'env') {
     await safeFile(d.file); await gitGuard(d.file, execute);
-    const lock = `${d.file}.secret-bridge.lock`;
+    const lock = `${d.file}.golden-gate.lock`;
     let handle;
     try { handle = await fs.open(lock, 'wx', 0o600); }
-    catch { throw new SafeError('Destination is busy. If a prior process crashed, review and remove its .secret-bridge.lock file.'); }
-    const temp = path.join(path.dirname(d.file), `.secret-bridge-${randomUUID()}`);
+    catch { throw new SafeError('Destination is busy. If a prior process crashed, review and remove its .golden-gate.lock file.'); }
+    const temp = path.join(path.dirname(d.file), `.golden-gate-${randomUUID()}`);
     try {
       let text = '', before;
       try { const source = await fs.open(d.file, constants.O_RDONLY | constants.O_NOFOLLOW); try { before = await source.stat(); text = await source.readFile('utf8'); } finally { await source.close(); } }

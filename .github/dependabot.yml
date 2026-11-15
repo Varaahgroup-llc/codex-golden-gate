@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: /plugins/secret-bridge
+    directory: /plugins/golden-gate
     schedule:
       interval: weekly
     open-pull-requests-limit: 5

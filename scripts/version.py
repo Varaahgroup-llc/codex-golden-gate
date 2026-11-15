@@ -9,7 +9,7 @@ parser.add_argument('version')
 args = parser.parse_args()
 if not re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?', args.version):
     raise SystemExit('Use a semantic version such as 0.1.1 or 0.2.0-beta.1.')
-plugin = Path(__file__).resolve().parents[1] / 'plugins/secret-bridge'
+plugin = Path(__file__).resolve().parents[1] / 'plugins/golden-gate'
 for name in ['plugin.json', 'package.json', 'package-lock.json']:
     file = plugin / name
     data = json.loads(file.read_text())

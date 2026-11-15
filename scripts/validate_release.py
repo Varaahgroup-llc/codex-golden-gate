@@ -9,19 +9,19 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--tag')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-plugin = root / 'plugins/secret-bridge'
+plugin = root / 'plugins/golden-gate'
 manifest = json.loads((plugin / 'plugin.json').read_text())
 package = json.loads((plugin / 'package.json').read_text())
 lock = json.loads((plugin / 'package-lock.json').read_text())
 version = manifest['version']
 assert re.fullmatch(r'\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?', version), 'Invalid version'
 assert package['version'] == lock['version'] == lock['packages']['']['version'] == version, 'Versions differ'
-assert manifest['repository'] == 'https://github.com/Varaahgroup-llc/codex-secret-bridge'
+assert manifest['repository'] == 'https://github.com/Varaahgroup-llc/codex-golden-gate'
 assert not args.tag or args.tag == f'v{version}', 'Tag and plugin version differ'
 marketplace = json.loads((root / '.agents/plugins/marketplace.json').read_text())
-assert marketplace['name'] == 'varaahgroup-secret-bridge'
-assert marketplace['plugins'][0]['source']['path'] == './plugins/secret-bridge'
-mcp = json.loads((plugin / 'mcp.json').read_text())['mcpServers']['secret-bridge']
+assert marketplace['name'] == 'varaahgroup-golden-gate'
+assert marketplace['plugins'][0]['source']['path'] == './plugins/golden-gate'
+mcp = json.loads((plugin / 'mcp.json').read_text())['mcpServers']['golden-gate']
 assert mcp['type'] == 'stdio' and mcp['args'] == ['${PLUGIN_ROOT}/dist/server.mjs']
 for file in ['dist/server.mjs', 'dist/THIRD_PARTY_LICENSES.txt', 'skills/save-secret/SKILL.md']:
     assert (plugin / file).is_file(), f'Missing runtime file: {file}'

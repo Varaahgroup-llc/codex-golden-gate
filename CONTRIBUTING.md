@@ -1,8 +1,8 @@
 # Contributing
 
-Varaahgroup-llc maintains Secret Bridge. Use GitHub issues for reproducible bugs and narrowly scoped feature requests. Use private security reporting for vulnerabilities. All test values and examples must be synthetic.
+Varaahgroup-llc maintains Golden Gate. Use GitHub issues for reproducible bugs and narrowly scoped feature requests. Use private security reporting for vulnerabilities. All test values and examples must be synthetic.
 
-Create a branch, make the smallest complete change, and open a pull request. Run the build and tests from plugins/secret-bridge:
+Create a branch, make the smallest complete change, and open a pull request. Run the build and tests from plugins/golden-gate:
 
 ```bash
 npm ci --ignore-scripts
@@ -11,7 +11,7 @@ npm test
 npm run test:ui
 ```
 
-On Linux, first run `npx playwright install --with-deps chromium`. On macOS the UI test uses installed Google Chrome; a trusted Chromium executable can be supplied with SECRET_BRIDGE_TEST_BROWSER.
+On Linux, first run `npx playwright install --with-deps chromium`. On macOS the UI test uses installed Google Chrome; a trusted Chromium executable can be supplied with GOLDEN_GATE_TEST_BROWSER.
 
 Commit regenerated dist/server.mjs and dist/THIRD_PARTY_LICENSES.txt with source changes. Do not edit generated files directly. CI checks Node.js 22 and 24 on macOS and Linux, the browser flow, metadata consistency and release packaging.
 

@@ -1,12 +1,14 @@
-# Secret Bridge
+# Golden Gate
+
+Golden Gate is the new name for Secret Bridge. The prepared rename version is 0.2.0; see [migration instructions](MIGRATION.md) for the new repository, marketplace and plugin IDs. The rename source is in the review PR until merged; it is not an OpenAI directory approval.
 
 ## Directory eligibility and project tracking
 
-Secret Bridge has its own [SBR Jira board](https://varaahgroup.atlassian.net/jira/software/projects/SBR/boards/72), [public roadmap](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues/6) and [issue crosswalk](docs/TRACKING.md).
+Golden Gate has its own [GG Jira board](https://varaahgroup.atlassian.net/jira/software/projects/GG/boards/72), [public roadmap](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/6) and [issue crosswalk](docs/TRACKING.md).
 
 **Directory submission is gated.** The current encrypted local entry form still processes API keys/passwords, which the [directory restricted-data rule](https://developers.openai.com/plugins/plugin-guidelines#data-collection) prohibits. The product needs written OpenAI clarification or an approved redesign before submission. The proposed service-owned entry alternative is not implemented or approved. Repository installation is available; the packaged v0.1.0 release remains a draft.
 
-Maintained by **Varaahgroup-llc**. [Downloads](https://github.com/Varaahgroup-llc/codex-secret-bridge/releases) · [Install in Codex](INSTALL.md) · [Report a bug](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues) · [Maintenance](MAINTAINING.md)
+Maintained by **Varaahgroup-llc**. [Downloads](https://github.com/Varaahgroup-llc/codex-golden-gate/releases) · [Install in Codex](INSTALL.md) · [Report a bug](https://github.com/Varaahgroup-llc/codex-golden-gate/issues) · [Maintenance](MAINTAINING.md)
 
 **Preview release:** native Codex rendering/modal behavior and live cloud saves remain unverified. This is a standalone Codex plugin, distributed like an IDE extension. It is not affiliated with or endorsed by OpenAI.
 
@@ -27,34 +29,34 @@ This project is independent of any application repository. It does not call an A
 
 ## Install the release
 
-Ask Codex: **“Install Secret Bridge from Varaahgroup-llc/codex-secret-bridge.”** Review the source and installation approval before accepting. The supported CLI flow is:
+Ask Codex: **“Install Golden Gate from Varaahgroup-llc/codex-golden-gate.”** Review the source and installation approval before accepting. The supported CLI flow is:
 
 ```bash
-codex plugin marketplace add Varaahgroup-llc/codex-secret-bridge
-codex plugin add secret-bridge@varaahgroup-secret-bridge
+codex plugin marketplace add Varaahgroup-llc/codex-golden-gate
+codex plugin add golden-gate@varaahgroup-golden-gate
 ```
 
 Restart Codex or start a fresh local chat after installation. If the CLI lacks these commands, use its plugin browser and the repository marketplace. Installing the plugin does not grant access to a destination provider; authorize your own service account separately.
 
 For an offline source download:
 
-Unzip `secret-bridge-0.1.0-source.zip` into a separate folder. It includes the built bundle and this repository's marketplace catalog.
+Unzip `golden-gate-0.2.0-source.zip` into a separate folder. It includes the built bundle and this repository's marketplace catalog.
 
 Register that folder using:
 
 ```bash
-codex plugin marketplace add /absolute/path/to/codex-secret-bridge
+codex plugin marketplace add /absolute/path/to/codex-golden-gate
 ```
 
-Restart the desktop app, open its Plugins directory, choose the **Secret Bridge** marketplace, and install/enable **Secret Bridge**. Start a fresh local chat. Installation and rendering must be checked in the target host; do not assume a successful SDK test means the host has enabled it.
+Restart the desktop app, open its Plugins directory, choose the **Golden Gate** marketplace, and install/enable **Golden Gate**. Start a fresh local chat. Installation and rendering must be checked in the target host; do not assume a successful SDK test means the host has enabled it.
 
-Alternatively, `secret-bridge-0.1.0-plugin.zip` contains the plugin files at the ZIP root for supported plugin import/submission workflows. It is not an npm package or a browser extension. A bundled stdio MCP server is declared in `mcp.json` with the documented `${PLUGIN_ROOT}` placeholder.
+Alternatively, `golden-gate-0.2.0-plugin.zip` contains the plugin files at the ZIP root for supported plugin import/submission workflows. It is not an npm package or a browser extension. A bundled stdio MCP server is declared in `mcp.json` with the documented `${PLUGIN_ROOT}` placeholder.
 
-If the target host's plugin installation is unavailable, its normal MCP configuration can launch `node /absolute/path/to/plugins/secret-bridge/dist/server.mjs`. This registers the tools but still requires that host to support MCP Apps UI. Never place a secret value in an MCP config file.
+If the target host's plugin installation is unavailable, its normal MCP configuration can launch `node /absolute/path/to/plugins/golden-gate/dist/server.mjs`. This registers the tools but still requires that host to support MCP Apps UI. Never place a secret value in an MCP config file.
 
 Try:
 
-> Use Secret Bridge to save SERVICE_API_KEY to /absolute/path/to/my-project/.env.local.
+> Use Golden Gate to save SERVICE_API_KEY to /absolute/path/to/my-project/.env.local.
 
 > Save a new SERVICE_API_KEY as a GitHub Actions secret for owner/repository, in staging.
 
@@ -76,14 +78,14 @@ The form displays the signed-in account. Cloud identity is checked again immedia
 ## Develop and test
 
 ```bash
-cd plugins/secret-bridge
+cd plugins/golden-gate
 npm ci --ignore-scripts
 npm run build
 npm test
 npm run test:ui
 ```
 
-The UI test uses installed Google Chrome on macOS by default and Playwright Chromium on Linux. Set `SECRET_BRIDGE_TEST_BROWSER` to a trusted Chromium executable to override it. It uses synthetic values and a temporary dotenv file; no provider account is used. Unit tests mock the cloud CLI boundaries. Live cloud writes have not been tested.
+The UI test uses installed Google Chrome on macOS by default and Playwright Chromium on Linux. Set `GOLDEN_GATE_TEST_BROWSER` to a trusted Chromium executable to override it. It uses synthetic values and a temporary dotenv file; no provider account is used. Unit tests mock the cloud CLI boundaries. Live cloud writes have not been tested.
 
 ## Share or publish
 

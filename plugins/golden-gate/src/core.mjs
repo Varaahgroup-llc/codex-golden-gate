@@ -5,7 +5,7 @@ const decode = (value, max) => {
   if (typeof value !== 'string' || value.length > max || !/^[A-Za-z0-9_-]+$/.test(value)) throw new SafeError('Invalid encrypted submission.');
   return Buffer.from(value, 'base64url');
 };
-export class SecretBridge {
+export class GoldenGate {
   constructor({ prepareFn = prepare, saveFn = save, now = Date.now } = {}) {
     this.prepareFn = prepareFn; this.saveFn = saveFn; this.now = now; this.requests = new Map();
   }

@@ -4,7 +4,7 @@ node_modules/
 .env
 .env.*
 .dev.vars*
-*.secret-bridge.lock
+*.golden-gate.lock
 release/
 preview.png
 __pycache__/

@@ -1,6 +1,6 @@
 {
-  "name": "codex-secret-bridge",
-  "version": "0.1.0",
+  "name": "codex-golden-gate",
+  "version": "0.2.0",
   "private": true,
   "description": "Local MCP Apps secret entry with encrypted submissions and destination-bound saves",
   "type": "module",

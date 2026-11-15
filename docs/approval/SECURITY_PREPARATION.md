@@ -1,6 +1,6 @@
 # Security preparation — November 14, 2026
 
-Tracking: SBR-6, SBR-7 and SBR-8. This is maintainer preparation, not an independent audit, executed native reviewer cases or OpenAI approval.
+Tracking: GG-6, GG-7 and GG-8. This is maintainer preparation, not an independent audit, executed native reviewer cases or OpenAI approval.
 
 ## Findings addressed in the approval-readiness branch
 

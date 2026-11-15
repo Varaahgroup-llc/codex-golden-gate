@@ -11,7 +11,7 @@ import zipfile
 def excluded(path):
     return any(p in {'node_modules', '.git', '__pycache__', 'release'} for p in path.parts) or path.name.startswith(('.env', '.dev.vars')) or path.suffix in {'.log', '.zip', '.pyc'} or path.name in {'.DS_Store', 'preview.png'}
 
-PUBLIC_DOCS = ['README.md', 'INSTALL.md', 'SECURITY.md', 'PRIVACY.md', 'PUBLISHING.md', 'CHANGELOG.md', 'MAINTAINING.md', 'CONTRIBUTING.md', 'VALIDATION.md', 'LICENSE',
+PUBLIC_DOCS = ['README.md', 'INSTALL.md', 'MIGRATION.md', 'SECURITY.md', 'PRIVACY.md', 'PUBLISHING.md', 'CHANGELOG.md', 'MAINTAINING.md', 'CONTRIBUTING.md', 'VALIDATION.md', 'LICENSE',
                'docs/TRACKING.md', 'docs/approval/SUPPORT_STATUS.md', 'docs/approval/REVIEW_PLAN.md', 'docs/approval/readiness.json', 'docs/approval/SECURITY_PREPARATION.md', 'docs/approval/SUBMISSION_PREPARATION.md', 'docs/approval/TERMS_DRAFT.md']
 
 def approved_files(root):
@@ -35,25 +35,25 @@ def approved_files(root):
 def package(root, output):
     root = root.resolve()
     files = approved_files(root)  # Validate before creating any output.
-    version = json.loads((root / 'plugins/secret-bridge/plugin.json').read_text())['version']
+    version = json.loads((root / 'plugins/golden-gate/plugin.json').read_text())['version']
     # A manifest version also becomes an output filename.
     if not re.fullmatch(r'\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?', version):
         raise ValueError('Invalid package version.')
     names = {name for _, name in files}
-    if not set(PUBLIC_DOCS + ['plugins/secret-bridge/dist/server.mjs', 'plugins/secret-bridge/dist/THIRD_PARTY_LICENSES.txt', 'plugins/secret-bridge/plugin.json', 'plugins/secret-bridge/mcp.json', 'plugins/secret-bridge/skills/save-secret/SKILL.md']).issubset(names):
+    if not set(PUBLIC_DOCS + ['plugins/golden-gate/dist/server.mjs', 'plugins/golden-gate/dist/THIRD_PARTY_LICENSES.txt', 'plugins/golden-gate/plugin.json', 'plugins/golden-gate/mcp.json', 'plugins/golden-gate/skills/save-secret/SKILL.md']).issubset(names):
         raise ValueError('Public package catalog omits required release files.')
     output.mkdir(parents=True, exist_ok=True)
-    source = output / f'secret-bridge-{version}-source.zip'
-    release = output / f'secret-bridge-{version}-plugin.zip'
+    source = output / f'golden-gate-{version}-source.zip'
+    release = output / f'golden-gate-{version}-plugin.zip'
     with zipfile.ZipFile(source, 'w', zipfile.ZIP_DEFLATED) as archive:
         for file, name in files:
-            archive.write(file, f'codex-secret-bridge/{name}')
+            archive.write(file, f'codex-golden-gate/{name}')
     with zipfile.ZipFile(release, 'w', zipfile.ZIP_DEFLATED) as archive:
         for file, name in files:
             rel = PurePosixPath(name)
             if name in PUBLIC_DOCS:
                 archive.write(file, name)
-            elif rel.parts[:2] == ('plugins', 'secret-bridge'):
+            elif rel.parts[:2] == ('plugins', 'golden-gate'):
                 plugin_rel = PurePosixPath(*rel.parts[2:])
                 if plugin_rel.parts[0] in {'dist', 'skills', 'assets'} or str(plugin_rel) in {'plugin.json', 'mcp.json'}:
                     archive.write(file, str(plugin_rel))

@@ -23,7 +23,7 @@ class PackagingTests(unittest.TestCase):
             target = self.root / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text('public fixture\n')
-        (self.root / 'plugins/secret-bridge/plugin.json').write_text('{"version":"0.1.0"}')
+        (self.root / 'plugins/golden-gate/plugin.json').write_text('{"version":"0.1.0"}')
         self.catalog()
         self.output = Path(self.temp.name) / 'packages'
 
@@ -32,7 +32,7 @@ class PackagingTests(unittest.TestCase):
 
     def test_unknown_files_never_enter_either_archive(self):
         marker = b'SYNTHETIC-PRIVATE-NOT-A-CREDENTIAL'
-        for name in ['private-account.md', 'docs/approval/verification.json', 'plugins/secret-bridge/dist/private.txt', 'plugins/secret-bridge/skills/save-secret/private.txt', 'plugins/secret-bridge/assets/private.txt', '.env', '.aws/credentials']:
+        for name in ['private-account.md', 'docs/approval/verification.json', 'plugins/golden-gate/dist/private.txt', 'plugins/golden-gate/skills/save-secret/private.txt', 'plugins/golden-gate/assets/private.txt', '.env', '.aws/credentials']:
             file = self.root / name
             file.parent.mkdir(parents=True, exist_ok=True)
             file.write_bytes(marker)
@@ -42,7 +42,7 @@ class PackagingTests(unittest.TestCase):
                 self.assertTrue(archive.namelist())
                 self.assertFalse(any(marker in archive.read(name) for name in archive.namelist()))
         with zipfile.ZipFile(source) as archive:
-            self.assertEqual(set(archive.namelist()), {'codex-secret-bridge/' + n for n in self.names})
+            self.assertEqual(set(archive.namelist()), {'codex-golden-gate/' + n for n in self.names})
         with zipfile.ZipFile(release) as archive:
             self.assertIn('dist/server.mjs', archive.namelist())
             self.assertIn('skills/save-secret/SKILL.md', archive.namelist())
@@ -88,7 +88,7 @@ class PackagingTests(unittest.TestCase):
         extracted = Path(self.temp.name) / 'extracted'
         with zipfile.ZipFile(source) as archive:
             archive.extractall(extracted)
-        rebuilt, _, _ = packaging.package(extracted / 'codex-secret-bridge', Path(self.temp.name) / 'rebuilt')
+        rebuilt, _, _ = packaging.package(extracted / 'codex-golden-gate', Path(self.temp.name) / 'rebuilt')
         with zipfile.ZipFile(source) as first, zipfile.ZipFile(rebuilt) as second:
             self.assertEqual(first.namelist(), second.namelist())
             for name in first.namelist():

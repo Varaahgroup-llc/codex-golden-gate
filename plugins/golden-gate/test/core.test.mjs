@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
-import { SecretBridge } from '../src/core.mjs';
+import { GoldenGate } from '../src/core.mjs';
 import { UncertainError } from '../src/adapters.mjs';
 
 const destination = { provider: 'github', repo: 'example/app', name: 'SERVICE_KEY' };
@@ -20,7 +20,7 @@ export async function envelope(session, secret, extra = {}) {
 
 test('Web Crypto submission saves once and returns only a receipt', async () => {
   const calls = [];
-  const bridge = new SecretBridge({ prepareFn: async () => plan, saveFn: async (...args) => calls.push(args) });
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async (...args) => calls.push(args) });
   const opened = await bridge.open(destination), secret = 'synthetic-test-only-🔐\nsecond line';
   const encrypted = await envelope(opened.private, secret);
   assert.ok(!JSON.stringify(encrypted).includes(secret));
@@ -32,7 +32,7 @@ test('Web Crypto submission saves once and returns only a receipt', async () => 
 });
 test('ciphertext tampering and missing consent cannot write', async () => {
   let writes = 0;
-  const bridge = new SecretBridge({ prepareFn: async () => plan, saveFn: async () => writes++ });
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => writes++ });
   const opened = await bridge.open(destination), encrypted = await envelope(opened.private, 'synthetic');
   const bytes = Buffer.from(encrypted.ciphertext, 'base64url'); bytes[0] ^= 1;
   await assert.rejects(bridge.submit({ ...encrypted, ciphertext: bytes.toString('base64url') }), /validation failed/);
@@ -41,14 +41,14 @@ test('ciphertext tampering and missing consent cannot write', async () => {
   assert.equal(writes, 0);
 });
 test('ciphertext is bound to the destination request', async () => {
-  const bridge = new SecretBridge({ prepareFn: async () => plan, saveFn: async () => assert.fail('unexpected save') });
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => assert.fail('unexpected save') });
   const a = await bridge.open(destination), b = await bridge.open(destination);
   const encrypted = await envelope(a.private, 'synthetic');
   await assert.rejects(bridge.submit({ ...encrypted, requestId: b.receipt.requestId }), /validation failed/);
 });
 test('cancelled and expired forms cannot write', async () => {
   let now = 1000;
-  const bridge = new SecretBridge({ prepareFn: async () => plan, saveFn: async () => assert.fail('unexpected save'), now: () => now });
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => assert.fail('unexpected save'), now: () => now });
   const opened = await bridge.open(destination), encrypted = await envelope(opened.private, 'synthetic');
   assert.throws(() => bridge.cancel(opened.receipt.requestId, 'bad'), /capability/);
   assert.equal(bridge.cancel(opened.receipt.requestId, opened.private.token).status, 'cancelled');
@@ -59,14 +59,14 @@ test('cancelled and expired forms cannot write', async () => {
 });
 test('concurrent submissions cannot duplicate a write', async () => {
   let release, writes = 0;
-  const bridge = new SecretBridge({ prepareFn: async () => plan, saveFn: async () => { writes++; await new Promise(r => release = r); } });
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => { writes++; await new Promise(r => release = r); } });
   const opened = await bridge.open(destination), encrypted = await envelope(opened.private, 'synthetic');
   const first = bridge.submit(encrypted);
   await assert.rejects(bridge.submit(encrypted), /no longer active/); release(); await first; assert.equal(writes, 1);
 });
 test('cloud uncertainty and unexpected provider exceptions cannot leak values', async () => {
   for (const [error, status] of [[new UncertainError('Check destination metadata.'), 'uncertain'], [new Error('synthetic-secret-that-must-not-leak'), 'failed']]) {
-    const bridge = new SecretBridge({ prepareFn: async () => plan, saveFn: async () => { throw error; } });
+    const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => { throw error; } });
     const opened = await bridge.open(destination);
     const result = await bridge.submit(await envelope(opened.private, 'synthetic-secret-that-must-not-leak'));
     assert.equal(result.status, status); assert.ok(!JSON.stringify(result).includes('synthetic-secret-that-must-not-leak'));

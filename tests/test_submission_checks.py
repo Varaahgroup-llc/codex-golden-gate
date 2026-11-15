@@ -11,11 +11,11 @@ spec.loader.exec_module(module)
 class SubmissionChecks(unittest.TestCase):
     def setUp(self):
         self.manifest = {'extensions': {'com.openai': {'interface': {
-            'displayName': 'Secret Bridge', 'shortDescription': 'Private secret setup',
+            'displayName': 'Golden Gate', 'shortDescription': 'Private secret setup',
             'longDescription': 'Local prototype with destination review.',
             'developerName': 'Varaahgroup-llc', 'category': 'Productivity',
             'defaultPrompt': ['Open the setup form.'], 'capabilities': ['Read', 'Write'],
-            'supportURL': 'https://github.com/Varaahgroup-llc/codex-secret-bridge/issues'}}}}
+            'supportURL': 'https://github.com/Varaahgroup-llc/codex-golden-gate/issues'}}}}
 
     def test_final_directory_subtitle_limit_catches_old_listing(self):
         self.manifest['extensions']['com.openai']['interface']['shortDescription'] = 'Private secret entry and destination-aware saving'

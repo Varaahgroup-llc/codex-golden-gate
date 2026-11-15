@@ -1,11 +1,11 @@
 # Submission preparation — November 14, 2026
 
-Tracking: SBR-2, SBR-3 and SBR-7. Prepared using Plugin Creator 0.1.28's `prepare-plugin-submission` skill and its package/listing and review-material references. This is an incomplete preparation record, not an OpenAI scan, submitted draft, policy decision or approval.
+Tracking: GG-2, GG-3 and GG-7. Prepared using Plugin Creator 0.1.28's `prepare-plugin-submission` skill and its package/listing and review-material references. This is an incomplete preparation record, not an OpenAI scan, submitted draft, policy decision or approval.
 
 ## Listing and publisher
 
 - Intended publisher: Varaahgroup LLC; the final directory identity must come from the verified Platform identity. Latest observed Business verification state is **Identity incomplete**. The owner is completing the official phone flow. No identity documents or account identifiers are in this record.
-- A dedicated OpenAI Platform project named **Secret Bridge** has been created in that organization and selected in the Plugins portal. Its Global residency is confirmed; private identifiers and a screenshot are retained outside the repository. This completes the separate publishing-project setup step only. No ZIP, listing draft or review submission was uploaded, and no local-MCP allowlisting or verified publisher status is implied.
+- A dedicated OpenAI Platform project named **Golden Gate** has been created in that organization and selected in the Plugins portal. Its Global residency is confirmed; private identifiers and a screenshot are retained outside the repository. This completes the separate publishing-project setup step only. No ZIP, listing draft or review submission was uploaded, and no local-MCP allowlisting or verified publisher status is implied.
 - Existing name/subtitle/description/category have been inspected. The category remains Productivity. Current functionality describes the local prototype; it must change if the permitted architecture changes.
 - At the maintainer's request, the current listing/composer asset is a generated Golden Gate Bridge illustration with a closed padlock in the middle. The full generated PNG and prompt are stored in assets/golden-gate-lock.png and assets/ARTWORK.md. Prior 256px geometric PNG/SVG studies remain separate; they are not vector sources for this illustration. PNG headers, dimensions, size and ZIP inclusion are checked. These are proposed product assets pending final branding review, not OpenAI branding or approval.
 - The owner explicitly selected all countries available in the directory. `publication.countries: []` intentionally declares no additional country restriction; it does not override OpenAI/provider availability or applicable law.
@@ -17,7 +17,7 @@ Opened each existing URL in a signed-out browser and inspected its content:
 
 | Field | Result |
 | --- | --- |
-| websiteURL | Public repository identifies Secret Bridge, Varaahgroup-llc, purpose, compatibility and the current directory gate. |
+| websiteURL | Public repository identifies Golden Gate, Varaahgroup-llc, purpose, compatibility and the current directory gate. |
 | supportURL | Public issue list is readable; a GitHub account is needed to submit a new issue. Security reports have a separate documented route. |
 | privacyPolicyURL | Public PRIVACY.md describes the local prototype, host/provider recipients and handling limits. This branch adds explicit metadata/destination retention and deletion controls; recheck the published policy after approval/merge and after any architecture change. |
 | termsOfServiceURL | Missing. The owner requested creation; TERMS_DRAFT.md is prepared for owner review. An unpublished or unapproved draft is not a valid terms URL. |

@@ -10,8 +10,8 @@ const result = await build({
   platform: 'node', target: 'node22', format: 'esm', bundle: true,
   banner: { js: "import { createRequire as __createRequire } from 'node:module'; const require = __createRequire(import.meta.url);" },
   define: {
-    SECRET_BRIDGE_HTML: JSON.stringify(await readFile(new URL('web/entry.html', root), 'utf8')),
-    SECRET_BRIDGE_VERSION: JSON.stringify(JSON.parse(await readFile(new URL('package.json', root), 'utf8')).version),
+    GOLDEN_GATE_HTML: JSON.stringify(await readFile(new URL('web/entry.html', root), 'utf8')),
+    GOLDEN_GATE_VERSION: JSON.stringify(JSON.parse(await readFile(new URL('package.json', root), 'utf8')).version),
   },
   legalComments: 'eof', sourcemap: false, metafile: true,
 });

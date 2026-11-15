@@ -1,6 +1,6 @@
 # Reviewer evidence plan — not executed review cases
 
-Tracking: SBR-4, SBR-6 and SBR-7. These are proposed scenarios, not a claim that reviewer tests have passed. The five positive and three negative expectations are now declared in plugin.json under extensions.com.openai.review.test_cases, with every description explicitly marked DRAFT / NOT RUN. The declarations are review plans, not execution evidence. Reconcile them with the policy/architecture decision in SBR-2 before running or submitting them.
+Tracking: GG-4, GG-6 and GG-7. These are proposed scenarios, not a claim that reviewer tests have passed. The five positive and three negative expectations are now declared in plugin.json under extensions.com.openai.review.test_cases, with every description explicitly marked DRAFT / NOT RUN. The declarations are review plans, not execution evidence. Reconcile them with the policy/architecture decision in GG-2 before running or submitting them.
 
 Use a dedicated disposable environment and synthetic values only. Never give reviewers the maintainer's real account, production secrets or verification documents. Any provider login needed by an eligible design belongs in the portal's private reviewer setup, outside the public ZIP.
 

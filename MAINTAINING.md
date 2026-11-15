@@ -1,6 +1,6 @@
 # Maintenance and releases
 
-Owner: Varaahgroup-llc. Source, issues and downloads live at https://github.com/Varaahgroup-llc/codex-secret-bridge.
+Owner: Varaahgroup-llc. Source, issues and downloads live at https://github.com/Varaahgroup-llc/codex-golden-gate.
 
 ## Ongoing maintenance
 
@@ -19,6 +19,6 @@ Only synthetic credentials belong in tests, screenshots, issues and examples. Se
 5. The release workflow rebuilds, checks the committed bundle, runs the core/browser tests, validates tag/version consistency and packages the assets. It creates a **draft prerelease** for 0.x versions, or a draft release for 1.x+. If a command fails it stops before creating a new release.
 6. Review the draft's assets, SHA-256 checksums, changelog and compatibility notes. Publish it from GitHub when ready. Initial v0.1.0 is an explicitly labeled preview.
 
-Users install the repository's Codex marketplace and refresh it with `codex plugin marketplace upgrade varaahgroup-secret-bridge`. They may need to update/re-enable the installed plugin and restart the client. A marketplace refresh is not a forced update or a remote change to anyone's credentials.
+Users install the repository's Codex marketplace and refresh it with `codex plugin marketplace upgrade varaahgroup-golden-gate`. They may need to update/re-enable the installed plugin and restart the client. A marketplace refresh is not a forced update or a remote change to anyone's credentials.
 
 For universal-directory distribution, follow PUBLISHING.md. A public GitHub release does not confer OpenAI directory approval.

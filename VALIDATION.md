@@ -1,6 +1,6 @@
 # Validation — November 14, 2026
 
-Tested locally using Node.js 24.7.0 on macOS. [Initial public CI](https://github.com/Varaahgroup-llc/codex-secret-bridge/actions/runs/43655774411) passed the full build, reproducible-bundle check, 16 core/adapter/MCP tests, browser integration, and release metadata validation on macOS and Ubuntu using Node.js 22 and 24.
+Tested locally using Node.js 24.7.0 on macOS. [Initial public CI](https://github.com/Varaahgroup-llc/codex-golden-gate/actions/runs/43655774411) passed the full build, reproducible-bundle check, 16 core/adapter/MCP tests, browser integration, and release metadata validation on macOS and Ubuntu using Node.js 22 and 24.
 
 - Build: self-contained ESM server and third-party notices generated successfully.
 - Core, adapter and stdio MCP suite: 16 tests passed.
@@ -8,7 +8,7 @@ Tested locally using Node.js 24.7.0 on macOS. [Initial public CI](https://github
 - Bundled skill: Skill Creator validator passed.
 - A copy of the server bundle was run from an isolated temporary folder without node_modules. Discovery, UI resources, widget-only capabilities, encrypted saving, receipt polling, cancellation and replay rejection passed through the official MCP SDK client.
 
-The public marketplace and plugin were installed successfully through Codex CLI 0.167.0-alpha.4.1 using the native `plugin marketplace add` and `plugin add` commands. The installed result identified secret-bridge@varaahgroup-secret-bridge version 0.1.0. The current chat did not reload the newly installed tool set; the actual Codex chat form and modal have not been exercised.
+The original public marketplace and plugin were installed successfully through Codex CLI 0.167.0-alpha.4.1 using the native `plugin marketplace add` and `plugin add` commands. That historical installed result identified secret-bridge@varaahgroup-secret-bridge version 0.1.0. The actual Codex chat form and modal have not been exercised.
 
 All entry values were synthetic. Local files and test repositories were temporary and cleaned up. Cloud CLI boundaries were mocked; no live GitHub/AWS/Azure secret was saved or read. The browser test used an MCP Apps host harness rather than Codex's renderer.
 
@@ -16,7 +16,7 @@ Outstanding before advertising production readiness: clean target-client renderi
 
 ## Approval-readiness branch checks
 
-The SBR-6/SBR-7/SBR-8 follow-up upgrades Zod to 4.6.7 and rebuilds the server bundle. On November 14, 2026, local validation passed 16 core/adapter/MCP tests, one Chromium iframe integration test, ten Python readiness/packaging tests, release metadata validation and ZIP creation. A fresh `npm audit --json --ignore-scripts` reported zero known vulnerabilities. These checks do not replace an independent audit or native Codex reviewer tests.
+The GG-6/GG-7/GG-8 follow-up upgrades Zod to 4.6.7 and rebuilds the server bundle. On November 14, 2026, local validation passed 16 core/adapter/MCP tests, one Chromium iframe integration test, ten Python readiness/packaging tests, release metadata validation and ZIP creation. A fresh `npm audit --json --ignore-scripts` reported zero known vulnerabilities. These checks do not replace an independent audit or native Codex reviewer tests.
 
 The packaging tests verify that synthetic private files outside the exact public-file catalog cannot enter either ZIP, including files placed beside runtime and skill files. They also cover missing files, symlink files/parents, unsafe catalog paths, checksums and repackaging an extracted offline source archive. New public files require a reviewed catalog entry. No content scanner can guarantee that approved source files themselves contain no sensitive information; maintainers must review them.
 
