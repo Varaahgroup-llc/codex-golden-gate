@@ -1,4 +1,4 @@
-# Eligibility inquiry — November 14, 2026
+# Eligibility inquiry — updated November 15, 2026
 
 The existing inquiry was sent under the former Secret Bridge name. The product and repository are now Golden Gate / codex-golden-gate under the same publisher. Keep the original conversation and private organization reference; the rename is not a new eligibility decision or a reason to open a duplicate inquiry.
 
@@ -8,7 +8,13 @@ The maintainer authorized an eligibility inquiry to OpenAI Platform support. It 
 
 The initial response was explicitly AI-assisted. It did not establish a policy exception or eligibility. A human escalation was requested and the support interface's **Escalate** action was confirmed. The interface then displayed **Escalation requested** and said a support specialist would respond in the coming days, including by email.
 
-No formal case/reference ID was displayed. There is no human policy decision, allowlisting confirmation, listing submission or OpenAI approval. Keep the release and directory gates closed. Do not create another support conversation merely because the first is awaiting a reply.
+On November 15, the same conversation displayed a reply signed by **Stephanie, OpenAI Support**. It confirms that accepting credentials through the plugin form and processing them locally conflicts with the restricted-data requirement; encryption/local processing does not establish an exception. It recommends destination-owned entry while Golden Gate handles destination selection, consent and non-sensitive confirmations. It explicitly says this does not automatically establish approval. It confirms local-MCP submission is for approved partners with allowlisted organizations and directs the organization to its OpenAI representative. It also distinguishes the desktop guide's documented ChatGPT installation from the broader Codex discovery/install behavior requested here.
+
+No formal case/reference ID, organization allowlisting, approved architecture or listing approval was displayed. This is written support guidance, not a program acceptance or exemption. Keep the directory gates closed. Continue in this existing conversation rather than open a duplicate inquiry.
+
+The owner clarified that the primary goal remains a secure key-entry window **inside Codex**, without putting values in chat or leaving the session. Do not replace that requirement with an external-page handoff and call it complete. Investigate a host-owned credential broker or destination-owned isolated embedded flow only as candidates requiring explicit capability/policy confirmation; no such approved mechanism is established yet. See REQUIREMENTS.md and UAT_CASES.md.
+
+A focused follow-up was sent in the same conversation on November 15. It states the preserved in-Codex goal, asks about a host-owned credential-broker capability and an essential provider-owned isolated embedded form, requests supported API/client details and a representative/partner-routing path, and asks for an explicit limitation if neither is supported. No new account identifiers, credentials or documents were attached. No routing/eligibility confirmation for these precise questions was observed at sending.
 
 The exact request, private organization identifier and confirmation screenshot are retained outside the public repository and reviewer ZIP. Public records contain only this status summary. When a reply arrives, record its actual conclusion and reference without exposing account identifiers, credentials or verification documents.
 

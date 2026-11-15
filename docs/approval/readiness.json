@@ -1,23 +1,23 @@
 {
-  "checkedOn": "2026-11-14",
+  "checkedOn": "2026-11-15",
   "scope": "Local readiness record; not an OpenAI decision or substitute for portal checks",
   "gates": {
     "policy_eligibility": {
       "status": "blocked",
       "issue": "GG-2",
-      "reason": "Current credential-entry prototype processes restricted authentication secrets. Written clarification or an authorized eligible redesign is required.",
+      "reason": "Signed OpenAI Support reply inspected November 15 confirms the current local credential-entry design conflicts with restricted-data rules. The primary in-Codex secure-entry goal is preserved; no approved capability or exception is established.",
       "evidence": []
     },
     "verified_publisher": {
       "status": "pending",
       "issue": "GG-3",
-      "reason": "Dedicated Golden Gate publishing project is created and selected. Organization owner verification still shows Identity incomplete; no OpenAI verification success is established.",
+      "reason": "Golden Gate publishing project exists. Organization Business verification freshly inspected November 15 still shows Identity incomplete; owner flow is paused.",
       "evidence": []
     },
     "local_mcp_allowlisting": {
       "status": "pending",
       "issue": "GG-3",
-      "reason": "Eligibility/allowlisting clarification has been requested; no allowlisting confirmation exists.",
+      "reason": "Support confirms approved-partner allowlisting requires an OpenAI representative. No eligibility or allowlisting has been granted.",
       "evidence": []
     },
     "native_client_validation": {

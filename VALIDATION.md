@@ -1,4 +1,14 @@
-# Validation — November 14, 2026
+# Validation — updated November 15, 2026
+
+## Test evidence and release-management follow-up (GG-6/GG-7/GG-9)
+
+On November 15, the updated suite passed **25 core/adapter/stdio MCP tests, one Chromium iframe integration test and 27 Python tests** on macOS arm64, Node 24.7.0 and Python 3.13.7. Nine additional core/adapter tests cover exact expiry, malformed/extra envelope fields, in-flight cancellation/status, terminal write failures, byte/control limits, reviewed-file replacement, hardlinks/locks, parser cleanup and provider output/timeout suppression. Eight new release-guard tests cover accepted fixtures and blocked source/CI/protection/release-reuse decisions. No runtime or secret-routing behavior changed in this work.
+
+The full evidence runner passed build, committed-bundle comparison, Node/browser/Python suites and release metadata checks. Strict preflight returned 1 with **nine readiness findings**, retained as a blocker report rather than represented as test failure or approval. The first evidence run caught a catalog path named `release` colliding with the existing output exclusion; the documentation moved to `docs/releases`, and the full rerun passed. Exact-file source/plugin ZIP packaging was verified after the correction. Local records include dirty-source hashes; clean committed CI evidence is preferred for review.
+
+The read-only release guard was exercised against the existing immutable v0.1.0 tag and refused both package-version mismatch and existing-release reuse. GitHub API readback confirmed the new release-draft environment's required reviewer, administrator-bypass prohibition and v* tag-only policy. The tag-to-draft workflow itself is **not run end-to-end**: no new tag or release was created. Required review of these release-script changes is still a separate maintainer action.
+
+Detailed [UAT cases](docs/approval/UAT_CASES.md) contain 27 acceptance procedures, including the primary in-Codex entry requirement, eight initial-review cases, safety/lifecycle checks and release checks. None has been marked passed without native execution. Automated/browser evidence does not certify Codex's renderer, an approved credential-entry mechanism, live providers, independent security review or OpenAI eligibility. [Requirements](docs/approval/REQUIREMENTS.md) and [support status](docs/approval/SUPPORT_STATUS.md) record the November 15 checks and preserved product goal.
 
 Tested locally using Node.js 24.7.0 on macOS. [Initial public CI](https://github.com/Varaahgroup-llc/codex-golden-gate/actions/runs/43655774411) passed the full build, reproducible-bundle check, 16 core/adapter/MCP tests, browser integration, and release metadata validation on macOS and Ubuntu using Node.js 22 and 24.
 

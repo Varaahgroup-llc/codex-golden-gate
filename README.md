@@ -1,6 +1,8 @@
 # Golden Gate
 
-Golden Gate is the new name for Secret Bridge. The prepared rename version is 0.2.0; see [migration instructions](MIGRATION.md) for the new repository, marketplace and plugin IDs. The rename source is in the review PR until merged; it is not an OpenAI directory approval.
+Golden Gate is the new name for Secret Bridge. The 0.2.0 rename source was merged in PR #14; see [migration instructions](MIGRATION.md) for the new repository, marketplace and plugin IDs. Version 0.2.0 is not a published release or an approved OpenAI directory listing.
+
+The primary goal is secure key entry in a window inside Codex, with delivery to a user-confirmed destination and no plaintext in chat/model-visible output. The current local credential-entry prototype conflicts with directory rules, as confirmed by OpenAI Support. An approved in-session capability is not established yet; an external-page handoff is not treated as fulfilling this goal. See [requirements and candidate paths](docs/approval/REQUIREMENTS.md), [UAT cases](docs/approval/UAT_CASES.md) and [release management](docs/releases/MANAGEMENT.md).
 
 ## Directory eligibility and project tracking
 

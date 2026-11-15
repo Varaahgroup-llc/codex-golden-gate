@@ -71,3 +71,54 @@ test('identity changes block saving; write errors become uncertain', async () =>
   await assert.rejects(save(plan, 'synthetic', async () => 'second'), /login changed/);
   await assert.rejects(save(plan, 'synthetic', async (_cmd, args) => { if (args[0] === 'api') return 'first'; throw new Error('synthetic-private-provider-output'); }), UncertainError);
 });
+
+test('invalid secret byte lengths and control characters never reach a provider', async () => {
+  const plan = { destination: { provider: 'github', repo: 'example/app', name: 'KEY' }, identity: 'test' };
+  for (const secret of ['', 'x'.repeat(65537), '🔐'.repeat(16385), 'synthetic\0value', 'synthetic\rvalue', null]) {
+    await assert.rejects(save(plan, secret, async () => assert.fail('provider must not run')), /UTF-8 bytes/);
+  }
+});
+
+test('a dotenv replaced by a symlink after review cannot redirect the write', async t => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-recheck-'));
+  t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const file = path.join(dir, '.env.local'), other = path.join(dir, '.env.other');
+  await fs.writeFile(file, 'KEY=before\n'); await fs.writeFile(other, 'KEY=untouched\n');
+  const plan = await prepare({ provider: 'env', file, name: 'KEY' });
+  await fs.unlink(file); await fs.symlink(other, file);
+  await assert.rejects(save(plan, 'synthetic'), /Symlink/);
+  assert.equal(await fs.readFile(other, 'utf8'), 'KEY=untouched\n');
+});
+
+test('hardlinked destinations and existing locks cannot replace a value', async t => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-lock-'));
+  t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const file = path.join(dir, '.env.local'); await fs.writeFile(file, 'KEY=before\n');
+  const plan = await prepare({ provider: 'env', file, name: 'KEY' });
+  await fs.link(file, path.join(dir, '.env.link'));
+  await assert.rejects(save(plan, 'synthetic'), /regular private file/);
+  await fs.unlink(path.join(dir, '.env.link'));
+  const lock = `${plan.destination.file}.golden-gate.lock`;
+  await fs.writeFile(lock, 'existing-lock');
+  await assert.rejects(save(plan, 'synthetic'), /busy/);
+  assert.equal(await fs.readFile(file, 'utf8'), 'KEY=before\n');
+  assert.equal(await fs.readFile(lock, 'utf8'), 'existing-lock');
+});
+
+test('parser failure preserves the original file and cleans its temporary lock', async t => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-atomic-'));
+  t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const file = path.join(dir, '.env.local'), before = 'KEY=one\nKEY=two\n';
+  await fs.writeFile(file, before);
+  const plan = await prepare({ provider: 'env', file, name: 'KEY' });
+  await assert.rejects(save(plan, 'synthetic'), /Duplicate/);
+  assert.equal(await fs.readFile(file, 'utf8'), before);
+  assert.deepEqual(await fs.readdir(dir), ['.env.local']);
+});
+
+test('provider subprocess failures and timeouts suppress stdout and stderr', async () => {
+  await assert.rejects(run(process.execPath, ['-e', 'process.stdout.write("SYNTHETIC-PRIVATE"); process.stderr.write("SYNTHETIC-PRIVATE"); process.exit(1)']), err => {
+    assert.ok(!err.message.includes('SYNTHETIC-PRIVATE')); return /Provider command failed/.test(err.message);
+  });
+  await assert.rejects(run(process.execPath, ['-e', 'setTimeout(() => {}, 10000)'], { timeout: 50 }), /timed out/);
+});

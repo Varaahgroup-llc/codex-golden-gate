@@ -12,7 +12,8 @@ def excluded(path):
     return any(p in {'node_modules', '.git', '__pycache__', 'release'} for p in path.parts) or path.name.startswith(('.env', '.dev.vars')) or path.suffix in {'.log', '.zip', '.pyc'} or path.name in {'.DS_Store', 'preview.png'}
 
 PUBLIC_DOCS = ['README.md', 'INSTALL.md', 'MIGRATION.md', 'SECURITY.md', 'PRIVACY.md', 'PUBLISHING.md', 'CHANGELOG.md', 'MAINTAINING.md', 'CONTRIBUTING.md', 'VALIDATION.md', 'LICENSE',
-               'docs/TRACKING.md', 'docs/approval/SUPPORT_STATUS.md', 'docs/approval/REVIEW_PLAN.md', 'docs/approval/readiness.json', 'docs/approval/SECURITY_PREPARATION.md', 'docs/approval/SUBMISSION_PREPARATION.md', 'docs/approval/TERMS_DRAFT.md']
+               'docs/TRACKING.md', 'docs/approval/SUPPORT_STATUS.md', 'docs/approval/REVIEW_PLAN.md', 'docs/approval/readiness.json', 'docs/approval/SECURITY_PREPARATION.md', 'docs/approval/SUBMISSION_PREPARATION.md', 'docs/approval/TERMS_DRAFT.md',
+               'docs/approval/REQUIREMENTS.md', 'docs/approval/UAT_CASES.md', 'docs/releases/MANAGEMENT.md']
 
 def approved_files(root):
     """Only reviewed catalog entries may leave the working directory."""
