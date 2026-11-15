@@ -12,6 +12,8 @@ Only synthetic credentials belong in tests, screenshots, issues and examples. Se
 
 ## Release a version
 
+See [release management](docs/releases/MANAGEMENT.md) for exact-commit CI guards, the protected draft environment, evidence retention and rollback. Only explicitly authorized candidate tags may trigger draft staging; public release and OpenAI submission remain separate decisions.
+
 1. Complete review and CI. Verify a clean installation in the target Codex client before claiming that host/version is supported. Validate providers using disposable resources before claiming live compatibility.
 2. Run `python3 scripts/version.py X.Y.Z`, update CHANGELOG.md and any compatibility evidence, then build and test. The script updates plugin.json, package.json and the lockfile; the server and form get their version from package.json at build time.
 3. Commit the source and regenerated bundle, merge the reviewed change to main and wait for green CI.

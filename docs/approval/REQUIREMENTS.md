@@ -1,0 +1,26 @@
+# Approval requirements and the preserved product goal
+
+Checked November 15, 2026. Tracking: GG-2, GG-3, GG-4, GG-6, GG-7, GG-9.
+
+Golden Gate's primary requirement is **secure key entry inside Codex without leaving the chat/session, with delivery to the user-confirmed destination and no plaintext value in the chat transcript or model-visible inputs/results**. An external secret-entry page is not an equivalent completion of that requirement. Support's alternative is guidance to investigate, not authorization to silently replace the goal. The existing local-entry prototype remains experimental and ineligible under the published restricted-data rule.
+
+## What is established
+
+| Requirement / source | Golden Gate evidence and gap |
+| --- | --- |
+| [Restricted data](https://developers.openai.com/plugins/plugin-guidelines#data-collection): plugin collection/processing of API keys and authentication secrets is prohibited. | Support's signed reply, inspected November 15, explicitly says the current encrypted local-entry design conflicts. Local encryption and model-hidden metadata are not an exception. GG-2 remains blocked. |
+| [UI resources and modals](https://developers.openai.com/plugins/build/chatgpt-ui): MCP Apps supplies in-conversation UI; optional modal capability must be feature-detected. | A UI container is documented; an approved generic credential-entry broker for arbitrary destinations was not established by the fetched public UI/reference/authentication docs. SDK harness evidence does not establish actual Codex modal support or policy approval. |
+| [Embedded pages](https://developers.openai.com/plugins/plugin-guidelines#iframes-and-embedded-pages): declare origins, justify ownership/need, and expect extra review. Other privacy rules still apply. | A provider-owned embedded form is a research candidate only. It needs OpenAI acceptance, provider permission/embedding support, isolation and actual Codex testing. A frameDomains declaration alone grants none of those. Do not proxy a third-party login or weaken CSP/X-Frame-Options to make it work. |
+| [OAuth authentication](https://developers.openai.com/plugins/build/auth): supported MCP authorization uses explicit scoped authorization. | OAuth can avoid manually pasting some credentials, but authorizing a service does not transfer an arbitrary user-supplied key to a destination. It is not evidence that the original paste-in-Codex requirement is met. |
+| [Desktop-only submission](https://developers.openai.com/plugins/deploy/desktop-only): approved-partner eligibility and submitting-organization allowlisting are prerequisites. | No allowlisting granted. The guide describes ChatGPT desktop installation; broad Codex discovery/install behavior must be confirmed separately. GG-3 remains pending. |
+| [Publishing identity](https://developers.openai.com/plugins/deploy/submission#confirm-access-and-publishing-identity): verified developer/business and submission access. | Organization Business verification freshly inspected November 15: **Identity incomplete**. Dedicated Golden Gate project exists. No verification success or submitted listing observed. Private screenshots/account identifiers stay outside this repo. |
+| [Review materials](https://developers.openai.com/plugins/deploy/submission): initial MCP review needs five positive/three negative cases, actual execution, accessible walkthrough and release notes. | Eight manifest cases remain DRAFT / NOT RUN. Detailed UAT procedures are in UAT_CASES.md. No actual native case or video URL is claimed. Confirm desktop-partner-specific checks with OpenAI. |
+| [Submission errors](https://developers.openai.com/plugins/deploy/submission-errors): listing, skill/security scans, setup and attestations must pass. | Local preflight is preparation only: terms/recording URLs missing and seven manual gates unresolved. Owner-approved terms, final public-page checks, portal scans and attestations remain open. |
+
+## Routes to investigate without losing the goal
+
+1. **OpenAI/host-owned secure-entry broker:** ask whether an approved partner API can open native secret entry in Codex, send values directly to a confirmed provider, and return metadata-only receipts. No public generic interface was established; do not invent a method or claim access.
+2. **Destination-owned embedded entry:** ask whether an essential, provider-controlled cross-origin form inside Codex is eligible when Golden Gate cannot inspect the input or receive raw keys/ciphertext. Requires explicit policy/host confirmation and provider cooperation. This is not achieved by hosting Golden Gate's current form on a different domain.
+3. **Explicit program exception:** only a written OpenAI decision identifying the permitted design/capability could change the current gate. Native execution, encryption, consent or a successful technical test does not create one.
+
+If none is supported, record the core requirement as blocked rather than advertise an approved equivalent. A later owner-approved scope decision may choose another experience, but this work does not make that decision. See SUPPORT_STATUS.md for the exact scope of support guidance and UAT_CASES.md for acceptance tests that preserve the original requirement.

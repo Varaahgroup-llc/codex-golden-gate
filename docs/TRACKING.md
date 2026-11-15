@@ -19,6 +19,7 @@ Owner: Varaahgroup LLC. This is a standalone project.
 | [GG-6](https://varaahgroup.atlassian.net/browse/GG-6) | [#11](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/11) | Complete independent security review and disposable provider validation |
 | [GG-7](https://varaahgroup.atlassian.net/browse/GG-7) | [#12](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/12) | Prepare reviewer evidence and submit the native directory listing |
 | [GG-8](https://varaahgroup.atlassian.net/browse/GG-8) | [#13](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/13) | Maintain standalone release, issue and dependency governance |
+| [GG-9](https://varaahgroup.atlassian.net/browse/GG-9) | [#16](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/16) | Implement release management, required review and auditable test evidence |
 
 ## Authority and maintenance
 

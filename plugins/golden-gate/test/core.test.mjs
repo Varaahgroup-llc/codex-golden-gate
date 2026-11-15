@@ -72,3 +72,60 @@ test('cloud uncertainty and unexpected provider exceptions cannot leak values', 
     assert.equal(result.status, status); assert.ok(!JSON.stringify(result).includes('synthetic-secret-that-must-not-leak'));
   }
 });
+
+test('expiry is enforced at the exact deadline and destroys the capability', async () => {
+  let now = 1000, writes = 0;
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => writes++, now: () => now });
+  const opened = await bridge.open(destination);
+  const encrypted = await envelope(opened.private, 'synthetic');
+  now = opened.private.expiresAt;
+  await assert.rejects(bridge.submit(encrypted), /no longer active/);
+  const state = bridge.requests.get(opened.receipt.requestId);
+  assert.equal(bridge.status(opened.receipt.requestId).status, 'expired');
+  assert.equal(state.privateKey, undefined); assert.equal(state.token, undefined);
+  assert.equal(writes, 0);
+});
+
+test('malformed envelopes and extra decrypted fields fail closed without a write', async () => {
+  let writes = 0;
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => writes++ });
+  const opened = await bridge.open(destination);
+  const encrypted = await envelope(opened.private, 'synthetic');
+  for (const replacement of [{ wrappedKey: '!' }, { iv: 'AA' }, { ciphertext: 'AA' }, { ciphertext: 'A'.repeat(550001) }]) {
+    await assert.rejects(bridge.submit({ ...encrypted, ...replacement }), /validation failed/);
+  }
+  for (const payload of [{ destination: { provider: 'github', repo: 'other/repo', name: 'KEY' } }, { secret: 42 }, { confirmed: 'true' }]) {
+    await assert.rejects(bridge.submit(await envelope(opened.private, 'synthetic', payload)), /validation failed/);
+  }
+  assert.equal(writes, 0);
+  assert.equal(bridge.cancel(opened.receipt.requestId, opened.private.token).status, 'cancelled');
+});
+
+test('in-flight status is nonmutating and cancellation cannot race a claimed write', async () => {
+  let release, writes = 0;
+  const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => { writes++; await new Promise(r => release = r); } });
+  const opened = await bridge.open(destination);
+  const saving = bridge.submit(await envelope(opened.private, 'synthetic'));
+  assert.equal(bridge.status(opened.receipt.requestId).status, 'saving');
+  assert.throws(() => bridge.cancel(opened.receipt.requestId, opened.private.token), /no longer active/);
+  release();
+  const receipt = await saving;
+  assert.deepEqual(bridge.status(receipt.requestId), receipt);
+  assert.deepEqual(bridge.status(receipt.requestId), receipt);
+  assert.equal(writes, 1);
+});
+
+test('failed or uncertain writes are terminal and cannot be retried automatically', async () => {
+  for (const error of [new Error('SYNTHETIC-PRIVATE'), new UncertainError('Check metadata before retrying.')]) {
+    let writes = 0;
+    const bridge = new GoldenGate({ prepareFn: async () => plan, saveFn: async () => { writes++; throw error; } });
+    const opened = await bridge.open(destination), encrypted = await envelope(opened.private, 'synthetic');
+    const receipt = await bridge.submit(encrypted);
+    assert.ok(['failed', 'uncertain'].includes(receipt.status));
+    await assert.rejects(bridge.submit(encrypted), /no longer active/);
+    assert.equal(writes, 1);
+    assert.equal(bridge.requests.get(receipt.requestId).token, undefined);
+    assert.equal(bridge.requests.get(receipt.requestId).privateKey, undefined);
+    assert.ok(!JSON.stringify(receipt).includes('SYNTHETIC-PRIVATE'));
+  }
+});
