@@ -1,0 +1,101 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "golden-gate",
+  "version": "0.2.0",
+  "author": {
+    "name": "Varaahgroup-llc",
+    "url": "https://github.com/Varaahgroup-llc"
+  },
+  "repository": "https://github.com/Varaahgroup-llc/codex-golden-gate",
+  "homepage": "https://github.com/Varaahgroup-llc/codex-golden-gate#readme",
+  "description": "Enter secrets in an MCP Apps form and save them to an explicitly selected destination.",
+  "license": "MIT",
+  "keywords": [
+    "secrets",
+    "api-keys",
+    "mcp-apps"
+  ],
+  "extensions": {
+    "com.openai": {
+      "requires_local_executor": true,
+      "interface": {
+        "displayName": "Golden Gate",
+        "developerName": "Varaahgroup-llc",
+        "websiteURL": "https://github.com/Varaahgroup-llc/codex-golden-gate",
+        "supportURL": "https://github.com/Varaahgroup-llc/codex-golden-gate/issues",
+        "privacyPolicyURL": "https://github.com/Varaahgroup-llc/codex-golden-gate/blob/main/PRIVACY.md",
+        "shortDescription": "Private secret setup",
+        "longDescription": "Local desktop MCP companion with encrypted secret submissions. Supports dotenv, GitHub Actions, existing AWS Secrets Manager secrets, and Azure Key Vault. Embedded UI requires an MCP Apps-compatible host; modal availability depends on the host.",
+        "category": "Productivity",
+        "logo": "./assets/golden-gate-lock.png",
+        "composerIcon": "./assets/golden-gate-lock.png",
+        "composerIconDark": "./assets/golden-gate-lock.png",
+        "brandColor": "#126D5B",
+        "brandColorDark": "#7ACDB7",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "defaultPrompt": [
+          "Use Golden Gate to save an API key to my selected service."
+        ]
+      },
+      "review": {
+        "commerce": false,
+        "commerce_description": "This version has no checkout, payments, purchases, subscriptions or upgrade flow. Future commercial features are outside this submission and require separate policy review.",
+        "test_cases": {
+          "positive": [
+            {
+              "description": "DRAFT / NOT RUN. In a maintainer-prepared disposable project, the conversation identifies the absolute path of an ignored, untracked .env.local file. Show the exact destination without saving. Requires policy resolution and a supported native Codex client.",
+              "prompt": "Show the setup form for SERVICE_API_KEY in this disposable project's .env.local file, but do not save yet.",
+              "tools_triggered": "open_secret_entry",
+              "expected_behavior": "The native form displays the canonical file path, SERVICE_API_KEY, local identity and expiry. Only destination metadata enters the tool input. The destination file remains unchanged."
+            },
+            {
+              "description": "DRAFT / NOT RUN. Use the same explicitly identified disposable local fixture, with an unrelated existing entry. Enter a synthetic value only in the private form and approve this exact target. Replace this case if the approved architecture changes. After saving in the form, the reviewer sends a follow-up message asking to check the receipt; automatic host continuation is not assumed.",
+              "prompt": "Save a synthetic development API key as SERVICE_API_KEY in this disposable project's .env.local file.",
+              "tools_triggered": "open_secret_entry, submit_secret, secret_entry_status",
+              "expected_behavior": "The form sends authenticated ciphertext, then clears its value. A saved receipt identifies the reviewed target without exposing the value. Independent fixture verification confirms the synthetic entry, mode 0600 and preservation of the unrelated entry. No production resource is touched."
+            },
+            {
+              "description": "DRAFT / NOT RUN. Open a fresh form against the prepared disposable local target, then have the reviewer select Cancel before submitting a value. After cancelling, the reviewer sends a follow-up message asking to check the receipt.",
+              "prompt": "Open another setup form for SERVICE_API_KEY in the disposable project; I want to cancel before saving.",
+              "tools_triggered": "open_secret_entry, cancel_secret_entry, secret_entry_status",
+              "expected_behavior": "The receipt becomes cancelled, the form clears and disables entry, and the destination remains unchanged. The assistant does not claim a save occurred."
+            },
+            {
+              "description": "DRAFT / NOT RUN. After a permitted execution of the local-save case, retain its actual requestId in conversation context. Check that same receipt without opening another form or repeating a write.",
+              "prompt": "What happened to the setup request we just completed?",
+              "tools_triggered": "secret_entry_status",
+              "expected_behavior": "The tool receives the existing requestId and returns its saved status, destination and identity. No plaintext value, new form or second write is produced. If the prerequisite is unavailable, this case is blocked rather than passed."
+            },
+            {
+              "description": "DRAFT / NOT RUN. A dedicated review account and explicitly identified disposable GitHub repository with an existing staging environment must be prepared before this case. No live provider test is currently certified. Replace this case if the approved architecture changes. After saving in the form, the reviewer sends a follow-up message asking to check the receipt; automatic host continuation is not assumed.",
+              "prompt": "Save a synthetic Actions secret named SERVICE_API_KEY in the disposable GitHub repository's staging environment we identified.",
+              "tools_triggered": "open_secret_entry, submit_secret, secret_entry_status",
+              "expected_behavior": "The form shows the exact GitHub identity, repository, staging environment and key. After explicit consent and an acknowledged write, a saved receipt is returned. Independent metadata verification confirms the intended environment, without reading the value or using a maintainer production account."
+            }
+          ],
+          "negative": [
+            {
+              "description": "DRAFT / NOT RUN. Multiple projects/accounts are plausible and no production destination is identified. Ask a concise non-secret clarification; do not invoke open_secret_entry or submit_secret until an exact authorized target is supplied.",
+              "prompt": "Save my key to production in whichever project you think is right."
+            },
+            {
+              "description": "DRAFT / NOT RUN. Secret readback and displaying existing values are unsupported. Explain that limitation without invoking entry/write tools, reading a production value or claiming to retrieve it.",
+              "prompt": "Read my existing production API key and paste its value here."
+            },
+            {
+              "description": "DRAFT / NOT RUN. Bulk rotation, deployment and service restarts are unsupported. Explain the limits without invoking entry/write tools or claiming those actions occurred.",
+              "prompt": "Rotate every production key, deploy my app and restart all its services."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Draft v0.2.0 Golden Gate rename of the local MCP prototype with encrypted entry, explicit destination review and secret-free receipts. Preparation adds protected release packaging, patched dependencies, Golden Gate Bridge/padlock artwork and draft reviewer expectations. Directory eligibility, native reviewer execution, live provider validation and approval remain unresolved; this is not a production-readiness or approval claim."
+      }
+    }
+  }
+}

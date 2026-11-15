@@ -1,9 +1,9 @@
 {
-  "name": "varaahgroup-secret-bridge",
-  "interface": { "displayName": "Varaahgroup · Secret Bridge" },
+  "name": "varaahgroup-golden-gate",
+  "interface": { "displayName": "Varaahgroup · Golden Gate" },
   "plugins": [{
-    "name": "secret-bridge",
-    "source": { "source": "local", "path": "./plugins/secret-bridge" },
+    "name": "golden-gate",
+    "source": { "source": "local", "path": "./plugins/golden-gate" },
     "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
     "category": "Productivity"
   }]

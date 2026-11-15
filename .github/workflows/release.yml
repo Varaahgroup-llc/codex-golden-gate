@@ -11,7 +11,7 @@ jobs:
       contents: write
     defaults:
       run:
-        working-directory: plugins/secret-bridge
+        working-directory: plugins/golden-gate
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-          cache-dependency-path: plugins/secret-bridge/package-lock.json
+          cache-dependency-path: plugins/golden-gate/package-lock.json
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm run build
       - run: git diff --exit-code -- dist
@@ -28,6 +28,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: node scripts/select-test-browser.mjs
       - run: npm run test:ui
+      - working-directory: .
+        run: python3 -m unittest discover -s tests
       - working-directory: .
         env:
           RELEASE_TAG: ${{ github.ref_name }}
@@ -45,6 +47,6 @@ jobs:
           if [[ "$RELEASE_TAG" == v0.* || "$RELEASE_TAG" == *-* ]]; then flags+=(--prerelease); fi
           gh release create "$RELEASE_TAG" release/*.zip release/SHA256SUMS.txt \
             --verify-tag --draft "${flags[@]}" \
-            --title "Secret Bridge $RELEASE_TAG" \
+            --title "Golden Gate $RELEASE_TAG" \
             --generate-notes \
             --notes "See CHANGELOG.md and VALIDATION.md for compatibility limits. Native Codex modal behavior and live cloud saves require separate validation."
