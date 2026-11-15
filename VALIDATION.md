@@ -1,5 +1,15 @@
 # Validation — updated November 15, 2026
 
+## Inline-slot candidate and bounded native observation (GG-4/GG-2)
+
+Candidate 0.3.0 replaces the expanded form with a compact approval-style masked paste slot, visible immutable destination/identity and Save/Cancel. Save is explicit consent to delivery/replacement; entering a value alone never submits. The component declares inline-only display support and reports content size. It no longer offers a modal button. The host controls actual placement and tool-row expansion; this does not customize Codex's built-in approval prompt or change the restricted-data policy conflict.
+
+The expanded Chromium harness passed with synthetic data: empty submission and input without Save cause no RPC/write; Save encrypts exactly once and clears/disables input; Show/Hide works; narrow layout does not overflow; in-place multiline switching preserves values/line breaks; Cancel clears both inputs without writing. It also checks inline initialization/size notifications and the existing observed-channel plaintext regression assertions. The source/built/isolated stdio suites passed 25 tests, and the Python preparation/packaging/release suites passed 27 tests. This is 53 automated tests including one browser test, not 53 native UAT cases. The first browser run reached the intended newline-preservation behavior but Playwright's uncheck helper expected a changed checkbox; using a real click allowed the assertion to verify that rejected mode change correctly.
+
+Separately, the installed 0.2.0 plugin's live metadata-only open tool returned a pending receipt for SYNTHETIC_UI_CHECK in a disposable local fixture. The user reported that a form appeared inside the chat. The supplied screenshot shows only the invocation row, and the available computer-use surfaces did not expose the input component for independent inspection. No value was entered or saved; the receipt later expired, and an independent hash check confirmed the fixture unchanged. This limited observation does not pass G1/P1, certify the 0.3.0 inline slot or establish an approved secure boundary.
+
+Organization settings recovered from an intervening connection error and freshly showed **Identity incomplete**; the existing support conversation still showed no new response to the broker/provider-owned-entry follow-up. Current official documentation establishes Codex Cloud Personal Vault as an overlapping native credential facility. A supported third-party API for the requested local slot/destination routing has not been established. See [requirements](docs/approval/REQUIREMENTS.md). No new support message, tag, release or submission was made.
+
 ## Test evidence and release-management follow-up (GG-6/GG-7/GG-9)
 
 The browser confidentiality follow-up extends the existing save/cancel harness to observe iframe-to-host bridge messages (including any future chat/model-context notification), HTTP request URLs/bodies, console output, returned receipts and local/session storage snapshots. It checks that both synthetic entered values are absent from those observed channels, verifies the expected two app calls and rejects attempted off-fixture network egress. This is a bounded plaintext regression check in a synthetic MCP Apps harness, not proof about every possible encoding/channel, actual Codex internals, memory erasure, policy eligibility or a native approved broker. Test counts remain unchanged; the existing browser integration gains these assertions.
@@ -12,7 +22,7 @@ The full evidence runner passed build, committed-bundle comparison, Node/browser
 
 The read-only release guard was exercised against the existing immutable v0.1.0 tag and refused both package-version mismatch and existing-release reuse. GitHub API readback confirmed the new release-draft environment's required reviewer, administrator-bypass prohibition and v* tag-only policy. The tag-to-draft workflow itself is **not run end-to-end**: no new tag or release was created. Required review of these release-script changes is still a separate maintainer action.
 
-Detailed [UAT cases](docs/approval/UAT_CASES.md) contain 27 acceptance procedures, including the primary in-Codex entry requirement, eight initial-review cases, safety/lifecycle checks and release checks. None has been marked passed without native execution. Automated/browser evidence does not certify Codex's renderer, an approved credential-entry mechanism, live providers, independent security review or OpenAI eligibility. [Requirements](docs/approval/REQUIREMENTS.md) and [support status](docs/approval/SUPPORT_STATUS.md) record the November 15 checks and preserved product goal.
+Detailed [UAT cases](docs/approval/UAT_CASES.md) contain 33 planned acceptance procedures, including the primary in-Codex entry requirement, eight initial-review cases, safety/lifecycle checks and release checks. None has been marked passed without native execution. Automated/browser evidence does not certify Codex's renderer, an approved credential-entry mechanism, live providers, independent security review or OpenAI eligibility. [Requirements](docs/approval/REQUIREMENTS.md) and [support status](docs/approval/SUPPORT_STATUS.md) record the November 15 checks and preserved product goal.
 
 Tested locally using Node.js 24.7.0 on macOS. [Initial public CI](https://github.com/Varaahgroup-llc/codex-golden-gate/actions/runs/43655774411) passed the full build, reproducible-bundle check, 16 core/adapter/MCP tests, browser integration, and release metadata validation on macOS and Ubuntu using Node.js 22 and 24.
 
@@ -28,7 +38,7 @@ The Golden Gate rename was also installed through native Codex CLI from reviewed
 
 All entry values were synthetic. Local files and test repositories were temporary and cleaned up. Cloud CLI boundaries were mocked; no live GitHub/AWS/Azure secret was saved or read. The browser test used an MCP Apps host harness rather than Codex's renderer.
 
-Outstanding before advertising production readiness: clean target-client rendering/approval checks, actual host modal behavior, disposable live provider tests, independent security review, remaining directory submission/legal/branding requirements, and OpenAI directory eligibility/review.
+Outstanding before advertising production readiness: clean target-client rendering/approval checks, direct-inline host placement, disposable live provider tests, independent security review, remaining directory submission/legal/branding requirements, and OpenAI directory eligibility/review.
 
 ## Approval-readiness branch checks
 

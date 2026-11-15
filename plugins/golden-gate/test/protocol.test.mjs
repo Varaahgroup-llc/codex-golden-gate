@@ -37,9 +37,12 @@ for (const entry of ['src/server.mjs', 'dist/server.mjs', 'isolated-release']) {
     const submit = tools.find(tool => tool.name === 'submit_secret');
     assert.deepEqual(submit._meta.ui.visibility, ['app']); assert.ok(!('secret' in submit.inputSchema.properties));
     assert.ok(tools.every(tool => tool.outputSchema));
-    const resource = await client.readResource({ uri: 'ui://golden-gate/entry-v1.html' });
+    const resource = await client.readResource({ uri: 'ui://golden-gate/entry-v2.html' });
     assert.equal(resource.contents[0].mimeType, 'text/html;profile=mcp-app');
     assert.deepEqual(resource.contents[0]._meta.ui.csp.connectDomains, []);
+    assert.deepEqual(resource.contents[0]._meta['openai/ui'].availableDisplayModes, ['inline']);
+    assert.equal(resource.contents[0]._meta.ui.prefersBorder, false);
+    assert.equal(tools.find(tool => tool.name === 'open_secret_entry')._meta.ui.resourceUri, resource.contents[0].uri);
     const opened = await client.callTool({ name: 'open_secret_entry', arguments: { destination: { provider: 'env', file: path.join(dir, '.env.local'), name: 'KEY' } } });
     assert.equal(opened.structuredContent.status, 'pending');
     assert.ok(opened._meta.goldenGate.publicKey);
