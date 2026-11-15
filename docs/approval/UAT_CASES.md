@@ -1,6 +1,6 @@
 # Golden Gate user acceptance test cases
 
-Version: 0.2.0 candidate; tracking GG-2/GG-4/GG-6/GG-7/GG-9. **All cases below are NOT RUN in the target client.** Automated tests are separate supporting evidence, never a substitute for UAT. The five P and three N cases correspond in order to the eight DRAFT / NOT RUN manifest review expectations. They must be reconciled with the OpenAI-permitted architecture before reviewer submission.
+Version: 0.2.0 candidate; tracking GG-2/GG-4/GG-5/GG-6/GG-7/GG-9. **All cases below are NOT RUN in the target client.** Automated tests are separate supporting evidence, never a substitute for UAT. The five P and three N cases correspond in order to the eight DRAFT / NOT RUN manifest review expectations. They must be reconciled with the OpenAI-permitted architecture before reviewer submission. There are 33 planned cases: 3 primary, 6 project-build, 8 initial-review, 10 safety/lifecycle and 6 release cases.
 
 ## Execution protocol
 
@@ -17,6 +17,19 @@ Common fixtures: F1 = a disposable Git repository with `.env.local` ignored and 
 | G1 | Approved secure-entry capability, F1/F4. Ask to configure SERVICE_API_KEY, open entry, paste synthetic value and complete save while remaining in Codex. | Secure window is inside Codex throughout; no external-page handoff; correct destination receives the value; transcript/model-visible calls/results contain no plaintext. Capture native screen recording and destination verification. | BLOCKED: approved capability not established. |
 | G2 | Same design. Inspect the documented data path and synthetic request/response traces across UI, host, Golden Gate and destination. | Actual secret handling matches OpenAI's written permitted boundary; no raw keys or encrypted credential payloads are routed through an unapproved plugin path. Independent review supports the claim. | BLOCKED: policy/architecture decision. |
 | G3 | Host lacks the approved secure-entry capability. Ask to configure a key. | Explain the capability limitation, do not ask for a key in chat, do not open an unapproved substitute or claim success. | NOT_RUN. |
+
+## Projects being built through Codex (GG-5)
+
+These are additional product acceptance cases; they do not change the manifest's required five positive/three negative review declarations. Use the common synthetic/disposable fixtures and execution record. The approved in-Codex entry path remains a prerequisite, not a capability supplied by this plan.
+
+| ID | Preconditions and actions | Expected result / evidence | State |
+| --- | --- | --- | --- |
+| A1 | F1/F4, approved entry capability. In the current project-building chat, ask Codex to configure a documented missing SERVICE_API_KEY needed for the next authorized setup step. | Propose the variable and destination from non-secret project context; show project/account/environment and confirmation; open secure entry inside that same Codex session. Never ask for the value in chat. Record native screen and metadata-only trace. | BLOCKED: approved entry/contextual-trigger implementation not established. |
+| A2 | A1 complete. Paste synthetic value in the secure window and confirm the ignored local-development destination; ask Codex to check status and continue the previously authorized setup. | Exactly one write to F1's confirmed ignored/untracked file; 0600 permissions and unrelated entries preserved. Receipt only, no readback/value in generated source, chat, argv or Golden Gate diagnostics. Continuation uses configuration references; any build result is verified separately. | BLOCKED. |
+| A3 | F1 and F2 both open, with the same variable name but different worktrees/accounts/environments. Ask “Add the key my app needs” without specifying which project/environment. | Clarify non-secret project/destination details before entry or write; show the selected worktree/account/environment. No silent production selection or change to the other project. | NOT_RUN. |
+| A4 | F3 with explicit disposable-provider authorization. In a project-building chat, request the key for that project's staging CI/deployment destination. | Confirm exact project/repository/account/environment/name; use approved in-session entry and the selected supported adapter. Verify destination metadata without reading value. Unsupported hosting targets receive an accurate limitation, not an invented integration. | BLOCKED: eligible path/live fixture. |
+| A5 | In the build chat, open setup and then cancel or allow expiry; separately simulate an uncertain provider acknowledgement using a synthetic fixture. | Truthful cancelled/expired/uncertain status; no success claim, automatic retry or continuation that assumes setup succeeded. Preserve destination state/write count and metadata-only transcript. | NOT_RUN. |
+| A6 | Complete synthetic setup for project A, switch to project B and request configuration there without authorizing key reuse. | No readback, reuse or copying from A. A new explicit destination decision and supported entry flow are required. A's destination remains unchanged; each receipt stays associated with its own project. | NOT_RUN. |
 
 ## Initial MCP review cases
 
