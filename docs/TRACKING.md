@@ -4,6 +4,7 @@ Owner: Varaahgroup LLC. This is a standalone project.
 
 - Canonical source: https://github.com/Varaahgroup-llc/codex-secret-bridge
 - Jira project: SBR, https://varaahgroup.atlassian.net/jira/software/projects/SBR/boards/72
+- OpenAI publishing project: **Secret Bridge**, created in the Varaah group llc organization and selected in the Plugins portal. Private project/account identifiers are retained outside this repository. Project creation does not establish verified publisher identity or local-MCP submission eligibility.
 - Product epic: [SBR-1](https://varaahgroup.atlassian.net/browse/SBR-1)
 - Public roadmap: [GitHub #6](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues/6)
 

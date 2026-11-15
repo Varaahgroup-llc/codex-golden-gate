@@ -11,7 +11,7 @@
     "verified_publisher": {
       "status": "pending",
       "issue": "SBR-3",
-      "reason": "Organization owner is completing verification in the official phone flow; OpenAI verification success has not been observed.",
+      "reason": "Dedicated Secret Bridge publishing project is created and selected. Organization owner verification still shows Identity incomplete; no OpenAI verification success is established.",
       "evidence": []
     },
     "local_mcp_allowlisting": {
