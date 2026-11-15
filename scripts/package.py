@@ -31,7 +31,7 @@ with zipfile.ZipFile(release, 'w', zipfile.ZIP_DEFLATED) as archive:
         rel = file.relative_to(plugin)
         if file.is_file() and not file.is_symlink() and not excluded(rel) and (rel.parts[0] in {'dist', 'skills'} or rel.name in {'plugin.json', 'mcp.json'}):
             archive.write(file, rel)
-    for name in ['README.md', 'SECURITY.md', 'PRIVACY.md', 'PUBLISHING.md', 'CHANGELOG.md', 'LICENSE']:
+    for name in ['README.md', 'INSTALL.md', 'SECURITY.md', 'PRIVACY.md', 'PUBLISHING.md', 'CHANGELOG.md', 'MAINTAINING.md', 'CONTRIBUTING.md', 'VALIDATION.md', 'LICENSE']:
         archive.write(root / name, name)
 
 checksums = args.output / 'SHA256SUMS.txt'

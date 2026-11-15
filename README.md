@@ -17,7 +17,7 @@ This project is independent of any application repository. It does not call an A
 - Local dotenv files, GitHub Actions repository/environment secrets, existing AWS Secrets Manager secrets, and Azure Key Vault.
 - A self-contained Node.js server bundle: installing the release does not run npm or download dependencies.
 
-**Compatibility:** Node.js 22+ on macOS/Linux, a locally executing chat, and an MCP Apps-compatible UI host. This release has been tested through the MCP SDK and a browser-host harness. A clean Codex desktop install and its native modal behavior still need to be verified. The documented `requestModal` extension is for ChatGPT; its presence is checked at runtime. A host without MCP Apps rendering cannot display this form. Windows and browser-only/cloud execution are not supported in this release.
+**Compatibility:** Node.js 22+ on macOS/Linux, a locally executing chat, and an MCP Apps-compatible UI host. CI passes on both operating systems using Node.js 22 and 24. Native Codex CLI installation is verified; the chat renderer and modal still need testing in a fresh chat. The documented `requestModal` extension is for ChatGPT; its presence is checked at runtime. A host without MCP Apps rendering cannot display this form. Windows and browser-only/cloud execution are not supported in this release.
 
 ## Install the release
 
