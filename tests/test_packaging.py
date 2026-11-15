@@ -49,6 +49,7 @@ class PackagingTests(unittest.TestCase):
             self.assertIn('assets/logo.png', archive.namelist())
             self.assertIn('assets/icon.png', archive.namelist())
             self.assertIn('assets/icon-dark.png', archive.namelist())
+            self.assertIn('assets/golden-gate-lock.png', archive.namelist())
         self.assertEqual(sums.read_text(), ''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n' for p in [source, release]))
 
     def test_missing_approved_file_fails_before_creating_archives(self):
