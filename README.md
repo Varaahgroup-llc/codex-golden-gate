@@ -1,5 +1,11 @@
 # Secret Bridge
 
+## Directory eligibility and project tracking
+
+Secret Bridge has its own [SBR Jira board](https://varaahgroup.atlassian.net/jira/software/projects/SBR/boards/72), [public roadmap](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues/6) and [issue crosswalk](docs/TRACKING.md).
+
+**Directory submission is gated.** The current encrypted local entry form still processes API keys/passwords, which the [directory restricted-data rule](https://developers.openai.com/plugins/plugin-guidelines#data-collection) prohibits. The product needs written OpenAI clarification or an approved redesign before submission. The proposed service-owned entry alternative is not implemented or approved. Repository installation is available; the packaged v0.1.0 release remains a draft.
+
 Maintained by **Varaahgroup-llc**. [Downloads](https://github.com/Varaahgroup-llc/codex-secret-bridge/releases) · [Install in Codex](INSTALL.md) · [Report a bug](https://github.com/Varaahgroup-llc/codex-secret-bridge/issues) · [Maintenance](MAINTAINING.md)
 
 **Preview release:** native Codex rendering/modal behavior and live cloud saves remain unverified. This is a standalone Codex plugin, distributed like an IDE extension. It is not affiliated with or endorsed by OpenAI.

@@ -1,5 +1,9 @@
 # Distribution
 
+## Current policy gate
+
+The raw-credential-entry prototype is not ready for a directory submission. The current directory guidelines prohibit processing API keys/passwords. Resolve SBR-2 with written clarification or an approved redesign before asserting eligibility. Track the standalone project and prerequisites in docs/TRACKING.md. Business verification and local-MCP allowlisting remain separate requirements.
+
 ## Repository distribution
 
 The standalone project home is `Varaahgroup-llc/codex-secret-bridge`. The root `.agents/plugins/marketplace.json` catalog points to `plugins/secret-bridge`; the built `dist/server.mjs`, notices, skill, and manifests must be included. After approving installation, users can register it with `codex plugin marketplace add Varaahgroup-llc/codex-secret-bridge` and install with `codex plugin add secret-bridge@varaahgroup-secret-bridge` in supported clients. See INSTALL.md for the approval flow.
