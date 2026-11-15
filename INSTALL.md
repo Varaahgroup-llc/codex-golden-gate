@@ -27,9 +27,9 @@ Tell Codex what you are configuring, without the value:
 
 > Save a new SERVICE_API_KEY for this repository's staging GitHub Actions environment.
 
-Codex selects a destination from the request and relevant non-secret project context. If routing is ambiguous, it asks for the missing project/service/environment. The private form displays the exact destination and signed-in identity. Paste the key in that form, review it and click Save. Only a receipt is returned to the assistant.
+Codex selects a destination from the request and relevant non-secret project context. If routing is ambiguous, it asks for the missing project/service/environment. The compact private slot displays the exact destination and signed-in identity. Paste the key there and select Save to confirm that destination and any replacement. Pasting alone does not write. Only a receipt is returned to the assistant.
 
-The form uses the chat host's native MCP Apps surface. A modal is offered only when the host exposes the documented modal extension. Do not open the HTML file directly: it needs the MCP host bridge. A standalone webpage fallback is not included in v0.2.0. Existing Secret Bridge users should follow [MIGRATION.md](MIGRATION.md).
+The 0.3.0 candidate requests inline-only MCP Apps rendering, with no separate open-form or modal button. It does not modify Codex's built-in approval prompt or control the host's tool-row expansion. Direct-inline native rendering remains unverified. Do not open the HTML file directly: it needs the MCP host bridge. No standalone webpage fallback is included. Existing Secret Bridge users should follow [MIGRATION.md](MIGRATION.md).
 
 ## Updates and removal
 

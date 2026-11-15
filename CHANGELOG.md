@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 — Inline paste slot (prepared, unreleased)
+
+- Replaced the expanded entry layout with a compact approval-style paste slot, visible destination/identity, masking, Save and Cancel. Save confirms delivery/replacement; pasting alone never submits.
+- Removed the optional modal control, declared inline-only rendering and added content-size notifications. The host still controls its tool-row presentation.
+- Preserved encryption, app-only submission, immutable destinations, expiry, receipts and cancellation. Kept multiline entry in place and prevented line-break loss when switching modes.
+- Versioned the UI resource as entry-v2 to avoid stale component caches and extended browser/protocol regression checks.
+- Personal Vault is an existing native Codex Cloud facility; a third-party API for local inline entry/destination routing is not established. Native candidate rendering, directory eligibility and release approval remain pending.
+
 ## 0.2.0 — Golden Gate rename (prepared, unreleased)
 
 - Renamed the product, repository, plugin, marketplace, local server and source path to Golden Gate / golden-gate.

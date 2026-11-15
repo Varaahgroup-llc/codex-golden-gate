@@ -1,14 +1,14 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "golden-gate",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "Varaahgroup-llc",
     "url": "https://github.com/Varaahgroup-llc"
   },
   "repository": "https://github.com/Varaahgroup-llc/codex-golden-gate",
   "homepage": "https://github.com/Varaahgroup-llc/codex-golden-gate#readme",
-  "description": "Enter secrets in an MCP Apps form and save them to an explicitly selected destination.",
+  "description": "Paste secrets into a compact inline slot and save to an explicitly confirmed destination.",
   "license": "MIT",
   "keywords": [
     "secrets",
@@ -25,7 +25,7 @@
         "supportURL": "https://github.com/Varaahgroup-llc/codex-golden-gate/issues",
         "privacyPolicyURL": "https://github.com/Varaahgroup-llc/codex-golden-gate/blob/main/PRIVACY.md",
         "shortDescription": "Private secret setup",
-        "longDescription": "Local desktop MCP companion with encrypted secret submissions. Supports dotenv, GitHub Actions, existing AWS Secrets Manager secrets, and Azure Key Vault. Embedded UI requires an MCP Apps-compatible host; modal availability depends on the host.",
+        "longDescription": "Local desktop MCP companion with encrypted secret submissions. Supports dotenv, GitHub Actions, existing AWS Secrets Manager secrets, and Azure Key Vault. Compact inline-only UI requires an MCP Apps-compatible host. Save confirms the visible destination; native direct-inline rendering remains unverified.",
         "category": "Productivity",
         "logo": "./assets/golden-gate-lock.png",
         "composerIcon": "./assets/golden-gate-lock.png",
@@ -49,7 +49,7 @@
               "description": "DRAFT / NOT RUN. In a maintainer-prepared disposable project, the conversation identifies the absolute path of an ignored, untracked .env.local file. Show the exact destination without saving. Requires policy resolution and a supported native Codex client.",
               "prompt": "Show the setup form for SERVICE_API_KEY in this disposable project's .env.local file, but do not save yet.",
               "tools_triggered": "open_secret_entry",
-              "expected_behavior": "The native form displays the canonical file path, SERVICE_API_KEY, local identity and expiry. Only destination metadata enters the tool input. The destination file remains unchanged."
+              "expected_behavior": "The native inline slot directly displays the canonical file path, SERVICE_API_KEY and local identity; expiry is available under Options. No separate open-form or modal step is required. Pasting alone never writes. Only destination metadata enters the tool input. The destination file remains unchanged."
             },
             {
               "description": "DRAFT / NOT RUN. Use the same explicitly identified disposable local fixture, with an unrelated existing entry. Enter a synthetic value only in the private form and approve this exact target. Replace this case if the approved architecture changes. After saving in the form, the reviewer sends a follow-up message asking to check the receipt; automatic host continuation is not assumed.",
@@ -94,7 +94,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Draft v0.2.0 Golden Gate rename of the local MCP prototype with encrypted entry, explicit destination review and secret-free receipts. Preparation adds protected release packaging, patched dependencies, Golden Gate Bridge/padlock artwork and draft reviewer expectations. Directory eligibility, native reviewer execution, live provider validation and approval remain unresolved; this is not a production-readiness or approval claim."
+        "release_notes": "Draft v0.3.0 compact inline paste slot with Save/Cancel, explicit destination review, encrypted entry and secret-free receipts. Save confirms replacement; pasting alone never writes. The component requests inline-only rendering and reports content size. It does not customize Codex built-in approval prompts. Preparation adds protected release packaging, patched dependencies, Golden Gate Bridge/padlock artwork and draft reviewer expectations. Directory eligibility, native reviewer execution, live provider validation and approval remain unresolved; this is not a production-readiness or approval claim."
       }
     }
   }

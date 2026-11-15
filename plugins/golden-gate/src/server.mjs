@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { GoldenGate } from './core.mjs';
 import { destinationSchema, SafeError } from './adapters.mjs';
 
-const URI = 'ui://golden-gate/entry-v1.html';
+const URI = 'ui://golden-gate/entry-v2.html';
 const VERSION = typeof GOLDEN_GATE_VERSION !== 'undefined' ? GOLDEN_GATE_VERSION : JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8')).version;
 const receiptSchema = { requestId: z.string().uuid(), destination: z.string(), identity: z.string(), status: z.enum(['pending', 'saving', 'saved', 'failed', 'uncertain', 'cancelled', 'expired']), expiresAt: z.string(), message: z.string().optional() };
 const reply = receipt => ({ content: [{ type: 'text', text: JSON.stringify(receipt) }], structuredContent: receipt });
@@ -21,11 +21,11 @@ export async function createServer() {
   const html = (typeof GOLDEN_GATE_HTML !== 'undefined' ? GOLDEN_GATE_HTML : await readFile(new URL('../web/entry.html', import.meta.url), 'utf8')).replaceAll('__GOLDEN_GATE_VERSION__', VERSION);
   server.registerResource('secret-entry', URI, { mimeType: 'text/html;profile=mcp-app' }, async () => ({ contents: [{
     uri: URI, mimeType: 'text/html;profile=mcp-app', text: html,
-    _meta: { ui: { prefersBorder: true, csp: { connectDomains: [], resourceDomains: [] } }, 'openai/widgetDescription': 'Private secret entry. Never inspect the form value.', 'openai/widgetPrefersBorder': true }
+    _meta: { ui: { prefersBorder: false, csp: { connectDomains: [], resourceDomains: [] } }, 'openai/ui': { availableDisplayModes: ['inline'] }, 'openai/widgetDescription': 'Compact inline Golden Gate paste slot. Never inspect the value. Save confirms the displayed destination.', 'openai/widgetPrefersBorder': false }
   }] }));
   server.registerTool('open_secret_entry', {
-    title: 'Open private secret entry',
-    description: 'Show an encrypted entry form for a single explicit destination. Takes metadata only, never a secret. Preflights the local file or signed-in CLI identity. Requires MCP Apps UI rendering.',
+    title: 'Show secure paste slot',
+    description: 'Show a compact inline encrypted paste slot for a single explicit destination. Takes metadata only, never a secret. Save confirms delivery to the displayed destination. Preflights the local file or signed-in CLI identity. Requires MCP Apps inline rendering.',
     inputSchema: { destination: destinationSchema }, outputSchema: receiptSchema,
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     _meta: { ui: { resourceUri: URI }, 'openai/outputTemplate': URI }
