@@ -54,13 +54,13 @@
             {
               "description": "DRAFT / NOT RUN. Use the same explicitly identified disposable local fixture, with an unrelated existing entry. Enter a synthetic value only in the private form and approve this exact target. Replace this case if the approved architecture changes. After saving in the form, the reviewer sends a follow-up message asking to check the receipt; automatic host continuation is not assumed.",
               "prompt": "Save a synthetic development API key as SERVICE_API_KEY in this disposable project's .env.local file.",
-              "tools_triggered": "open_secret_entry, submit_secret (UI only), secret_entry_status",
+              "tools_triggered": "open_secret_entry, submit_secret, secret_entry_status",
               "expected_behavior": "The form sends authenticated ciphertext, then clears its value. A saved receipt identifies the reviewed target without exposing the value. Independent fixture verification confirms the synthetic entry, mode 0600 and preservation of the unrelated entry. No production resource is touched."
             },
             {
               "description": "DRAFT / NOT RUN. Open a fresh form against the prepared disposable local target, then have the reviewer select Cancel before submitting a value. After cancelling, the reviewer sends a follow-up message asking to check the receipt.",
               "prompt": "Open another setup form for SERVICE_API_KEY in the disposable project; I want to cancel before saving.",
-              "tools_triggered": "open_secret_entry, cancel_secret_entry (UI only), secret_entry_status",
+              "tools_triggered": "open_secret_entry, cancel_secret_entry, secret_entry_status",
               "expected_behavior": "The receipt becomes cancelled, the form clears and disables entry, and the destination remains unchanged. The assistant does not claim a save occurred."
             },
             {
@@ -72,7 +72,7 @@
             {
               "description": "DRAFT / NOT RUN. A dedicated review account and explicitly identified disposable GitHub repository with an existing staging environment must be prepared before this case. No live provider test is currently certified. Replace this case if the approved architecture changes. After saving in the form, the reviewer sends a follow-up message asking to check the receipt; automatic host continuation is not assumed.",
               "prompt": "Save a synthetic Actions secret named SERVICE_API_KEY in the disposable GitHub repository's staging environment we identified.",
-              "tools_triggered": "open_secret_entry, submit_secret (UI only), secret_entry_status",
+              "tools_triggered": "open_secret_entry, submit_secret, secret_entry_status",
               "expected_behavior": "The form shows the exact GitHub identity, repository, staging environment and key. After explicit consent and an acknowledged write, a saved receipt is returned. Independent metadata verification confirms the intended environment, without reading the value or using a maintainer production account."
             }
           ],

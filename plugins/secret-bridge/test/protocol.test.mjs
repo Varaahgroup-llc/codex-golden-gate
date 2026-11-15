@@ -22,6 +22,13 @@ for (const entry of ['src/server.mjs', 'dist/server.mjs', 'isolated-release']) {
     t.after(async () => { await client.close(); await fs.rm(dir, { recursive: true, force: true }); });
     await client.connect(transport);
     const { tools } = await client.listTools();
+    const manifest = JSON.parse(await fs.readFile(new URL('../plugin.json', import.meta.url), 'utf8'));
+    const expectations = manifest.extensions['com.openai'].review.test_cases.positive;
+    for (const expectation of expectations) {
+      for (const name of expectation.tools_triggered.split(',').map(value => value.trim())) {
+        assert.ok(tools.some(tool => tool.name === name), `Review expectation references an undiscovered tool: ${name}`);
+      }
+    }
     for (const tool of tools) {
       for (const flag of ['readOnlyHint', 'destructiveHint', 'openWorldHint']) {
         assert.equal(typeof tool.annotations?.[flag], 'boolean', `${tool.name} must declare ${flag}`);
