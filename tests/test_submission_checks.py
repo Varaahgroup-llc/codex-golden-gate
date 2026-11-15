@@ -41,6 +41,69 @@ class SubmissionChecks(unittest.TestCase):
         self.assertTrue(result['readyForMaintainerPortalReview'])
         self.assertIn('not established', result['openAIApproval'])
 
+    def mcp_fixture(self):
+        manifest = copy.deepcopy(self.manifest)
+        openai = manifest['extensions']['com.openai']
+        for key in ['websiteURL', 'supportURL', 'privacyPolicyURL', 'termsOfServiceURL']:
+            openai['interface'][key] = 'https://example.test/' + key
+        openai['review'] = {
+            'test_cases': {
+                'positive': [{'description': f'Draft fixture {i}', 'prompt': f'Test {i}', 'tools_triggered': 'fixture_tool', 'expected_behavior': 'An observable result.'} for i in range(5)],
+                'negative': [{'description': f'Unsupported fixture {i}', 'prompt': f'Do unsupported action {i}'} for i in range(3)],
+            },
+            'demo_recording_url': 'https://example.test/recording',
+        }
+        openai['publication'] = {'release_notes': 'Synthetic fixture notes.'}
+        return manifest, {'mcpServers': {'fixture': {'type': 'stdio', 'command': 'node'}}}
+
+    def test_mcp_missing_listing_urls_are_reported_individually(self):
+        findings = module.listing_findings(self.manifest, mcp_review=True)
+        self.assertEqual({f['code'] for f in findings}, {'listing.websiteURL', 'listing.privacyPolicyURL', 'listing.termsOfServiceURL'})
+
+    def test_skills_only_does_not_require_mcp_review_materials(self):
+        self.assertEqual(module.review_findings(self.manifest, {}), [])
+        self.assertEqual(module.listing_findings(self.manifest), [])
+
+    def test_draft_case_declarations_do_not_replace_execution_evidence(self):
+        manifest, config = self.mcp_fixture()
+        self.assertEqual(module.review_findings(manifest, config), [])
+        result = module.assess(manifest, {}, config)
+        self.assertFalse(result['readyForMaintainerPortalReview'])
+        self.assertIn('gate.executed_reviewer_materials', {f['code'] for f in result['findings']})
+
+    def test_missing_terms_cannot_hide_behind_verified_manual_flags(self):
+        manifest, config = self.mcp_fixture()
+        del manifest['extensions']['com.openai']['interface']['termsOfServiceURL']
+        readiness = {'gates': {name: {'status': 'verified', 'evidence': ['synthetic-fixture']} for name in module.REQUIRED_GATES}}
+        result = module.assess(manifest, readiness, config)
+        self.assertFalse(result['readyForMaintainerPortalReview'])
+        self.assertEqual([f['code'] for f in result['findings']], ['listing.termsOfServiceURL'])
+
+    def test_incomplete_case_counts_are_reported(self):
+        manifest, config = self.mcp_fixture()
+        manifest['extensions']['com.openai']['review']['test_cases']['positive'].pop()
+        self.assertIn('review.positive', {f['code'] for f in module.review_findings(manifest, config)})
+
+    def test_positive_expectations_need_tools_and_observable_result(self):
+        manifest, config = self.mcp_fixture()
+        manifest['extensions']['com.openai']['review']['test_cases']['positive'][0]['expected_behavior'] = ' '
+        self.assertIn('review.positive.1', {f['code'] for f in module.review_findings(manifest, config)})
+
+    def test_recording_and_release_notes_cannot_be_omitted(self):
+        manifest, config = self.mcp_fixture()
+        del manifest['extensions']['com.openai']['review']['demo_recording_url']
+        del manifest['extensions']['com.openai']['publication']['release_notes']
+        self.assertEqual({f['code'] for f in module.review_findings(manifest, config)}, {'review.demo_recording_url', 'publication.release_notes'})
+
+    def test_url_syntax_rejects_empty_credentials_controls_and_bad_ports(self):
+        for value in ['https://@example.test', 'https://example.test/\nsecret', 'https://example.test:bad', 'https://example.test/with space', 'https://example.test\\path']:
+            with self.subTest(value=value):
+                self.assertFalse(module.valid_https_url(value))
+
+    def test_documented_single_starter_prompt_is_accepted(self):
+        self.manifest['extensions']['com.openai']['interface']['defaultPrompt'] = 'Open the setup form.'
+        self.assertEqual(module.listing_findings(self.manifest), [])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -28,6 +28,8 @@ Existing URLs remain the exact HTTPS URLs in plugin.json. The general web fetch 
 
 REVIEW_PLAN.md now separates five distinct supported MCP workflows from three negative prompts for ambiguous/unsupported intent. Install/update/disable/uninstall checks and replay/expiry/tampering remain additional lifecycle/robustness coverage. All native cases are **Not run / blocked on the permitted architecture and native development setup**. Existing SDK/browser harness tests do not certify Codex rendering.
 
+The five positive/three negative draft expectations are also encoded in the manifest's review.test_cases using the documented single-server field names, with explicit DRAFT / NOT RUN descriptions. publication.release_notes describes the actual draft prototype. No result, recording URL or reviewer credentials have been fabricated. The strengthened local preflight reads mcp.json to distinguish MCP preparation requirements from skills-only metadata: it reports absent Terms of Service and recording URLs directly, validates case shape/counts and release notes, and still requires all seven manual evidence gates. Its URL checks are syntax checks; published content/access and recording playback remain human/external verification requirements. Local-MCP partner eligibility and actual portal findings remain separate.
+
 Once the architecture and native setup are resolved, rehearse this recording sequence using synthetic values and disposable resources:
 
 1. Show the actual Codex version and installed package commit/version. Establish native loading in a fresh local chat without exposing another project's context.

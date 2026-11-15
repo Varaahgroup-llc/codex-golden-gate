@@ -10,6 +10,8 @@ Plugin Creator's official preparation workflow has been applied to the current s
 
 Run `python3 scripts/preflight_submission.py` before attempting portal submission. It exits nonzero while known evidence gates are unresolved. `--report-only` is for displaying blockers in CI and does not grant eligibility. This limited offline check does not replace OpenAI package/skill scans, verification, policy attestations or human review. Proposed reviewer scenarios and unverified evidence are in docs/approval/REVIEW_PLAN.md.
 
+For this single-MCP package the checker also requires the four listing URLs, five positive/three negative case declarations, a recording URL and release notes. It accepts the declared draft cases only as expectations: no case has been certified in native Codex. The current output explicitly reports the missing Terms of Service and recording URLs, as well as seven unresolved manual gates. URL syntax validation does not establish public page content, video playback, eligible local-MCP access or policy approval.
+
 ## Repository distribution
 
 The standalone project home is `Varaahgroup-llc/codex-secret-bridge`. The root `.agents/plugins/marketplace.json` catalog points to `plugins/secret-bridge`; the built `dist/server.mjs`, notices, skill, and manifests must be included. After approving installation, users can register it with `codex plugin marketplace add Varaahgroup-llc/codex-secret-bridge` and install with `codex plugin add secret-bridge@varaahgroup-secret-bridge` in supported clients. See INSTALL.md for the approval flow.

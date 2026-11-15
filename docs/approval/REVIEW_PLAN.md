@@ -1,6 +1,6 @@
 # Reviewer evidence plan — not executed review cases
 
-Tracking: SBR-4, SBR-6 and SBR-7. These are proposed scenarios, not a claim that reviewer tests have passed. They are deliberately not imported into plugin.json as executed review information. Reconcile this plan with the policy/architecture decision in SBR-2 before running or submitting it.
+Tracking: SBR-4, SBR-6 and SBR-7. These are proposed scenarios, not a claim that reviewer tests have passed. The five positive and three negative expectations are now declared in plugin.json under extensions.com.openai.review.test_cases, with every description explicitly marked DRAFT / NOT RUN. The declarations are review plans, not execution evidence. Reconcile them with the policy/architecture decision in SBR-2 before running or submitting them.
 
 Use a dedicated disposable environment and synthetic values only. Never give reviewers the maintainer's real account, production secrets or verification documents. Any provider login needed by an eligible design belongs in the portal's private reviewer setup, outside the public ZIP.
 
@@ -26,6 +26,10 @@ Use a dedicated disposable environment and synthetic values only. Never give rev
 
 Record the permitted design/version/commit, exact Codex client and OS/runtime, reviewer environment, prompt, actual tool names, expected vs actual behavior, synthetic-data screenshot/video references, and pass/fail evidence. Never equate an SDK/browser harness result with a test in Codex's renderer.
 
+For save/cancel scenarios, the reviewer sends a follow-up message asking to check the receipt after completing the UI action. Do not assume a host automatically resumes the assistant after an app-only call. P4 checks the existing request again without another form or write.
+
 A final reviewer-accessible native walkthrough URL and any accepted reviewer credentials/setup remain pending. Do not invent a recording URL, case result, eligible account or approval. The local preflight is a preparation aid, not the OpenAI validator or review result.
+
+The local checker now inspects MCP-specific listing URLs, case counts/required fields, recording URL and release notes in addition to the seven manual evidence gates. Passing case-shape checks does not mean a scenario was run. The current source still reports two concrete missing fields (published Terms of Service URL and an actual recording URL) plus all seven unresolved manual gates. Do not insert placeholder URLs or mark the execution gate verified to silence findings.
 
 The official Plugin Creator `prepare-plugin-submission` workflow is now being applied; its package/listing and review-material references have been inspected. See [SUBMISSION_PREPARATION.md](SUBMISSION_PREPARATION.md) for completed checks and gaps. This does not establish passing portal scans or executed native reviewer cases. Replay/expiry/tampering and unsafe dotenv targets remain additional robustness tests, rather than replacing negative cases for unsupported user intent. See [submission instructions](https://developers.openai.com/plugins/deploy/submission).
