@@ -16,6 +16,8 @@ The owner clarified that the primary goal remains a secure key-entry window **in
 
 A focused follow-up was sent in the same conversation on November 15. It states the preserved in-Codex goal, asks about a host-owned credential-broker capability and an essential provider-owned isolated embedded form, requests supported API/client details and a representative/partner-routing path, and asks for an explicit limitation if neither is supported. No new account identifiers, credentials or documents were attached. No routing/eligibility confirmation for these precise questions was observed at sending.
 
+Latest November 15 recheck (approximately 15:12 UTC / 07:12 Pacific): the visible support conversation still ends with that follow-up; no new capability/partner reply is displayed. Refreshed Organization General settings still show Business verification **Identity incomplete**. No email inbox was inspected, so this observation covers the support conversation and Platform status only. The owner verification flow was not restarted and no duplicate inquiry was sent. PR #18's project-building requirements are merged; its main CI passed, while native entry/approval and the 33 planned UAT cases remain unresolved. Additional synthetic channel-observation assertions are being prepared separately; they cannot open the approval gates.
+
 The exact request, private organization identifier and confirmation screenshot are retained outside the public repository and reviewer ZIP. Public records contain only this status summary. When a reply arrives, record its actual conclusion and reference without exposing account identifiers, credentials or verification documents.
 
 Source rules checked:
