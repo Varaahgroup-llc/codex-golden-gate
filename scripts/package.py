@@ -33,6 +33,10 @@ with zipfile.ZipFile(release, 'w', zipfile.ZIP_DEFLATED) as archive:
             archive.write(file, rel)
     for name in ['README.md', 'INSTALL.md', 'SECURITY.md', 'PRIVACY.md', 'PUBLISHING.md', 'CHANGELOG.md', 'MAINTAINING.md', 'CONTRIBUTING.md', 'VALIDATION.md', 'LICENSE']:
         archive.write(root / name, name)
+    # Include only explicitly public preparation records, never private support/account evidence.
+    for name in ['docs/TRACKING.md', 'docs/approval/SUPPORT_STATUS.md', 'docs/approval/REVIEW_PLAN.md', 'docs/approval/readiness.json']:
+        if (root / name).is_file():
+            archive.write(root / name, name)
 
 checksums = args.output / 'SHA256SUMS.txt'
 checksums.write_text(''.join(f'{hashlib.sha256(file.read_bytes()).hexdigest()}  {file.name}\n' for file in [source, release]))

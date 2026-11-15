@@ -35,7 +35,7 @@ export async function createServer() {
   }));
   server.registerTool('secret_entry_status', {
     title: 'Check secret entry receipt', description: 'Return status, destination and identity without a secret value.',
-    inputSchema: { requestId: z.string().uuid() }, outputSchema: receiptSchema, annotations: { readOnlyHint: true, openWorldHint: false }
+    inputSchema: { requestId: z.string().uuid() }, outputSchema: receiptSchema, annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false }
   }, guard(async ({ requestId }) => reply(bridge.status(requestId))));
   server.registerTool('submit_secret', {
     title: 'Save encrypted entry', description: 'App-only tool. Accepts authenticated ciphertext created by the entry UI. No plaintext secret argument.',

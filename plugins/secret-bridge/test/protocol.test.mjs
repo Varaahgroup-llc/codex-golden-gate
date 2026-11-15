@@ -22,6 +22,11 @@ for (const entry of ['src/server.mjs', 'dist/server.mjs', 'isolated-release']) {
     t.after(async () => { await client.close(); await fs.rm(dir, { recursive: true, force: true }); });
     await client.connect(transport);
     const { tools } = await client.listTools();
+    for (const tool of tools) {
+      for (const flag of ['readOnlyHint', 'destructiveHint', 'openWorldHint']) {
+        assert.equal(typeof tool.annotations?.[flag], 'boolean', `${tool.name} must declare ${flag}`);
+      }
+    }
     const submit = tools.find(tool => tool.name === 'submit_secret');
     assert.deepEqual(submit._meta.ui.visibility, ['app']); assert.ok(!('secret' in submit.inputSchema.properties));
     assert.ok(tools.every(tool => tool.outputSchema));

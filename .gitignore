@@ -7,3 +7,5 @@ node_modules/
 *.secret-bridge.lock
 release/
 preview.png
+__pycache__/
+*.pyc

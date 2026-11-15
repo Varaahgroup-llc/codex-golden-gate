@@ -36,6 +36,10 @@ jobs:
       - working-directory: .
         run: python3 scripts/validate_release.py
       - working-directory: .
+        run: python3 -m unittest discover -s tests -p test_submission_checks.py
+      - working-directory: .
+        run: python3 scripts/preflight_submission.py --report-only
+      - working-directory: .
         if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
         run: python3 scripts/package.py --output release
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

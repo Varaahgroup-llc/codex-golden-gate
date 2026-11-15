@@ -1,0 +1,48 @@
+{
+  "checkedOn": "2026-11-14",
+  "scope": "Local readiness record; not an OpenAI decision or substitute for portal checks",
+  "gates": {
+    "policy_eligibility": {
+      "status": "blocked",
+      "issue": "SBR-2",
+      "reason": "Current credential-entry prototype processes restricted authentication secrets. Written clarification or an authorized eligible redesign is required.",
+      "evidence": []
+    },
+    "verified_publisher": {
+      "status": "pending",
+      "issue": "SBR-3",
+      "reason": "Organization owner is identified; business verification is not completed.",
+      "evidence": []
+    },
+    "local_mcp_allowlisting": {
+      "status": "pending",
+      "issue": "SBR-3",
+      "reason": "Eligibility/allowlisting clarification has been requested; no allowlisting confirmation exists.",
+      "evidence": []
+    },
+    "native_client_validation": {
+      "status": "pending",
+      "issue": "SBR-4",
+      "reason": "CLI installation and harness tests are verified; actual Codex renderer/modal and lifecycle evidence is incomplete.",
+      "evidence": []
+    },
+    "security_provider_validation": {
+      "status": "pending",
+      "issue": "SBR-6",
+      "reason": "Independent security review and disposable live provider tests remain outstanding.",
+      "evidence": []
+    },
+    "executed_reviewer_materials": {
+      "status": "pending",
+      "issue": "SBR-7",
+      "reason": "Five positive and three negative review scenarios, reviewer setup and native walkthrough must be executed against the permitted design.",
+      "evidence": []
+    },
+    "publisher_listing_materials": {
+      "status": "pending",
+      "issue": "SBR-7",
+      "reason": "Verified developer identity, final branding, applicable terms and publisher review are not complete.",
+      "evidence": []
+    }
+  }
+}

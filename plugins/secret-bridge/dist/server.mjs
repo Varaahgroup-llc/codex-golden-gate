@@ -21995,7 +21995,7 @@ else{try{await rpc('ui/initialize',{appInfo:{name:'secret-bridge',version:'__SEC
     description: "Return status, destination and identity without a secret value.",
     inputSchema: { requestId: external_exports.string().uuid() },
     outputSchema: receiptSchema,
-    annotations: { readOnlyHint: true, openWorldHint: false }
+    annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false }
   }, guard(async ({ requestId }) => reply(bridge.status(requestId))));
   server.registerTool("submit_secret", {
     title: "Save encrypted entry",
