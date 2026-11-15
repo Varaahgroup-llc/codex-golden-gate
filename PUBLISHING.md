@@ -12,7 +12,7 @@ Run `python3 scripts/preflight_submission.py` before attempting portal submissio
 
 The standalone project home is `Varaahgroup-llc/codex-secret-bridge`. The root `.agents/plugins/marketplace.json` catalog points to `plugins/secret-bridge`; the built `dist/server.mjs`, notices, skill, and manifests must be included. After approving installation, users can register it with `codex plugin marketplace add Varaahgroup-llc/codex-secret-bridge` and install with `codex plugin add secret-bridge@varaahgroup-secret-bridge` in supported clients. See INSTALL.md for the approval flow.
 
-For a release from source, run the plugin build and all tests, then `python3 scripts/package.py --output /absolute/output/folder`. It produces an installable plugin ZIP, a source/marketplace ZIP, and SHA-256 checksums. The script excludes node_modules, Git metadata, dotenv files and test credentials. Rebuild before packaging so the bundle matches its source.
+For a release from source, run the plugin build and all tests, then `python3 scripts/package.py --output /absolute/output/folder`. It produces an installable plugin ZIP, a source/marketplace ZIP, and SHA-256 checksums. Both archives use the exact public-file catalog in `scripts/package-files.json`; adding a new public file requires an explicit catalog review. Unknown workspace files are excluded, and missing/symlinked catalog files fail packaging. Keep secrets out of approved public files too. Rebuild before packaging so the bundle matches its source. See [security preparation](docs/approval/SECURITY_PREPARATION.md) for findings and limitations.
 
 ## Universal OpenAI Plugin Directory
 

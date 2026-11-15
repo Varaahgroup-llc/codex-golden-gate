@@ -27,3 +27,5 @@ Use a dedicated disposable environment and synthetic values only. Never give rev
 Record the permitted design/version/commit, exact Codex client and OS/runtime, reviewer environment, prompt, actual tool names, expected vs actual behavior, synthetic-data screenshot/video references, and pass/fail evidence. Never equate an SDK/browser harness result with a test in Codex's renderer.
 
 A final reviewer-accessible native walkthrough URL and any accepted reviewer credentials/setup remain pending. Do not invent a recording URL, case result, eligible account or approval. The local preflight is a preparation aid, not the OpenAI validator or review result.
+
+Before upload, run the official Plugin Creator `prepare-plugin-submission` workflow required by the current portal instructions. Plugin Creator was discoverable but not installed in the current session; that official preparation has not been run. Do not label the repository's offline preflight as its replacement. See [submission instructions](https://developers.openai.com/plugins/deploy/submission).
