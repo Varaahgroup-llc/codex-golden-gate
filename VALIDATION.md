@@ -10,6 +10,8 @@ Tested locally using Node.js 24.7.0 on macOS. [Initial public CI](https://github
 
 The original public marketplace and plugin were installed successfully through Codex CLI 0.167.0-alpha.4.1 using the native `plugin marketplace add` and `plugin add` commands. That historical installed result identified secret-bridge@varaahgroup-secret-bridge version 0.1.0. The actual Codex chat form and modal have not been exercised.
 
+The Golden Gate rename was also installed through native Codex CLI from reviewed/tested rename commit 1948c9220fa270ec39a5d007567dc21d996d4ced using the Git marketplace's --ref option. Installation returned golden-gate@varaahgroup-golden-gate version 0.2.0, and plugin listing confirmed installed=true and enabled=true. The replaced Secret Bridge plugin and marketplace entries were removed as part of the requested full rename. This is a pinned preview installation pending source review/merge, not an approved directory listing or proof of native chat rendering. Follow MIGRATION.md and move the marketplace to the reviewed default branch after merge.
+
 All entry values were synthetic. Local files and test repositories were temporary and cleaned up. Cloud CLI boundaries were mocked; no live GitHub/AWS/Azure secret was saved or read. The browser test used an MCP Apps host harness rather than Codex's renderer.
 
 Outstanding before advertising production readiness: clean target-client rendering/approval checks, actual host modal behavior, disposable live provider tests, independent security review, remaining directory submission/legal/branding requirements, and OpenAI directory eligibility/review.
