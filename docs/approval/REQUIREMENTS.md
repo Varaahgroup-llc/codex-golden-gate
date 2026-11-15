@@ -1,8 +1,23 @@
 # Approval requirements and the preserved product goal
 
-Checked November 15, 2026. Tracking: GG-2, GG-3, GG-4, GG-6, GG-7, GG-9.
+Checked November 15, 2026. Tracking: GG-2, GG-3, GG-4, GG-5, GG-6, GG-7, GG-9.
 
 Golden Gate's primary requirement is **secure key entry inside Codex without leaving the chat/session, with delivery to the user-confirmed destination and no plaintext value in the chat transcript or model-visible inputs/results**. An external secret-entry page is not an equivalent completion of that requirement. Support's alternative is guidance to investigate, not authorization to silently replace the goal. The existing local-entry prototype remains experimental and ineligible under the published restricted-data rule.
+
+## Secret setup while building projects through Codex
+
+This is a core workflow, not a separate secret-management activity. While a user builds or configures a project through Codex, a missing API key, token or other supported authentication secret should invoke the approved secure-entry window **in that project's current Codex chat/session**. The user enters the value there and Golden Gate coordinates delivery to the confirmed project destination. Codex should receive only the setup status and the non-secret metadata needed to continue the authorized project work.
+
+Required behavior:
+
+1. Identify the required variable/secret name and propose the destination from task-specific, non-secret project context: the selected repository/worktree, documented variable names, declared deployment target and user request. Do not scan existing secret values to infer a destination or ask the user to paste a value in chat.
+2. Show the project/worktree, provider/account, secret name, target file or service, and development/staging/production environment before entry and delivery. Ask a non-secret clarification when the project, account, environment or destination is ambiguous. A current working directory alone does not authorize production writes.
+3. Use the same in-Codex approved entry boundary as the main product requirement. No plaintext value may enter Golden Gate's model-visible tools/results, chat messages, generated source, command arguments or diagnostic output. A masked chat message or a separately hosted Golden Gate-owned form is not evidence of an approved boundary.
+4. Deliver only to the user-confirmed supported destination: for example, an ignored/untracked local development dotenv file, a selected repository's CI secret, or the selected project's supported secret manager. These are destination examples; cloud/hosting services beyond the implemented adapters remain future integrations, not promised compatibility.
+5. Return a metadata-only saved/cancelled/failed/uncertain receipt bound to the project and destination. After confirmed success, Codex can continue the already-authorized setup/build using configuration references; it must not read the value back, print environment contents, or embed the value in code/prompts. A receipt alone does not prove the application built or the provider accepted the credential.
+6. Keep projects, worktrees, accounts and environments isolated. Reusing or copying a value to another project/destination needs a new explicit user decision and supported entry flow; never silently distribute a key. Cancellation, expiry or ambiguous writes must not produce a success claim or automatic duplicate write.
+
+Acceptance procedures A1–A6 in UAT_CASES.md cover this workflow. The requirement is recorded; contextual triggering, native entry and eligible delivery are not thereby implemented or approved. GG-5 remains linked to GG-2's architecture decision and GG-4's native-client validation.
 
 ## What is established
 

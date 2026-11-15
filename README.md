@@ -4,6 +4,8 @@ Golden Gate is the new name for Secret Bridge. The 0.2.0 rename source was merge
 
 The primary goal is secure key entry in a window inside Codex, with delivery to a user-confirmed destination and no plaintext in chat/model-visible output. The current local credential-entry prototype conflicts with directory rules, as confirmed by OpenAI Support. An approved in-session capability is not established yet; an external-page handoff is not treated as fulfilling this goal. See [requirements and candidate paths](docs/approval/REQUIREMENTS.md), [UAT cases](docs/approval/UAT_CASES.md) and [release management](docs/releases/MANAGEMENT.md).
 
+This includes projects users are building through Codex: when setup needs a key, Golden Gate should offer approved secure entry in the current project chat, propose and confirm the appropriate project destination, and return a metadata-only receipt so authorized work can continue. Contextual triggering and an eligible native entry path remain requirements under development.
+
 ## Directory eligibility and project tracking
 
 Golden Gate has its own [GG Jira board](https://varaahgroup.atlassian.net/jira/software/projects/GG/boards/72), [public roadmap](https://github.com/Varaahgroup-llc/codex-golden-gate/issues/6) and [issue crosswalk](docs/TRACKING.md).
