@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from pathlib import PurePosixPath
 import re
+from release_policy import VERSION
 import zipfile
 
 def excluded(path):
@@ -33,12 +34,20 @@ def approved_files(root):
         files.append((file, name))
     return files
 
+def write_entry(archive, file, name):
+    # The same source bytes must produce the same ZIP on macOS and Linux.
+    info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+    info.create_system = 3
+    info.external_attr = 0o100644 << 16
+    archive.writestr(info, file.read_bytes(), compress_type=zipfile.ZIP_STORED)
+
+
 def package(root, output):
     root = root.resolve()
     files = approved_files(root)  # Validate before creating any output.
     version = json.loads((root / 'plugins/golden-gate/plugin.json').read_text())['version']
     # A manifest version also becomes an output filename.
-    if not re.fullmatch(r'\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?', version):
+    if not re.fullmatch(VERSION, version):
         raise ValueError('Invalid package version.')
     names = {name for _, name in files}
     if not set(PUBLIC_DOCS + ['plugins/golden-gate/dist/server.mjs', 'plugins/golden-gate/dist/THIRD_PARTY_LICENSES.txt', 'plugins/golden-gate/plugin.json', 'plugins/golden-gate/mcp.json', 'plugins/golden-gate/skills/save-secret/SKILL.md']).issubset(names):
@@ -46,18 +55,18 @@ def package(root, output):
     output.mkdir(parents=True, exist_ok=True)
     source = output / f'golden-gate-{version}-source.zip'
     release = output / f'golden-gate-{version}-plugin.zip'
-    with zipfile.ZipFile(source, 'w', zipfile.ZIP_DEFLATED) as archive:
+    with zipfile.ZipFile(source, 'w', zipfile.ZIP_STORED) as archive:
         for file, name in files:
-            archive.write(file, f'codex-golden-gate/{name}')
-    with zipfile.ZipFile(release, 'w', zipfile.ZIP_DEFLATED) as archive:
+            write_entry(archive, file, f'codex-golden-gate/{name}')
+    with zipfile.ZipFile(release, 'w', zipfile.ZIP_STORED) as archive:
         for file, name in files:
             rel = PurePosixPath(name)
-            if name in PUBLIC_DOCS:
-                archive.write(file, name)
+            if name in PUBLIC_DOCS or rel.parts[0] == 'docs':
+                write_entry(archive, file, name)
             elif rel.parts[:2] == ('plugins', 'golden-gate'):
                 plugin_rel = PurePosixPath(*rel.parts[2:])
                 if plugin_rel.parts[0] in {'dist', 'skills', 'assets'} or str(plugin_rel) in {'plugin.json', 'mcp.json'}:
-                    archive.write(file, str(plugin_rel))
+                    write_entry(archive, file, str(plugin_rel))
     checksums = output / 'SHA256SUMS.txt'
     checksums.write_text(''.join(f'{hashlib.sha256(file.read_bytes()).hexdigest()}  {file.name}\n' for file in [source, release]))
     return source, release, checksums

@@ -1,0 +1,11 @@
+{
+  "issue": "GG-9",
+  "class": "INFRASTRUCTURE",
+  "summary": "Prepare reproducible plugin and marketplace archives, reviewable notes and an evidence-bound release manifest.",
+  "owner": "Golden Gate maintainers",
+  "priority": "P0",
+  "acceptance": "Bind a dry-run candidate to its exact source, tests and package checksums. Require reviewed changes on main and retain explicit publication approval.",
+  "validation": "CI matrix, candidate negative tests, checksum comparison after clean extraction, protected settings readback and release rehearsal.",
+  "securityImpact": "Build and release permissions only. The local runtime authorization and secret destinations retain their existing boundaries.",
+  "target": "0.3.0-rc.1"
+}

@@ -36988,7 +36988,7 @@ var GoldenGate = class {
 
 // src/server.mjs
 var URI = "ui://golden-gate/entry-v2.html";
-var VERSION = true ? "0.3.0" : JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).version;
+var VERSION = true ? "0.3.0-rc.1" : JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).version;
 var receiptSchema = { requestId: external_exports.string().uuid(), destination: external_exports.string(), identity: external_exports.string(), status: external_exports.enum(["pending", "saving", "saved", "failed", "uncertain", "cancelled", "expired"]), expiresAt: external_exports.string(), message: external_exports.string().optional() };
 var reply = (receipt) => ({ content: [{ type: "text", text: JSON.stringify(receipt) }], structuredContent: receipt });
 var guard = (fn) => async (args) => {

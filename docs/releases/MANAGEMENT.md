@@ -16,7 +16,7 @@ Repository administrators can change workflows or environment settings; this is 
 
 ## Environment configuration
 
-On November 15, 2026, GitHub API readback verified environment **release-draft**, required reviewer **bharatk1207**, administrator bypass disabled and a selected **tag `v*`** deployment policy. No environment secret was added. Self-review is permitted because only the current maintainer is configured; this is a human review gate, not a claimed two-person control. Add a second authorized maintainer before adopting independent-review requirements. The environment is live; the updated workflow becomes effective only after its PR is reviewed and merged.
+On November 15, 2026, GitHub API readback verified environment **release-draft**, required reviewer **bharatk1207**, administrator bypass disabled and a selected **tag `v*`** deployment policy. No environment secret was added. Self-review is permitted because only the current maintainer is configured; this is a human review gate, not a claimed two-person control. Add a second authorized maintainer before adopting independent-review requirements. The environment was verified again on 21 November. PR #17 integrated the original draft workflow. Further workflow changes take effect on main after review and merge.
 
 Check settings before each release or after repository visibility/plan changes. An environment mentioned in YAML can otherwise be created without protections; the guard explicitly refuses that state. Settings reference: [GitHub environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments).
 
@@ -38,3 +38,17 @@ Choose a fresh evidence directory. The runner uses only fixed local build/test c
 - Client rollback: in a disposable profile first, select a known reviewed version/commit via the supported marketplace/installation flow, restart as needed, and run lifecycle UAT R6. Do not erase or rotate destination secrets as a rollback side effect. Reopen a fresh form; previous in-memory capabilities are process-bound.
 
 Release evidence, source/tag hashes, checksums, CI URL, maintainer approval and UAT outcomes belong in a GG-9 comment and release record. Keep OpenAI verification/allowlisting/approval in their own GG-2/GG-3/GG-7 records. R1–R6 in UAT_CASES.md are **not run end-to-end** until an explicitly authorized candidate exercises them; guard unit tests alone do not certify the entire workflow.
+
+## Candidate rehearsal
+
+Use a clean GG checkout, Node 22/24, lockfile-installed dependencies, a supported Chromium, Python 3.9+ and checksum-verified Gitleaks 8.24.3. Set GG_GITLEAKS to its executable if it is outside PATH. The candidate scan needs access to the npm advisory registry. From the repository root run these commands with fresh output paths outside the checkout (or the ignored evidence and release directories).
+
+```sh
+python3 scripts/collect_test_evidence.py --output evidence
+python3 scripts/candidate.py --evidence evidence --output release
+(cd release && shasum -a 256 -c SHA256SUMS.txt)
+```
+
+The CI workflow rehearses on bundle changes and manual dispatch. Ordinary PRs still run traceability, syntax, security, packaging and matrix checks. A green rehearsal with outstanding product gates is eligible for engineering review only. For a new bundle update bundle.json with the previous immutable tag, previous version proposal and its commit, compatibility rationale, included change records and limitations. Reconcile legacy commits without change records individually using full SHA and verified PR. An omitted integration commit blocks the candidate. Review the generated CHANGELOG.md entry for incorporation into the repository on release. Archive the manifest, notes, ZIPs, checksums and associated test evidence together. Any source or scope edit invalidates previous acceptance.
+
+[Permanent policy](../governance/SOFTWARE_RELEASE_MANAGEMENT.md) · [Release register](RELEASE_REGISTER.md)

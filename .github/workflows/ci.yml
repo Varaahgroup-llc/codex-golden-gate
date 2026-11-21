@@ -24,6 +24,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ matrix.node }}
@@ -32,6 +33,16 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
       - run: node scripts/select-test-browser.mjs
+      - name: Validate change record, changelog and patch formatting
+        if: github.event_name == 'pull_request'
+        working-directory: .
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python3 scripts/release_policy.py --base "$BASE_SHA"
+          git diff --check "$BASE_SHA"...HEAD
+      - name: Check JavaScript syntax
+        run: for file in src/*.mjs scripts/*.mjs test/*.mjs; do node --check "$file"; done
       - name: Run checks and retain synthetic-data evidence
         working-directory: .
         run: python3 scripts/collect_test_evidence.py --output evidence
@@ -43,14 +54,26 @@ jobs:
           path: evidence/
           retention-days: 30
           if-no-files-found: warn
-      - working-directory: .
+      - name: Install pinned secret scanner
         if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
-        run: python3 scripts/package.py --output release
+        working-directory: .
+        run: bash scripts/install-ci-scanner.sh
+      - name: Scan and prepare release evidence
+        if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
+        working-directory: .
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT" == workflow_dispatch ]] || ! git diff --quiet "$BASE_SHA" HEAD -- docs/releases/bundle.json; then
+            python3 scripts/candidate.py --output release --evidence evidence
+          else
+            python3 scripts/candidate.py --scan-only
+            python3 scripts/package.py --output release
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
         with:
           name: golden-gate-packages
-          path: |
-            release/*.zip
-            release/SHA256SUMS.txt
+          path: release/
           if-no-files-found: error

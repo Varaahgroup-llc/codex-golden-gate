@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "golden-gate",
-  "version": "0.3.0",
+  "version": "0.3.0-rc.1",
   "author": {
     "name": "Varaahgroup-llc",
     "url": "https://github.com/Varaahgroup-llc"
@@ -94,7 +94,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Draft v0.3.0 compact inline paste slot with Save/Cancel, explicit destination review, encrypted entry and secret-free receipts. Save confirms replacement; pasting alone never writes. The component requests inline-only rendering and reports content size. It does not customize Codex built-in approval prompts. Preparation adds protected release packaging, patched dependencies, Golden Gate Bridge/padlock artwork and draft reviewer expectations. Directory eligibility, native reviewer execution, live provider validation and approval remain unresolved; this is not a production-readiness or approval claim."
+        "release_notes": "Draft v0.3.0-rc.1 compact inline paste slot with Save/Cancel, explicit destination review, encrypted entry and secret-free receipts. Save confirms replacement; pasting alone never writes. The component requests inline-only rendering and reports content size. It does not customize Codex built-in approval prompts. Preparation adds protected release packaging, patched dependencies, Golden Gate Bridge/padlock artwork and draft reviewer expectations. Directory eligibility, native reviewer execution, live provider validation and approval remain unresolved; this is not a production-readiness or approval claim."
       }
     }
   }

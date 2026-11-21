@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 import re
+from release_policy import VERSION
 import struct
 parser = argparse.ArgumentParser()
 parser.add_argument('--tag')
@@ -14,7 +15,7 @@ manifest = json.loads((plugin / 'plugin.json').read_text())
 package = json.loads((plugin / 'package.json').read_text())
 lock = json.loads((plugin / 'package-lock.json').read_text())
 version = manifest['version']
-assert re.fullmatch(r'\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?', version), 'Invalid version'
+assert re.fullmatch(VERSION, version), 'Invalid version'
 assert package['version'] == lock['version'] == lock['packages']['']['version'] == version, 'Versions differ'
 assert manifest['repository'] == 'https://github.com/Varaahgroup-llc/codex-golden-gate'
 assert not args.tag or args.tag == f'v{version}', 'Tag and plugin version differ'
