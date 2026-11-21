@@ -1,0 +1,7 @@
+# Branches and integration
+
+Develop from current main on a short-lived GG-keyed branch such as codex/GG-9-release-governance or hotfix/GG-42-expiry. Use release/vX.Y.Z only for parallel maintenance or stabilization. Link the GG issue in branch, commits and PR. Reconcile Dependabot proposals with GG dependency work before merge.
+
+Require one approving PR review, dismissal of stale approvals, up-to-date successful CI on Linux and macOS with Node 22 and 24, and protection from force pushes and deletion on main. Apply the rules to administrators. A sole author needs another authorized reviewer to merge. Keep version tags protected against updates and deletion. Verify actual server-side rules after any settings change and record gaps in GG-9. [GitHub protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+
+On 21 November 2026 the GitHub API returned active repository rulesets 27800492 (main) and 27800666 (v* tags). Both have an empty bypass list. Main requires one approving review, stale-review dismissal, resolved review threads and four up-to-date GitHub Actions checks. Main deletion/force-push and version-tag update/deletion are blocked. The reviewed definitions live in .github/rulesets. Settings changes require a separate administrative operation and readback. [Repository rules](https://github.com/Varaahgroup-llc/codex-golden-gate/rules)

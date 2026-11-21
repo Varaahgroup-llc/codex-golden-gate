@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 import re
+from release_policy import VERSION
 import subprocess
 
 REPOSITORY = 'Varaahgroup-llc/codex-golden-gate'
@@ -11,7 +12,7 @@ REPOSITORY = 'Varaahgroup-llc/codex-golden-gate'
 
 def findings(*, tag, version, commit, on_main, annotated, runs, existing_release, protected_environment):
     errors = []
-    if not re.fullmatch(r'v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?', tag) or tag != f'v{version}':
+    if not re.fullmatch('v' + VERSION, tag) or tag != f'v{version}':
         errors.append('Tag must match the package version exactly.')
     if not re.fullmatch(r'[0-9a-f]{40}', commit):
         errors.append('Release source must be a full Git commit SHA.')
@@ -46,9 +47,11 @@ def main():
     root = Path(__file__).resolve().parents[1]
     version = json.loads((root / 'plugins/golden-gate/package.json').read_text())['version']
     # Fully qualified refs avoid revision/option ambiguity. Invalid tags stop before Git/network.
-    if not re.fullmatch(r'v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?', args.tag):
+    if not re.fullmatch('v' + VERSION, args.tag):
         raise SystemExit('Invalid release tag.')
     commit = command(['git', 'rev-parse', '--verify', f'refs/tags/{args.tag}^{{commit}}'])
+    if command(['git', 'rev-parse', 'HEAD']) != commit:
+        raise SystemExit('The checked-out build must equal the tagged commit.')
     on_main = subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'refs/remotes/origin/main'], check=False).returncode == 0
     annotated = command(['git', 'cat-file', '-t', f'refs/tags/{args.tag}']) == 'tag'
     runs = json.loads(command(['gh', 'run', 'list', '--repo', REPOSITORY, '--workflow', 'ci.yml', '--commit', commit,

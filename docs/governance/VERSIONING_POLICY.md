@@ -1,0 +1,7 @@
+# Versioning and compatibility
+
+Apply Semantic Versioning 2.0.0 to the plugin, MCP tools and schemas, resource identities, marketplace installation contract, runtime support and destination behavior. Version all bundled adapters together. A compatible fix, security repair or internal-only release takes a patch. Compatible functionality takes a minor. A breaking public change takes a major after 1.0. Before 1.0 a breaking change takes at least a minor, with explicit migration instructions and acceptance coverage. A first stable 1.0 requires a separate product decision. [SemVer specification](https://semver.org/spec/v2.0.0.html)
+
+Plan from the latest released or previously reserved baseline, selecting the highest impact in the bundle. The rename reserved 0.2.0. The subsequent inline-slot feature proposes 0.3.0. Alpha and beta builds support internal and broader testing. Use rc.N for final acceptance, starting at 1, for example 0.3.0-rc.1. Product versions use numeric triples and optionally alpha.N, beta.N or rc.N. Use Git SHA for build provenance.
+
+Record the proposal before running `python3 scripts/version.py VERSION`. Rebuild the bundled server, validate manifests, lockfile and changelog, then freeze the exact artifact hashes. Each revised formal RC receives a new prerelease number. Changing from an RC to stable changes embedded metadata and requires rebuilding and revalidating the stable bytes. Within one version promote the same bytes. Never reuse a tag, version or published asset.

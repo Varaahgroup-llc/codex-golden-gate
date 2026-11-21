@@ -1,6 +1,6 @@
 # Golden Gate
 
-Golden Gate is the new name for Secret Bridge. The 0.2.0 rename source was merged in PR #14; see [migration instructions](MIGRATION.md) for the new repository, marketplace and plugin IDs. The current 0.3.0 inline-slot candidate is prepared for review, not a published release or an approved OpenAI directory listing.
+Golden Gate is the new name for Secret Bridge. The 0.2.0 rename source was merged in PR #14; see [migration instructions](MIGRATION.md) for the new repository, marketplace and plugin IDs. The current 0.3.0-rc.1 inline-slot candidate is prepared for review, not a published release or an approved OpenAI directory listing.
 
 The primary goal is secure key entry in a window inside Codex, with delivery to a user-confirmed destination and no plaintext in chat/model-visible output. The current local credential-entry prototype conflicts with directory rules, as confirmed by OpenAI Support. An approved in-session capability is not established yet; an external-page handoff is not treated as fulfilling this goal. See [requirements and candidate paths](docs/approval/REQUIREMENTS.md), [UAT cases](docs/approval/UAT_CASES.md) and [release management](docs/releases/MANAGEMENT.md).
 
@@ -44,7 +44,7 @@ Restart Codex or start a fresh local chat after installation. If the CLI lacks t
 
 For a locally packaged candidate source download (0.3.0 archives are not published):
 
-Unzip `golden-gate-0.3.0-source.zip` into a separate folder. It includes the built bundle and this repository's marketplace catalog.
+Unzip `golden-gate-0.3.0-rc.1-source.zip` into a separate folder. It includes the built bundle and this repository's marketplace catalog.
 
 Register that folder using:
 
@@ -54,7 +54,7 @@ codex plugin marketplace add /absolute/path/to/codex-golden-gate
 
 Restart the desktop app, open its Plugins directory, choose the **Golden Gate** marketplace, and install/enable **Golden Gate**. Start a fresh local chat. Installation and rendering must be checked in the target host; do not assume a successful SDK test means the host has enabled it.
 
-Alternatively, `golden-gate-0.3.0-plugin.zip` contains the plugin files at the ZIP root for supported plugin import/submission workflows. It is not an npm package or a browser extension. A bundled stdio MCP server is declared in `mcp.json` with the documented `${PLUGIN_ROOT}` placeholder.
+Alternatively, `golden-gate-0.3.0-rc.1-plugin.zip` contains the plugin files at the ZIP root for supported plugin import/submission workflows. It is not an npm package or a browser extension. A bundled stdio MCP server is declared in `mcp.json` with the documented `${PLUGIN_ROOT}` placeholder.
 
 If the target host's plugin installation is unavailable, its normal MCP configuration can launch `node /absolute/path/to/plugins/golden-gate/dist/server.mjs`. This registers the tools but still requires that host to support MCP Apps UI. Never place a secret value in an MCP config file.
 

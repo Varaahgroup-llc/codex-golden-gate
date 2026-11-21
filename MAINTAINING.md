@@ -24,3 +24,5 @@ See [release management](docs/releases/MANAGEMENT.md) for exact-commit CI guards
 Users install the repository's Codex marketplace and refresh it with `codex plugin marketplace upgrade varaahgroup-golden-gate`. They may need to update/re-enable the installed plugin and restart the client. A marketplace refresh is not a forced update or a remote change to anyone's credentials.
 
 For universal-directory distribution, follow PUBLISHING.md. A public GitHub release does not confer OpenAI directory approval.
+
+Apply the [permanent release policy](docs/governance/SOFTWARE_RELEASE_MANAGEMENT.md) and [release checklist](docs/releases/RELEASE_CHECKLIST.md) to this procedure. Obtain explicit owner authorization for the exact tag before step 4 and separate authorization for the exact public distribution before step 6. Required GitHub settings are versioned in .github/rulesets.

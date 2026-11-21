@@ -35,12 +35,15 @@ jobs:
       - working-directory: plugins/golden-gate
         run: node scripts/select-test-browser.mjs
       - run: python3 scripts/collect_test_evidence.py --output evidence
+      - run: bash scripts/install-ci-scanner.sh
       - name: Validate and stage exact artifacts
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           python3 scripts/validate_release.py --tag "$RELEASE_TAG"
-          python3 scripts/package.py --output release
+          python3 scripts/candidate.py --output release/candidate --evidence evidence
+          mv release/candidate/* release/
+          rmdir release/candidate
           python3 -m zipfile -c release/test-evidence.zip evidence
           cd release
           sha256sum test-evidence.zip release-guard.json >> SHA256SUMS.txt
@@ -90,8 +93,7 @@ jobs:
         run: |
           flags=()
           if [[ "$RELEASE_TAG" == v0.* || "$RELEASE_TAG" == *-* ]]; then flags+=(--prerelease); fi
-          gh release create "$RELEASE_TAG" release/*.zip release/release-guard.json release/SHA256SUMS.txt \
+          gh release create "$RELEASE_TAG" release/*.zip release/CHANGELOG.md release/manifest.json release/NOTES.md release/release-guard.json release/SHA256SUMS.txt \
             --verify-tag --draft "${flags[@]}" \
             --title "Golden Gate $RELEASE_TAG" \
-            --generate-notes \
-            --notes "Preview artifacts and synthetic-data test evidence. See CHANGELOG.md, VALIDATION.md and docs/releases/MANAGEMENT.md. Native UAT, live-provider certification and OpenAI approval remain separate. This draft is not public release authorization."
+            --notes-file release/NOTES.md

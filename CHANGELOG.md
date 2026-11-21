@@ -1,6 +1,15 @@
 # Changelog
 
-## 0.3.0 — Inline paste slot (prepared, unreleased)
+## [Unreleased]
+
+### Added
+
+- GG-9 adds reproducible ZIPs, issue-linked release manifests, draft notes and a read-only candidate rehearsal.
+
+### Changed
+
+- GG-4 prepares the inline paste slot for internal validation in 0.3.0-rc.1.
+
 
 - Replaced the expanded entry layout with a compact approval-style paste slot, visible destination/identity, masking, Save and Cancel. Save confirms delivery/replacement; pasting alone never submits.
 - Removed the optional modal control, declared inline-only rendering and added content-size notifications. The host still controls its tool-row presentation.
@@ -8,7 +17,7 @@
 - Versioned the UI resource as entry-v2 to avoid stale component caches and extended browser/protocol regression checks.
 - Personal Vault is an existing native Codex Cloud facility; a third-party API for local inline entry/destination routing is not established. Native candidate rendering, directory eligibility and release approval remain pending.
 
-## 0.2.0 — Golden Gate rename (prepared, unreleased)
+### Changed in the prepared 0.2.0 rename (included in Unreleased)
 
 - Renamed the product, repository, plugin, marketplace, local server and source path to Golden Gate / golden-gate.
 - Renamed Jira to Golden Gate with key GG; previous SBR issue keys remain historical aliases.
@@ -16,7 +25,7 @@
 - Added migration instructions, updated package/installation references, and retained the original artwork-generation prompt and immutable v0.1.0 history.
 - Directory eligibility, owner verification, native reviewer execution and independent security/live-provider evidence remain pending. No new release or directory approval is claimed.
 
-## 0.1.0 — Original Secret Bridge preview
+## [0.1.0] — Original Secret Bridge preview (tagged draft)
 
 - Added an MCP Apps secret-entry form with destination and signed-in identity review.
 - Added encrypted UI submissions, one-use forms, expiry, cancellation and secret-free receipts.

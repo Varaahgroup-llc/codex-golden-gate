@@ -1,0 +1,79 @@
+{
+  "version": "0.3.0-rc.1",
+  "previousTag": "v0.1.0",
+  "previousProposal": "0.2.0",
+  "proposalReason": "The rename already reserved 0.2.0. The subsequent user-visible inline slot adds functionality.",
+  "history": [
+    {
+      "commit": "c5aa7a62832d9355e0bd2e1748ee327117f20a9e",
+      "issues": [
+        "GG-8"
+      ],
+      "pr": null,
+      "class": "INFRASTRUCTURE",
+      "summary": "Established standalone governance under the historical SBR issue alias."
+    },
+    {
+      "commit": "7eb8eff95873843b905eab84cff1812b305e2597",
+      "issues": [
+        "GG-4",
+        "GG-7"
+      ],
+      "pr": 14,
+      "class": "BREAKING_CHANGE",
+      "summary": "Renamed marketplace and plugin identities. Existing installations require the documented migration."
+    },
+    {
+      "commit": "7f07a915b35727820edf2f2f166e35494d4a80d9",
+      "issues": [
+        "GG-6",
+        "GG-7",
+        "GG-9"
+      ],
+      "pr": 17,
+      "class": "INFRASTRUCTURE",
+      "summary": "Added automated test evidence, native acceptance cases and reviewed draft staging."
+    },
+    {
+      "commit": "63db8f38f97eb45ca6f442310361f6922335cd1c",
+      "issues": [
+        "GG-5"
+      ],
+      "pr": 18,
+      "class": "DOCUMENTATION",
+      "summary": "Documented secure project setup requirements. Contextual setup remains planned."
+    },
+    {
+      "commit": "6e0c8222ce8dcaf19d022a8856b7f6f2007a3f46",
+      "issues": [
+        "GG-6",
+        "GG-7"
+      ],
+      "pr": 19,
+      "class": "SECURITY",
+      "summary": "Extended synthetic browser tests for plaintext isolation across observable channels."
+    },
+    {
+      "commit": "7cc8c1dff3b1959037d73586f8a138bd749d75eb",
+      "issues": [
+        "GG-4"
+      ],
+      "pr": 20,
+      "class": "FEATURE",
+      "summary": "Added the compact masked inline slot, explicit Save and Cancel and inline resizing."
+    }
+  ],
+  "records": [
+    "GG-9-release-governance.json"
+  ],
+  "limitations": [
+    "GG-2: the raw-entry prototype is blocked for directory distribution.",
+    "GG-3: publisher verification and local MCP allowlisting remain pending.",
+    "GG-4: native inline acceptance and lifecycle recovery remain unverified.",
+    "GG-5: contextual destination setup implementation is excluded.",
+    "GG-6: independent security review and disposable live-provider acceptance remain pending.",
+    "GG-7: native reviewer execution, listing and legal evidence remain pending.",
+    "GG-1 epic completion, unmerged dependency updates and production authorization are excluded."
+  ],
+  "previousProposalCommit": "7eb8eff95873843b905eab84cff1812b305e2597"
+}

@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -84,11 +87,14 @@ class PackagingTests(unittest.TestCase):
                 self.names.pop()
 
     def test_offline_source_archive_remains_repackagable(self):
-        source, _, _ = packaging.package(self.root, self.output)
+        source, plugin, sums = packaging.package(self.root, self.output)
         extracted = Path(self.temp.name) / 'extracted'
         with zipfile.ZipFile(source) as archive:
             archive.extractall(extracted)
-        rebuilt, _, _ = packaging.package(extracted / 'codex-golden-gate', Path(self.temp.name) / 'rebuilt')
+        rebuilt, rebuilt_plugin, rebuilt_sums = packaging.package(extracted / 'codex-golden-gate', Path(self.temp.name) / 'rebuilt')
+        self.assertEqual(source.read_bytes(), rebuilt.read_bytes())
+        self.assertEqual(plugin.read_bytes(), rebuilt_plugin.read_bytes())
+        self.assertEqual(sums.read_bytes(), rebuilt_sums.read_bytes())
         with zipfile.ZipFile(source) as first, zipfile.ZipFile(rebuilt) as second:
             self.assertEqual(first.namelist(), second.namelist())
             for name in first.namelist():

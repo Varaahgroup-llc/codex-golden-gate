@@ -33,3 +33,5 @@ The initial v0.1.0 prerelease remains a draft. The raw-credential-entry prototyp
 
 Keep passwords, keys, tokens, private organization IDs, reviewer credentials and verification documents out of public source and GitHub issues. Use the private reporting/verification channels where appropriate.
 
+
+GG-9 tracks the internal 0.3.0-rc.1 release rehearsal. The project Fix Version is a planning association. The bundle records completed slices of GG-4 through GG-9 without closing the broader acceptance items. Consult the [release register](releases/RELEASE_REGISTER.md) for distribution evidence.
