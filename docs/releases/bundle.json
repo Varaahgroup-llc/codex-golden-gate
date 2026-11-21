@@ -64,7 +64,8 @@
     }
   ],
   "records": [
-    "GG-9-release-governance.json"
+    "GG-9-release-governance.json",
+    "GG-9-delivery-controls.json"
   ],
   "limitations": [
     "GG-2: the raw-entry prototype is blocked for directory distribution.",

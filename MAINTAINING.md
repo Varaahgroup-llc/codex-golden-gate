@@ -19,7 +19,7 @@ See [release management](docs/releases/MANAGEMENT.md) for exact-commit CI guards
 3. Commit the source and regenerated bundle, merge the reviewed change to main and wait for green CI.
 4. Create an immutable annotated tag `vX.Y.Z` at that exact commit and push it. Never move or reuse a published tag.
 5. The release workflow rebuilds, checks the committed bundle, runs the core/browser tests, validates tag/version consistency and packages the assets. It creates a **draft prerelease** for 0.x versions, or a draft release for 1.x+. If a command fails it stops before creating a new release.
-6. Review the draft's assets, SHA-256 checksums, changelog and compatibility notes. Publish it from GitHub when ready. Initial v0.1.0 is an explicitly labeled preview.
+6. Review the draft's assets, SHA-256 checksums, changelog and compatibility notes. Follow the [GitHub distribution procedure](docs/releases/DISTRIBUTION.md) after native acceptance and owner approval. Initial v0.1.0 is an explicitly labeled preview.
 
 Users install the repository's Codex marketplace and refresh it with `codex plugin marketplace upgrade varaahgroup-golden-gate`. They may need to update/re-enable the installed plugin and restart the client. A marketplace refresh is not a forced update or a remote change to anyone's credentials.
 

@@ -10,6 +10,12 @@ import subprocess
 REPOSITORY = 'Varaahgroup-llc/codex-golden-gate'
 
 
+def latest_ci(runs, commit):
+    matching = [r for r in runs if r.get('headSha') == commit and r.get('headBranch') == 'main'
+                and r.get('event') == 'push']
+    return max(matching, key=lambda r: (r.get('databaseId', 0), r.get('attempt', 0)), default={})
+
+
 def findings(*, tag, version, commit, on_main, annotated, runs, existing_release, protected_environment):
     errors = []
     if not re.fullmatch('v' + VERSION, tag) or tag != f'v{version}':
@@ -21,8 +27,7 @@ def findings(*, tag, version, commit, on_main, annotated, runs, existing_release
     if not annotated:
         errors.append('Release tag must be annotated.')
     # A later failed/re-running CI cannot hide behind an earlier green attempt.
-    matching = [r for r in runs if r.get('headSha') == commit and r.get('headBranch') == 'main' and r.get('event') == 'push']
-    latest = max(matching, key=lambda r: (r.get('databaseId', 0), r.get('attempt', 0)), default={})
+    latest = latest_ci(runs, commit)
     if latest.get('status') != 'completed' or latest.get('conclusion') != 'success':
         errors.append('The latest main push CI for this exact commit must have passed.')
     if existing_release:
@@ -62,8 +67,18 @@ def main():
     environment = json.loads(command(['gh', 'api', f'repos/{REPOSITORY}/environments/release-draft']))
     errors = findings(tag=args.tag, version=version, commit=commit, on_main=on_main, annotated=annotated,
                       runs=runs, existing_release=existing, protected_environment=environment)
+    policy = json.loads(command(['gh', 'api', f'repos/{REPOSITORY}/environments/release-draft/deployment-branch-policies']))
+    if (not (environment.get('deployment_branch_policy') or {}).get('custom_branch_policies')
+            or policy.get('total_count') != 1
+            or [(p['type'], p['name']) for p in policy['branch_policies']] != [('tag', 'v*')]):
+        errors.append('Restrict release-draft deployments to v* tags.')
+    pages = json.loads(command(['gh', 'api', '--paginate', '--slurp', f'repos/{REPOSITORY}/commits/{commit}/pulls']))
+    merged = [p['html_url'] for page in pages for p in page if p['merged_at'] and p['merge_commit_sha'] == commit
+              and p['base']['ref'] == 'main' and p['base']['repo']['full_name'] == REPOSITORY]
+    if not merged:
+        errors.append('Release source must identify a merged main pull request.')
     report = {'schemaVersion': 1, 'tag': args.tag, 'commit': commit, 'draftCreationAllowed': not errors,
-              'findings': errors, 'ciRuns': runs, 'publicationAuthorized': False, 'openAIApproval': 'not established'}
+              'findings': errors, 'ciRun': latest_ci(runs, commit), 'mergedPRs': merged, 'ciRuns': runs, 'publicationAuthorized': False, 'openAIApproval': 'not established'}
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2) + '\n')
     print('Draft release guard: ' + ('PASS' if not errors else 'BLOCKED'))

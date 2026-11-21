@@ -41,7 +41,7 @@ Release evidence, source/tag hashes, checksums, CI URL, maintainer approval and 
 
 ## Candidate rehearsal
 
-Use a clean GG checkout, Node 22/24, lockfile-installed dependencies, a supported Chromium, Python 3.9+ and checksum-verified Gitleaks 8.24.3. Set GG_GITLEAKS to its executable if it is outside PATH. The candidate scan needs access to the npm advisory registry. From the repository root run these commands with fresh output paths outside the checkout (or the ignored evidence and release directories).
+Use a clean GG checkout, Node 22/24, lockfile-installed dependencies, a supported Chromium, Python 3.9+ and checksum-verified Gitleaks 8.28.0. Set GG_GITLEAKS to its executable if it is outside PATH. The candidate scan needs access to the npm advisory registry. From the repository root run these commands with fresh output paths outside the checkout (or the ignored evidence and release directories).
 
 ```sh
 python3 scripts/collect_test_evidence.py --output evidence

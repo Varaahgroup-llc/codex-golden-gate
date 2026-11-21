@@ -23,7 +23,7 @@ Owner: Varaahgroup LLC. This is a standalone project.
 
 ## Authority and maintenance
 
-Jira records delivery status, dependencies and approval evidence. GitHub contains source, implementation PRs and public issue counterparts. Keep both sides linked during authorized work; this is not an unattended synchronization service. Open GitHub issues may correspond to To Do or In Progress in Jira. Do not mark a planned feature as completed because the tracking issue exists.
+Jira records delivery status, dependencies and approval evidence. GitHub contains source, implementation PRs and public issue counterparts. The daily Golden Gate release reconciliation in Codex records verified GitHub changes in GG-9 using existing account connections. Review records preserve their own approval and acceptance status. Open GitHub issues may correspond to To Do or In Progress in Jira. Do not mark a planned feature as completed because the tracking issue exists.
 
 Reference GG issue keys in related branches, commits and PRs. Keep releases, changelogs, publisher records and review evidence scoped to Golden Gate. Do not place this product's work in another product's repository, Jira project or release ledger.
 

@@ -37,9 +37,9 @@ def security():
     # Suppress scanner payloads. Only counts, tool version and pass/fail enter evidence.
     scanner = os.environ.get('GG_GITLEAKS', 'gitleaks')
     version = subprocess.check_output([scanner, 'version'], text=True).strip()
-    require(version.lstrip('v') == '8.24.3', 'Use the checksum-pinned Gitleaks 8.24.3')
+    require(version.lstrip('v') == '8.28.0', 'Use the checksum-pinned Gitleaks 8.28.0')
     subprocess.run([scanner, 'git', '--redact=100', '--no-banner', '--log-level=error',
-                    '--log-opts=HEAD', '.'], cwd=ROOT, stdout=subprocess.DEVNULL, check=True)
+                    '--log-opts=HEAD', '.'], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
     audit = subprocess.run(['npm', 'audit', '--json', '--audit-level=low'], cwd=ROOT / 'plugins/golden-gate',
                            capture_output=True, check=False)
     require(audit.returncode == 0, 'Dependency audit failed or reported vulnerabilities. Inspect npm audit separately.')
@@ -47,6 +47,19 @@ def security():
     require(counts['total'] == 0, 'Dependency audit reported findings')
     return {'secretScan': {'tool': 'Gitleaks ' + version, 'historyThrough': git('rev-parse', 'HEAD'), 'findings': 0},
             'npmAudit': counts}
+
+
+def write_sbom(output):
+    """Include build, optional and runtime dependencies from the reviewed npm lockfile."""
+    data = subprocess.check_output(['npm', 'sbom', '--package-lock-only', '--ignore-scripts',
+                                    '--sbom-format=cyclonedx'], cwd=ROOT / 'plugins/golden-gate')
+    bom = json.loads(data)
+    require(bom['bomFormat'] == 'CycloneDX' and bom['components'] and bom['dependencies']
+            and bom['metadata']['component']['version'] == read('plugins/golden-gate/plugin.json')['version'],
+            'Invalid or mismatched CycloneDX SBOM')
+    dest = output / 'sbom.cdx.json'
+    dest.write_bytes(data)
+    return dest
 
 
 def prepare(output, evidence):
@@ -66,7 +79,11 @@ def prepare(output, evidence):
         for original, copy in zip((source, plugin, sums), copies):
             require(digest(original) == digest(copy), 'Recovered package differs from original')
     preflight = json.loads((evidence / 'preflight.json').read_text())
+    sbom = write_sbom(output)
     manifest = {
+        'schemaVersion': 1,
+        'compatibility': {'os': ['macOS', 'Linux'], 'node': '>=22', 'host': 'local MCP Apps',
+                          'desktopUAT': 'NOT_VERIFIED', 'liveProviders': 'NOT_VERIFIED'},
         'version': plan['version'], 'commit': sha, 'sourceTree': git('rev-parse', 'HEAD^{tree}'),
         'baselineTag': plan['previousTag'], 'versionProposal': plan['proposalReason'],
         'history': plan['history'], 'changes': list(records.values()), 'limitations': plan['limitations'],
@@ -74,7 +91,7 @@ def prepare(output, evidence):
         'dependencies': {k: v['version'] for k, v in read('plugins/golden-gate/package-lock.json')['packages'].items() if k},
         'tests': report['results'], 'evidenceChecksumsSHA256': digest(evidence / 'SHA256SUMS.txt'),
         'security': scans, 'directoryFindings': preflight['findings'],
-        'artifacts': {p.name: digest(p) for p in (source, plugin)},
+        'artifacts': {p.name: digest(p) for p in (source, plugin, sbom)},
         'gates': {'functionalAcceptance': 'NOT_VERIFIED', 'securityAcceptance': 'NOT_VERIFIED',
                   'syntheticRegression': 'PASS', 'buildIntegrity': 'PASS', 'versionAccuracy': 'PASS',
                   'releaseDocumentationReview': 'NOT_VERIFIED', 'nativeCompatibility': 'NOT_VERIFIED',
@@ -110,18 +127,21 @@ def prepare(output, evidence):
             changelog.extend([f'### {category}', '', *entries[category], ''])
     (output / 'CHANGELOG.md').write_text('\n'.join(changelog))
     with sums.open('a') as stream:
-        for name in ('manifest.json', 'NOTES.md', 'CHANGELOG.md'):
+        for name in ('manifest.json', 'NOTES.md', 'CHANGELOG.md', 'sbom.cdx.json'):
             stream.write(f'{digest(output / name)}  {name}\n')
     print(f"Prepared {plan['version']} at {sha}. Owner approval pending.")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--sbom-directory', type=Path)
     parser.add_argument('--scan-only', action='store_true')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--evidence', type=Path)
     args = parser.parse_args()
-    if args.scan_only:
+    if args.sbom_directory:
+        write_sbom(args.sbom_directory)
+    elif args.scan_only:
         print(json.dumps(security()))
     elif args.output and args.evidence:
         prepare(args.output.resolve(), args.evidence.resolve())

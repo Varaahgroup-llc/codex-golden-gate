@@ -13,6 +13,8 @@ jobs:
     permissions:
       contents: read
       actions: read
+      pull-requests: read
+      deployments: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -34,22 +36,35 @@ jobs:
         run: npx playwright install --with-deps chromium
       - working-directory: plugins/golden-gate
         run: node scripts/select-test-browser.mjs
+      - name: Install pinned secret scanner
+        working-directory: .
+        run: bash scripts/install-ci-scanner.sh
       - run: python3 scripts/collect_test_evidence.py --output evidence
-      - run: bash scripts/install-ci-scanner.sh
       - name: Validate and stage exact artifacts
         env:
+          GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           python3 scripts/validate_release.py --tag "$RELEASE_TAG"
           python3 scripts/candidate.py --output release/candidate --evidence evidence
           mv release/candidate/* release/
           rmdir release/candidate
+          ci_run=$(jq -er .ciRun.databaseId release/release-guard.json)
+          ci_attempt=$(jq -er .ciRun.attempt release/release-guard.json)
+          gh run download "$ci_run" --name "golden-gate-packages-$ci_attempt" --dir "$RUNNER_TEMP/ci-packages"
+          for zip in release/golden-gate-*.zip; do cmp "$zip" "$RUNNER_TEMP/ci-packages/${zip##*/}"; done
           python3 -m zipfile -c release/test-evidence.zip evidence
+          bash scripts/scan_delivery.sh release
           cd release
           sha256sum test-evidence.zip release-guard.json >> SHA256SUMS.txt
           sha256sum -c SHA256SUMS.txt
+      - name: Screen synthetic evidence before upload
+        id: evidence_scan
+        if: always() && hashFiles('evidence/report.json') != ''
+        working-directory: .
+        run: bash scripts/scan_delivery.sh evidence
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        if: always()
+        if: always() && steps.evidence_scan.outcome == 'success'
         with:
           name: release-test-evidence
           path: evidence/
@@ -67,7 +82,11 @@ jobs:
     environment: release-draft
     permissions:
       contents: write
+      id-token: write
+      attestations: write
       actions: read
+      pull-requests: read
+      deployments: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -85,6 +104,17 @@ jobs:
       - name: Verify artifact checksums
         working-directory: release
         run: sha256sum -c SHA256SUMS.txt
+      - name: Sign the verified checksum inventory after draft approval
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+        with:
+          subject-path: release/SHA256SUMS.txt
+      - name: Verify signer, source commit and tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh attestation verify release/SHA256SUMS.txt --repo "$GITHUB_REPOSITORY" \
+            --signer-workflow "$GITHUB_REPOSITORY/.github/workflows/release.yml" \
+            --source-ref "$GITHUB_REF" --source-digest "$(git rev-parse HEAD)"
       - name: Create reviewable draft only
         env:
           GH_TOKEN: ${{ github.token }}
@@ -93,7 +123,7 @@ jobs:
         run: |
           flags=()
           if [[ "$RELEASE_TAG" == v0.* || "$RELEASE_TAG" == *-* ]]; then flags+=(--prerelease); fi
-          gh release create "$RELEASE_TAG" release/*.zip release/CHANGELOG.md release/manifest.json release/NOTES.md release/release-guard.json release/SHA256SUMS.txt \
+          gh release create "$RELEASE_TAG" release/*.zip release/CHANGELOG.md release/sbom.cdx.json release/manifest.json release/NOTES.md release/release-guard.json release/SHA256SUMS.txt \
             --verify-tag --draft "${flags[@]}" \
             --title "Golden Gate $RELEASE_TAG" \
             --notes-file release/NOTES.md

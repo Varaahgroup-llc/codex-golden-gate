@@ -1,0 +1,10 @@
+# Review credential boundaries, dependencies, and the release path.
+/plugins/golden-gate/ @bharatk1207
+/.github/ @bharatk1207
+/scripts/ @bharatk1207
+/docs/releases/ @bharatk1207
+/docs/changes/ @bharatk1207
+/docs/approval/ @bharatk1207
+/.agents/ @bharatk1207
+/docs/governance/ @bharatk1207
+/tests/ @bharatk1207

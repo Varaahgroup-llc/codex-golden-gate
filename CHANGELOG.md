@@ -4,6 +4,8 @@
 
 ### Added
 
+- GG-9 adds a CycloneDX SBOM, pre-upload secret scans, signed draft checksums, owner-gated GitHub distribution and an isolated CLI rollback rehearsal.
+
 - GG-9 adds reproducible ZIPs, issue-linked release manifests, draft notes and a read-only candidate rehearsal.
 
 ### Changed

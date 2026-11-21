@@ -41,23 +41,37 @@ jobs:
         run: |
           python3 scripts/release_policy.py --base "$BASE_SHA"
           git diff --check "$BASE_SHA"...HEAD
+      - name: Lint Actions expressions, job dependencies and shell steps
+        if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
+        working-directory: .
+        run: |
+          cd "$RUNNER_TEMP"
+          curl -fsSL --retry 3 https://github.com/rhysd/actionlint/releases/download/v1.7.9/actionlint_1.7.9_linux_amd64.tar.gz -o actionlint.tar.gz
+          echo "233b280d05e100837f4af1433c7b40a5dcb306e3aa68fb4f17f8a7f45a7df7b4  actionlint.tar.gz" | sha256sum -c -
+          tar xzf actionlint.tar.gz actionlint
+          cd "$GITHUB_WORKSPACE"
+          "$RUNNER_TEMP/actionlint"
       - name: Check JavaScript syntax
         run: for file in src/*.mjs scripts/*.mjs test/*.mjs; do node --check "$file"; done
+      - name: Install pinned secret scanner
+        working-directory: .
+        run: bash scripts/install-ci-scanner.sh
       - name: Run checks and retain synthetic-data evidence
         working-directory: .
         run: python3 scripts/collect_test_evidence.py --output evidence
+      - name: Screen synthetic evidence before upload
+        id: evidence_scan
+        if: always() && hashFiles('evidence/report.json') != ''
+        working-directory: .
+        run: bash scripts/scan_delivery.sh evidence
       - name: Retain evidence even on test failure
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        if: always()
+        if: always() && steps.evidence_scan.outcome == 'success'
         with:
           name: evidence-${{ matrix.os }}-node${{ matrix.node }}-${{ github.run_attempt }}
           path: evidence/
           retention-days: 30
           if-no-files-found: warn
-      - name: Install pinned secret scanner
-        if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
-        working-directory: .
-        run: bash scripts/install-ci-scanner.sh
       - name: Scan and prepare release evidence
         if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
         working-directory: .
@@ -70,10 +84,14 @@ jobs:
           else
             python3 scripts/candidate.py --scan-only
             python3 scripts/package.py --output release
+            python3 scripts/candidate.py --sbom-directory release
+            (cd release && sha256sum sbom.cdx.json >> SHA256SUMS.txt)
           fi
+          (cd release && sha256sum -c SHA256SUMS.txt)
+          bash scripts/scan_delivery.sh release
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: matrix.os == 'ubuntu-latest' && matrix.node == '24'
         with:
-          name: golden-gate-packages
+          name: golden-gate-packages-${{ github.run_attempt }}
           path: release/
           if-no-files-found: error

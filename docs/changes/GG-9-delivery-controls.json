@@ -1,0 +1,11 @@
+{
+  "issue": "GG-9",
+  "summary": "Screen outgoing evidence and archives, generate CycloneDX SBOMs, verify signed release inventory and rehearse native CLI recovery.",
+  "owner": "Golden Gate maintainers",
+  "priority": "High",
+  "acceptance": "Trace distributed bytes to reviewed code, require explicit channel approval and verify downloads and recoverability.",
+  "validation": "Four CI combinations, dependency audit, archive scan, negative inventory tests and isolated Codex CLI install and recovery.",
+  "securityImpact": "Publication requires reviewed acceptance references and a separate restricted environment. No destination credentials are used.",
+  "target": "0.3.0-rc.1",
+  "class": "INFRASTRUCTURE"
+}
