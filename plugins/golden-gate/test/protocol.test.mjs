@@ -52,7 +52,10 @@ for (const entry of ['src/server.mjs', 'dist/server.mjs', 'isolated-release']) {
     assert.equal(status.structuredContent.status, 'pending'); assert.equal(status._meta, undefined);
     const cancelled = await client.callTool({ name: 'cancel_secret_entry', arguments: { requestId: opened.structuredContent.requestId, token: opened._meta.goldenGate.token } });
     assert.equal(cancelled.structuredContent.status, 'cancelled');
-    const next = await client.callTool({ name: 'open_secret_entry', arguments: { destination: { provider: 'env', file: path.join(dir, '.env.local'), name: 'KEY' } } });
+    const configFile = path.join(dir, 'wrangler.json');
+    await fs.writeFile(configFile, '{}');
+    const next = await client.callTool({ name: 'open_secret_entry', arguments: { destination: { provider: 'cloudflare-local', configFile, environment: 'staging', name: 'KEY' } } });
+    assert.match(next.structuredContent.destination, /local, environment staging.*\.dev\.vars\.staging/);
     const session = next._meta.goldenGate, key = randomBytes(32), iv = randomBytes(12);
     const cipher = createCipheriv('aes-256-gcm', key, iv); cipher.setAAD(Buffer.from(session.requestId));
     const data = Buffer.concat([cipher.update(JSON.stringify({ token: session.token, confirmed: true, secret: 'synthetic-protocol-only' })), cipher.final(), cipher.getAuthTag()]);
@@ -60,7 +63,7 @@ for (const entry of ['src/server.mjs', 'dist/server.mjs', 'isolated-release']) {
     const saved = await client.callTool({ name: 'submit_secret', arguments: encrypted });
     assert.equal(saved.structuredContent.status, 'saved');
     assert.ok(!JSON.stringify(saved).includes('synthetic-protocol-only'));
-    assert.equal(await fs.readFile(path.join(dir, '.env.local'), 'utf8'), "KEY='synthetic-protocol-only'\n");
+    assert.equal(await fs.readFile(path.join(dir, '.dev.vars.staging'), 'utf8'), "KEY='synthetic-protocol-only'\n");
     const replay = await client.callTool({ name: 'submit_secret', arguments: encrypted });
     assert.equal(replay.isError, true);
     assert.equal(stderr, '');
