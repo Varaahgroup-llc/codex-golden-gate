@@ -1,0 +1,12 @@
+{
+  "issue": "GG-5",
+  "class": "ENHANCEMENT",
+  "owner": "Golden Gate maintainers",
+  "priority": "P2",
+  "summary": "Route local Cloudflare Worker setup through the private dotenv writer from a user-selected Wrangler configuration.",
+  "acceptance": "Display the exact local file and scope. Refuse implicit shared writes, dotenv shadowing and unsafe files. Return a metadata-only receipt after confirmation.",
+  "securityImpact": "Routing inspects filesystem metadata. Saving uses the existing local encrypted-entry and file protections. No Cloudflare account, network permission or hosted secret processing is added.",
+  "compatibility": "Additive destination for standard Wrangler .dev.vars files on supported macOS and Linux hosts. Explicit dotenv paths and existing providers retain their behavior.",
+  "validation": "TESTED on macOS with Node 24.7.0. All 27 Node tests, the Chromium UI test, 27 Python tests and release metadata validation passed. Wrangler 4.161.0 loaded distinct synthetic default and staging bindings using getPlatformProxy with remote bindings disabled. Native Codex entry and live cloud validation remain open.",
+  "target": "unassigned"
+}

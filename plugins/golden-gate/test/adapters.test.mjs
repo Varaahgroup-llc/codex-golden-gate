@@ -43,6 +43,53 @@ test('Git guard fails closed if Git is unavailable in a repository', async t => 
   await fs.mkdir(path.join(dir, '.git'));
   await assert.rejects(prepare({ provider: 'env', file: path.join(dir, '.env'), name: 'KEY' }, async () => { throw new Error(); }), /verify Git/);
 });
+
+test('local Worker routes are bound to the reviewed file and Git policy', async t => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-worker-'));
+  t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const configFile = path.join(dir, 'wrangler.jsonc');
+  await fs.writeFile(configFile, '{}');
+  await run('git', ['init', '-q', dir]);
+  const worker = { provider: 'cloudflare-local', configFile, name: 'SERVICE_KEY' };
+  await assert.rejects(prepare(worker), /Ignore/);
+  await fs.writeFile(path.join(dir, '.gitignore'), '.dev.vars*\n');
+  const shared = await prepare(worker);
+  assert.match(shared.label, /local, shared default/);
+  const staging = { ...worker, environment: 'staging' };
+  const pending = await prepare(staging);
+  assert.match(pending.label, /local, environment staging.*\.dev\.vars\.staging/);
+  await save(shared, 'synthetic-shared');
+  await assert.rejects(save(pending, 'synthetic-stage'), /inherits/);
+  const scopedFile = path.join(dir, '.dev.vars.staging');
+  await assert.rejects(fs.stat(scopedFile), { code: 'ENOENT' });
+  await fs.writeFile(scopedFile, 'OTHER=fixture\n');
+  await save(await prepare(staging), 'synthetic-stage');
+  assert.equal(await fs.readFile(scopedFile, 'utf8'), "OTHER=fixture\nSERVICE_KEY='synthetic-stage'\n");
+  assert.equal(await fs.readFile(path.join(dir, '.dev.vars'), 'utf8'), "SERVICE_KEY='synthetic-shared'\n");
+  await run('git', ['add', '-f', '.dev.vars.staging'], { cwd: dir });
+  await assert.rejects(prepare(staging), /tracked/);
+});
+
+test('local Worker routing rejects shadowing dotenv, unsafe targets and cloud fields', async t => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'golden-gate-worker-dotenv-'));
+  t.after(() => fs.rm(dir, { recursive: true, force: true }));
+  const configFile = path.join(dir, 'wrangler.toml');
+  await fs.writeFile(configFile, '');
+  const worker = { provider: 'cloudflare-local', configFile, name: 'SERVICE_KEY' };
+  const plan = await prepare(worker);
+  await fs.writeFile(path.join(dir, '.env.production'), 'OTHER=fixture\n');
+  await prepare({ ...worker, environment: 'staging' });
+  await assert.rejects(prepare({ ...worker, environment: 'production' }), /hide existing/);
+  await fs.writeFile(path.join(dir, '.env.local'), 'OTHER=fixture\n');
+  await assert.rejects(save(plan, 'synthetic'), /hide existing/);
+  await assert.rejects(prepare(worker), /hide existing/);
+  await fs.symlink('.env.local', path.join(dir, '.dev.vars'));
+  await assert.rejects(prepare(worker), /Symlink/);
+  await assert.rejects(prepare({ ...worker, environment: '../escape' }));
+  await assert.rejects(prepare({ ...worker, configFile: 'wrangler.toml' }), /absolute/);
+  await assert.rejects(prepare({ ...worker, configFile: path.join(dir, '.env.local') }), /Wrangler/);
+  await assert.rejects(prepare({ ...worker, accountId: 'unwanted' }));
+});
 test('cloud adapters pass values only through stdin and suppress write output', async () => {
   const destinations = [
     { provider: 'github', repo: 'example/app', environment: 'staging', name: 'KEY' },

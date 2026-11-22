@@ -73,11 +73,14 @@ The AI supplies metadata only. The user pastes the actual value into the slot an
 | Destination | Requirements | Scope |
 | --- | --- | --- |
 | Dotenv | Existing parent folder; ignored and untracked if inside Git | `.env`, `.env.*` or `.dev.vars*`; regular private files only, mode `0600`. Conservative single-line format; example files and ambiguous quoting/multiline values are refused. Use a dotenv parser without interpolation; do not source this as a shell script. |
+| Cloudflare Workers local development | Path to the local Worker's Wrangler configuration and an optional named environment | Shows the exact `.dev.vars` or `.dev.vars.<environment>` beside that configuration before Save. Uses the local OS identity and the same private-file checks as dotenv. |
 | GitHub | Installed/authenticated `gh`; repository permissions | GitHub.com Actions secrets, repository or existing environment. No organization/Enterprise/Codespaces support. |
 | AWS | Installed/authenticated AWS CLI v2; profile with STS access and `PutSecretValue` | Existing secret, full ARN required. Adds a version, no provisioning. ARN fixes region/account. |
 | Azure | Installed/authenticated `az`; explicit subscription and vault permission | Creates or updates a Key Vault secret; no vault provisioning. |
 
 The slot displays the signed-in account. Cloud identity is checked again immediately before writing. Values travel to provider CLIs through stdin, never command arguments. AWS and Azure use `/dev/stdin` on supported systems. Provider write output is discarded. An unacknowledged cloud write returns `uncertain`; inspect metadata before attempting another write. The plugin does not read values back, deploy, restart, or rotate anything automatically.
+
+For example, ask **“Save SERVICE_API_KEY for local Wrangler development using this Worker's wrangler.toml and its staging environment.”** Golden Gate selects the destination using filenames alone. If the named environment inherits a shared file, or creating the target could hide dotenv settings, Golden Gate asks you to review the file choice before opening the form. For custom `--env-file` setups, specify a supported private dotenv path directly. A saved receipt confirms a local file write. Deployed Worker bindings and account Secrets Store are outside this workflow. [Cloudflare's local secrets and file precedence](https://developers.cloudflare.com/workers/configuration/secrets/#local-development-with-secrets)
 
 ## Develop and test
 

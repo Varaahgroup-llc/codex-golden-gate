@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- GG-5 adds local Cloudflare Worker setup from a selected Wrangler configuration, with environment-specific destination review and protection against shadowing existing dotenv settings.
+
 ## 0.3.0 — Inline paste slot (prepared, unreleased)
 
 - Replaced the expanded entry layout with a compact approval-style paste slot, visible destination/identity, masking, Save and Cancel. Save confirms delivery/replacement; pasting alone never submits.

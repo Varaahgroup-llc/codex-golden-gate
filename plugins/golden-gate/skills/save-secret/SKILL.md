@@ -16,6 +16,7 @@ Once installed and enabled, this skill can be selected automatically for relevan
 Call `open_secret_entry` with one destination object:
 
 - `env`: `provider`, absolute `file`, `name`. Parent must exist; inside Git the file must be ignored and untracked. Add a narrow ignore rule only when authorized. The adapter rejects symlinks and unsupported existing dotenv syntax.
+- `cloudflare-local`: for an explicitly local Wrangler Worker, pass its absolute `configFile`, binding `name`, and the requested local `environment` if named. Use the config file selected by the user's dev command. The slot displays the exact .dev.vars file. If the project uses custom env files, use the explicitly identified private file through `env`. If a named environment inherits shared settings, clarify before selecting a shared file. A request for a deployed Worker binding or account Secrets Store has no remote adapter here. Do not substitute a local file or run a deployment.
 - `github`: `provider`, `repo` as `owner/repository`, `name`, optional existing `environment`. Requires authenticated `gh` for GitHub.com. Saves Actions secrets only.
 - `aws`: `provider`, full existing `secretArn`, explicit `profile`. Requires AWS CLI v2. The ARN determines region/account; no secret is created.
 - `azure`: `provider`, `vault`, explicit `subscription`, `name`. Requires authenticated Azure CLI.

@@ -36668,6 +36668,12 @@ var name = external_exports.string().regex(/^[A-Za-z_][A-Za-z0-9_]{0,127}$/);
 var safe = external_exports.string().min(1).max(256).regex(/^[A-Za-z0-9][A-Za-z0-9_.@/ -]*$/);
 var destinationSchema = external_exports.discriminatedUnion("provider", [
   external_exports.object({ provider: external_exports.literal("env"), file: external_exports.string().max(4096), name }).strict(),
+  external_exports.object({
+    provider: external_exports.literal("cloudflare-local"),
+    configFile: external_exports.string().max(4096),
+    environment: external_exports.string().regex(/^[A-Za-z0-9_-]{1,128}$/).optional(),
+    name
+  }).strict(),
   external_exports.object({ provider: external_exports.literal("github"), repo: external_exports.string().regex(/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/), name, environment: safe.optional() }).strict(),
   external_exports.object({ provider: external_exports.literal("aws"), secretArn: external_exports.string().regex(/^arn:aws(?:-us-gov|-cn)?:secretsmanager:[a-z0-9-]+:\d{12}:secret:[A-Za-z0-9/_+=.@-]+$/), profile: safe }).strict(),
   external_exports.object({ provider: external_exports.literal("azure"), vault: external_exports.string().regex(/^[A-Za-z][A-Za-z0-9-]{1,22}[A-Za-z0-9]$/), subscription: safe, name: external_exports.string().regex(/^[A-Za-z0-9-]{1,127}$/) }).strict()
@@ -36792,10 +36798,36 @@ function updateDotenv(text, key, secret) {
   }
   return lines.join("\n").replace(/\n*$/, "\n");
 }
+async function workerDevFile(destination) {
+  const { configFile, environment } = destination;
+  if (!path.isAbsolute(configFile) || /[\r\n\0]/.test(configFile) || !["wrangler.toml", "wrangler.json", "wrangler.jsonc"].includes(path.basename(configFile))) {
+    throw new SafeError("Choose the absolute Wrangler configuration file used by this local Worker.");
+  }
+  if (!(await fs.lstat(configFile)).isFile()) throw new SafeError("Choose a regular Wrangler configuration file.");
+  const directory = await fs.realpath(path.dirname(configFile));
+  const names = await fs.readdir(directory);
+  const target = environment ? `.dev.vars.${environment}` : ".dev.vars";
+  if (!names.includes(target)) {
+    if (environment && names.includes(".dev.vars")) {
+      throw new SafeError("This environment inherits .dev.vars. Choose the shared file explicitly or prepare a complete environment-specific file.");
+    }
+    const shadowsDotenv = environment ? [".env", ".env.local", `.env.${environment}`, `.env.${environment}.local`].some((file2) => names.includes(file2)) : names.some((file2) => /^\.env(?:\.|$)/.test(file2) && !/\.(?:example|sample|template|dist)(?:\.|$)/i.test(file2));
+    if (shadowsDotenv) {
+      throw new SafeError("Creating this .dev.vars file could hide existing dotenv settings. Review the local configuration and choose an explicit destination.");
+    }
+  }
+  return path.join(directory, target);
+}
 async function prepare(raw, execute = run) {
   const destination = destinationSchema.parse(raw);
   if (process.platform === "win32") throw new SafeError("This release supports macOS and Linux desktop only.");
   let identity, label;
+  if (destination.provider === "cloudflare-local") {
+    const file2 = await workerDevFile(destination);
+    const local = await prepare({ provider: "env", file: file2, name: destination.name }, execute);
+    const scope = destination.environment ? `environment ${destination.environment}` : "shared default";
+    return Object.freeze({ ...local, worker: Object.freeze(destination), label: `Cloudflare Worker (local, ${scope}) / ${local.label}` });
+  }
   if (destination.provider === "env") {
     if (!path.isAbsolute(destination.file) || /[\r\n\0]/.test(destination.file)) throw new SafeError("Use an absolute dotenv path.");
     destination.file = path.join(await fs.realpath(path.dirname(destination.file)), path.basename(destination.file));
@@ -36827,6 +36859,9 @@ async function save(plan, secret, execute = run) {
   if (typeof secret !== "string" || !Buffer.byteLength(secret) || Buffer.byteLength(secret) > 65536 || /[\0\r]/.test(secret)) throw new SafeError("Enter 1\u201365,536 UTF-8 bytes without NUL or carriage returns.");
   const d = plan.destination;
   if (d.provider === "env") {
+    if (plan.worker && await workerDevFile(plan.worker) !== d.file) {
+      throw new SafeError("Local Worker destination changed. Open a new form to review it.");
+    }
     await safeFile(d.file);
     await gitGuard(d.file, execute);
     const lock = `${d.file}.golden-gate.lock`;
